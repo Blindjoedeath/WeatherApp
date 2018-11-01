@@ -1,24 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Location View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LocationViewController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sky" translatesAutoresizingMaskIntoConstraints="NO" id="4tf-3c-vV1">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="или" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjE-mt-zZe">
+                                <rect key="frame" x="147.5" y="282" width="25" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J03-Sb-0qJ">
+                                <rect key="frame" x="95.5" y="307" width="129" height="29"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Выберете локацию">
+                                            <attributes>
+                                                <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <font key="NSFont" size="14" name=".AppleSystemUIFont"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                <integer key="NSUnderline" value="1"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bwD-ba-ujJ">
+                                <rect key="frame" x="137.5" y="391" width="45" height="30"/>
+                                <state key="normal" title="Далее">
+                                    <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Для определения геоданных, убедитесь, что на вашем телефоне включена функция геолокации." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gaz-v1-KRz">
+                                <rect key="frame" x="6.5" y="466" width="307" height="97"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="97" id="1dt-gE-Beu"/>
+                                    <constraint firstAttribute="width" constant="307" id="77E-tc-gbG"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="97" id="H2N-DZ-8Eg"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="307" id="wGh-Tk-rIM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ot1-78-f1A">
+                                <rect key="frame" x="134" y="158" width="52" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Сегодня вторник" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xY2-L5-7XO">
+                                <rect key="frame" x="103" y="125" width="114" height="17"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Введите город" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pe0-Hb-Lnw">
+                                <rect key="frame" x="76" y="237" width="168" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="168" id="EGX-7O-fti"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Pe0-Hb-Lnw" firstAttribute="top" secondItem="ot1-78-f1A" secondAttribute="bottom" constant="55" id="1GA-5A-Z3p"/>
+                            <constraint firstItem="yjE-mt-zZe" firstAttribute="top" secondItem="Pe0-Hb-Lnw" secondAttribute="bottom" constant="15" id="319-BR-AXO"/>
+                            <constraint firstItem="bwD-ba-ujJ" firstAttribute="top" secondItem="J03-Sb-0qJ" secondAttribute="bottom" constant="55" id="HWg-FM-rk5"/>
+                            <constraint firstItem="xY2-L5-7XO" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="105" id="NW3-vf-GoN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Gaz-v1-KRz" secondAttribute="bottom" constant="5" id="Nug-FH-v44"/>
+                            <constraint firstItem="bwD-ba-ujJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SG9-xb-bg8"/>
+                            <constraint firstItem="J03-Sb-0qJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SNA-TL-fin"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="4tf-3c-vV1" secondAttribute="bottom" id="SfG-eS-fBx"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4tf-3c-vV1" secondAttribute="trailing" id="XHQ-OC-OBf"/>
+                            <constraint firstItem="4tf-3c-vV1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="cYU-pj-kES"/>
+                            <constraint firstItem="4tf-3c-vV1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="dRQ-nV-nmX"/>
+                            <constraint firstItem="Pe0-Hb-Lnw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="eAN-se-Tdu"/>
+                            <constraint firstItem="xY2-L5-7XO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fEP-Nd-Gbo"/>
+                            <constraint firstItem="ot1-78-f1A" firstAttribute="top" secondItem="xY2-L5-7XO" secondAttribute="bottom" constant="16" id="gUV-uS-6AO"/>
+                            <constraint firstItem="yjE-mt-zZe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gb9-6y-e33"/>
+                            <constraint firstItem="ot1-78-f1A" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="h9f-xR-3wD"/>
+                            <constraint firstItem="Gaz-v1-KRz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xeY-lv-nFt"/>
+                            <constraint firstItem="J03-Sb-0qJ" firstAttribute="top" secondItem="yjE-mt-zZe" secondAttribute="bottom" constant="8" id="yyI-6U-zW3"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="cityTextField" destination="Pe0-Hb-Lnw" id="JOA-mx-CMd"/>
+                        <outlet property="dateLabel" destination="ot1-78-f1A" id="L55-RP-IYd"/>
+                        <outlet property="defineLocationButton" destination="J03-Sb-0qJ" id="PHh-pN-PE7"/>
+                        <outlet property="nextButton" destination="bwD-ba-ujJ" id="ccD-8X-YxZ"/>
+                        <outlet property="todayLabel" destination="xY2-L5-7XO" id="g5F-wA-PAG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="133.125" y="133.09859154929578"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Sky" width="800" height="1420"/>
+    </resources>
 </document>
