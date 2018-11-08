@@ -15,6 +15,16 @@ class WeatherRequest{
 
     typealias RequestCompleted = (Bool) -> Void
     
+    enum State {
+        case notRequestedYet
+        case loading
+        case noResult
+        // case wrongCity
+        case result(Weather)
+    }
+    
+    private(set) var state: State = .notRequestedYet
+    
     func weatherUrl(for city: String) -> URL{
         let urlString = String(format:
             "http://api.openweathermap.org/data/2.5/weather?q=%@&APPID=%@", city, weatherApiToken)
@@ -27,8 +37,8 @@ class WeatherRequest{
     
     func perform(for city: String, completion: @escaping RequestCompleted) {
         task?.cancel()
+        state = .loading
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
         let url = weatherUrl(for: city)
         let session = URLSession.shared
         task = session.dataTask(with: url, completionHandler: {
@@ -42,16 +52,21 @@ class WeatherRequest{
             }
             var success = false
             if let error = error as NSError?, error.code == -999 {
+                self.state = .noResult
                 escape(success)
             }
             
-            if let httpResponse = response as? HTTPURLResponse,
-                httpResponse.statusCode == 200,
-                let jsonData = data,
-                let jsonDictionary = self.parse(json: jsonData) {
-    
-                var weather = self.parse(dictionary: jsonDictionary)
-                success = true
+            if let httpResponse = response as? HTTPURLResponse{
+                if httpResponse.statusCode == 200 {
+                    if let jsonData = data,
+                        let jsonDictionary = self.parse(json: jsonData) {
+                        self.state = .result(self.parse(dictionary: jsonDictionary))
+                        success = true
+                    }
+                } else {
+                    print(httpResponse.statusCode)
+                    self.state = .noResult
+                }
             }
             
             escape(success)
