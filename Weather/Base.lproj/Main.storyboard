@@ -21,13 +21,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="или" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjE-mt-zZe">
-                                <rect key="frame" x="147.5" y="282" width="25" height="17"/>
+                                <rect key="frame" x="147.5" y="273" width="25" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J03-Sb-0qJ">
-                                <rect key="frame" x="95.5" y="307" width="129" height="29"/>
+                                <rect key="frame" x="95.5" y="298" width="129" height="29"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="Выберете локацию">
@@ -42,7 +42,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bwD-ba-ujJ">
-                                <rect key="frame" x="137.5" y="391" width="45" height="30"/>
+                                <rect key="frame" x="137.5" y="382" width="45" height="30"/>
                                 <state key="normal" title="Далее">
                                     <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 </state>
@@ -71,21 +71,30 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Введите город" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pe0-Hb-Lnw">
-                                <rect key="frame" x="76" y="237" width="168" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="line" placeholder="Введите город" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pe0-Hb-Lnw">
+                                <rect key="frame" x="76" y="225" width="168" height="36"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="168" id="EGX-7O-fti"/>
+                                    <constraint firstAttribute="height" constant="36" id="YiH-O0-aam"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="search"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="qlN-S7-oqJ"/>
+                                </connections>
                             </textField>
+                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QwZ-lf-tn6" userLabel="DarkView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <viewLayoutGuide key="safeArea" id="KhE-Sx-7Pd"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Pe0-Hb-Lnw" firstAttribute="top" secondItem="ot1-78-f1A" secondAttribute="bottom" constant="55" id="1GA-5A-Z3p"/>
-                            <constraint firstItem="yjE-mt-zZe" firstAttribute="top" secondItem="Pe0-Hb-Lnw" secondAttribute="bottom" constant="15" id="319-BR-AXO"/>
                             <constraint firstItem="bwD-ba-ujJ" firstAttribute="top" secondItem="J03-Sb-0qJ" secondAttribute="bottom" constant="55" id="HWg-FM-rk5"/>
+                            <constraint firstItem="Pe0-Hb-Lnw" firstAttribute="top" secondItem="ot1-78-f1A" secondAttribute="bottom" constant="43" id="J7O-6l-at8"/>
                             <constraint firstItem="xY2-L5-7XO" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="105" id="NW3-vf-GoN"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Gaz-v1-KRz" secondAttribute="bottom" constant="5" id="Nug-FH-v44"/>
                             <constraint firstItem="bwD-ba-ujJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SG9-xb-bg8"/>
@@ -94,18 +103,20 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4tf-3c-vV1" secondAttribute="trailing" id="XHQ-OC-OBf"/>
                             <constraint firstItem="4tf-3c-vV1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="cYU-pj-kES"/>
                             <constraint firstItem="4tf-3c-vV1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="dRQ-nV-nmX"/>
-                            <constraint firstItem="Pe0-Hb-Lnw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="eAN-se-Tdu"/>
                             <constraint firstItem="xY2-L5-7XO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fEP-Nd-Gbo"/>
                             <constraint firstItem="ot1-78-f1A" firstAttribute="top" secondItem="xY2-L5-7XO" secondAttribute="bottom" constant="16" id="gUV-uS-6AO"/>
                             <constraint firstItem="yjE-mt-zZe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gb9-6y-e33"/>
                             <constraint firstItem="ot1-78-f1A" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="h9f-xR-3wD"/>
+                            <constraint firstItem="Pe0-Hb-Lnw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iVt-09-Cdi"/>
                             <constraint firstItem="Gaz-v1-KRz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xeY-lv-nFt"/>
                             <constraint firstItem="J03-Sb-0qJ" firstAttribute="top" secondItem="yjE-mt-zZe" secondAttribute="bottom" constant="8" id="yyI-6U-zW3"/>
+                            <constraint firstItem="yjE-mt-zZe" firstAttribute="top" secondItem="Pe0-Hb-Lnw" secondAttribute="bottom" constant="12" id="zJ3-so-pWK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="cityTextField" destination="Pe0-Hb-Lnw" id="JOA-mx-CMd"/>
+                        <outlet property="darkView" destination="QwZ-lf-tn6" id="nkC-W0-4FT"/>
                         <outlet property="dateLabel" destination="ot1-78-f1A" id="L55-RP-IYd"/>
                         <outlet property="defineLocationButton" destination="J03-Sb-0qJ" id="PHh-pN-PE7"/>
                         <outlet property="nextButton" destination="bwD-ba-ujJ" id="ccD-8X-YxZ"/>
