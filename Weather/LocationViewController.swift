@@ -13,29 +13,30 @@ class LocationViewController: UIViewController {
 
     @IBOutlet weak var todayLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var permissionNotificationLabel: UILabel!
     @IBOutlet weak var cityTextField: UITextField!
     @IBOutlet weak var defineLocationButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var darkView: UIView!
     
-    
     private var updatingLocation = false
+    private var updatingIndicator: UIActivityIndicatorView!
     private var locationError: NSError?
     private var location: CLLocation?
-    private let locationManager = CLLocationManager()
+    private var locationManager: CLLocationManager!
     private let geocoder = CLGeocoder()
     private var placemark: CLPlacemark?
-    private var timer: Timer?
+    private var timer: Timer!
     
     private let weatherRequest = WeatherRequest()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        locationManager.delegate = self
         cityTextField.borderStyle = .roundedRect
         setDate()
         addGestureRecognizer()
+        
+        updateLabels()
     }
     
     func setDate(){
@@ -108,14 +109,16 @@ extension LocationViewController: CLLocationManagerDelegate{
                          didFailWithError error: Error) {
         locationError = error as NSError
         stopLocationManager()
+        updatingIndicator.stopAnimating()
+        updateLabels()
     }
     
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         let newLocation = locations.last!
         
-        if newLocation.timestamp.timeIntervalSinceNow < -5
-            || newLocation.horizontalAccuracy < 0 {
+        if newLocation.timestamp.timeIntervalSinceNow < -5 ||
+            newLocation.horizontalAccuracy < 0 {
             return
         }
         
@@ -129,25 +132,31 @@ extension LocationViewController: CLLocationManagerDelegate{
                     placemarks, error in
                     if error == nil, let p = placemarks, !p.isEmpty {
                         self.placemark = p.last!
-                        print("found")
                     } else {
-                        self.locationError = error as NSError?
+                        self.locationError = error! as NSError
                         self.placemark = nil
                     }
+                    self.updatingIndicator.stopAnimating()
+                    self.updateLabels()
                 })
             }
         }
     }
     
     @IBAction func getLocation() {
-        var authStatus = CLLocationManager.authorizationStatus()
+        if locationManager == nil{
+            locationManager = CLLocationManager()
+            locationManager.delegate = self
+        }
+        
+        let authStatus = CLLocationManager.authorizationStatus()
         if authStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
             return
         }
         
         if authStatus == .denied || authStatus == .restricted {
-            showLocationServicesDeniedAlert()
+            showLocationPermissionsError()
             return
         }
         
@@ -157,26 +166,34 @@ extension LocationViewController: CLLocationManagerDelegate{
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
-        if (status == .notDetermined){
+        if status == .notDetermined {
             return
         }
-        if (status == .denied || status == .restricted) {
-            showLocationServicesDeniedAlert()
+        if status == .denied || status == .restricted {
+            showLocationPermissionsError()
         } else {
             getLocation()
         }
+        updateLabels()
     }
     
-    func showLocationServicesDeniedAlert() {
-        let alert = UIAlertController(title: "Службы геолокации выключены",
-                                      message:
-            "Пожалуйста, включите службы геолокации в настройках.",
+    func showLocationPermissionsError() {
+        let alert = UIAlertController(title: "Службы геолокации выключены.",
+                                      message: "Пожалуйста, включите их в настройках.",
                                       preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default,
                                      handler: nil)
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func presentUpdatingLocationIndicator(){
+        let frame = CGRect(x: 0, y: 200, width: 320, height: 568)
+        updatingIndicator = UIActivityIndicatorView(frame: frame)
+        updatingIndicator.style = .whiteLarge
+        updatingIndicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.view.addSubview(updatingIndicator)
+        updatingIndicator.startAnimating()
     }
     
     func startLocationManager() {
@@ -185,20 +202,22 @@ extension LocationViewController: CLLocationManagerDelegate{
             placemark = nil
             locationError = nil
             updatingLocation = true
+            cityTextField.text = ""
+            locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
-            timer = Timer.scheduledTimer(timeInterval: 20, target: self,
-                                         selector: #selector(didTimeOut),
-                                         userInfo: nil, repeats: false)
-        }
-        else{
-            print("Disabled")
+            presentUpdatingLocationIndicator()
+            print("Run timer")
+            timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false){
+                _ in self.didTimeOut()
+            }
         }
     }
     
     func stopLocationManager() {
         if updatingLocation {
             locationManager.stopUpdatingLocation()
+            locationManager.delegate = nil
             updatingLocation = false
             
             if let timer = timer {
@@ -207,12 +226,31 @@ extension LocationViewController: CLLocationManagerDelegate{
         }
     }
     
-    @objc
     func didTimeOut() {
-        if location == nil {
-            stopLocationManager()
-            locationError = NSError(domain: "Time out error",
-                                        code: 1, userInfo: nil)
+        locationError = NSError(domain: "Время вышло.",
+                                    code: 1, userInfo: nil)
+        stopLocationManager()
+        updatingIndicator.stopAnimating()
+        updateLabels()
+    }
+    
+    func updateLabels(){
+        if let error = locationError {
+            let alert = UIAlertController(title: error.domain,
+                                          message: "Что-то пошло не так.",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default,
+                                          handler: nil))
+            present(alert, animated: true, completion: nil)
+        } else if let placemark = placemark{
+            cityTextField.text = placemark.locality
+        }
+        let authStatus = CLLocationManager.authorizationStatus()
+        if authStatus == .denied || authStatus == .restricted ||
+            authStatus == .notDetermined{
+            permissionNotificationLabel.isHidden = false
+        } else {
+            permissionNotificationLabel.isHidden = true
         }
     }
 }
