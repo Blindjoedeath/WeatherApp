@@ -123,6 +123,7 @@
                         <outlet property="dateLabel" destination="ot1-78-f1A" id="L55-RP-IYd"/>
                         <outlet property="defineLocationButton" destination="J03-Sb-0qJ" id="PHh-pN-PE7"/>
                         <outlet property="nextButton" destination="bwD-ba-ujJ" id="ccD-8X-YxZ"/>
+                        <outlet property="permissionNotificationLabel" destination="Gaz-v1-KRz" id="Kwg-OC-WBB"/>
                         <outlet property="todayLabel" destination="xY2-L5-7XO" id="g5F-wA-PAG"/>
                     </connections>
                 </viewController>

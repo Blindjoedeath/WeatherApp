@@ -28,7 +28,7 @@ class LocationViewController: UIViewController {
     private var placemark: CLPlacemark?
     private var timer: Timer!
     
-    private let weatherRequest = WeatherRequest()
+    private let forecastWeatherRequest = ForecastWeatherRequest()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,18 +37,13 @@ class LocationViewController: UIViewController {
         addGestureRecognizer()
         
         updateLabels()
+    
     }
     
     func setDate(){
         let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ru_RU")
-        
-        dateFormatter.dateFormat = "EEEE"
-        todayLabel.text = "Сегодня " + dateFormatter.string(from: date) + ","
-        
-        dateFormatter.dateFormat = "d MMMM yyyy"
-        dateLabel.text = dateFormatter.string(from: date)
+        todayLabel.text = "Сегодня " + date.day() + ","
+        dateLabel.text = date.formatted(by: "d MMMM yyyy")
     }
 }
 
