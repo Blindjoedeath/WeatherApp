@@ -14,8 +14,9 @@ class CurrentWeatherRequest{
     private var task: URLSessionDataTask? = nil
     
     func weatherUrl(for city: String) -> URL{
-        let urlString = String(format:
-            "http://api.openweathermap.org/data/2.5/weather?q=%@&appid=%@", city, weatherApiToken)
+        var urlString = String(format:
+            "https://api.openweathermap.org/data/2.5/weather?q=%@&appid=%@", city, weatherApiToken)
+        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         return URL(string: urlString)!
     }
     

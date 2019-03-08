@@ -15,7 +15,6 @@ class ForecastViewController: UIViewController {
     func loadBackground(){
         let now = Date()
         let season = now.season()
-        print(season)
         let image = UIImage(named: season)
         backgroundImage.image = image
     }
