@@ -45,6 +45,10 @@ class LocationViewController: UIViewController {
         todayLabel.text = "Сегодня " + date.day() + ","
         dateLabel.text = date.formatted(by: "d MMMM yyyy")
     }
+    
+    @IBAction func nextButtonTouch(){
+        performSegue(withIdentifier: "ForecastSegue", sender: nil)
+    }
 }
 
 extension LocationViewController: UITextFieldDelegate{

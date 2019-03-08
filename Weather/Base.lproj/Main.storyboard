@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -49,6 +49,9 @@
                                 <state key="normal" title="Далее">
                                     <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 </state>
+                                <connections>
+                                    <action selector="nextButtonTouch" destination="BYZ-38-t0r" eventType="touchUpInside" id="6PP-TP-BFP"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Для определения геоданных, убедитесь, что на вашем телефоне включена функция геолокации." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gaz-v1-KRz">
                                 <rect key="frame" x="6.5" y="466" width="307" height="97"/>
@@ -125,11 +128,66 @@
                         <outlet property="nextButton" destination="bwD-ba-ujJ" id="ccD-8X-YxZ"/>
                         <outlet property="permissionNotificationLabel" destination="Gaz-v1-KRz" id="Kwg-OC-WBB"/>
                         <outlet property="todayLabel" destination="xY2-L5-7XO" id="g5F-wA-PAG"/>
+                        <segue destination="9Hr-nK-eMY" kind="presentation" identifier="ForecastSegue" id="hX3-lU-ZVc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="133.125" y="133.09859154929578"/>
+        </scene>
+        <!--Forecast View Controller-->
+        <scene sceneID="tiz-D2-5o5">
+            <objects>
+                <viewController id="9Hr-nK-eMY" customClass="ForecastViewController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Rxi-rs-Wz0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1V4-cJ-8NB">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="1012"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BRt-9p-8d8">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1012"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ubG-VT-aCD" userLabel="BackgroundImage">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="570"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="ubG-VT-aCD" secondAttribute="trailing" id="9zT-K0-F1f"/>
+                                            <constraint firstAttribute="bottom" secondItem="ubG-VT-aCD" secondAttribute="bottom" constant="442" id="CDf-bS-6IC"/>
+                                            <constraint firstItem="ubG-VT-aCD" firstAttribute="top" secondItem="BRt-9p-8d8" secondAttribute="top" id="sub-ni-tPd"/>
+                                            <constraint firstItem="ubG-VT-aCD" firstAttribute="leading" secondItem="BRt-9p-8d8" secondAttribute="leading" id="tU2-Pd-P7R"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="BRt-9p-8d8" firstAttribute="height" secondItem="1V4-cJ-8NB" secondAttribute="height" id="Cf9-YW-5zO"/>
+                                    <constraint firstAttribute="bottom" secondItem="BRt-9p-8d8" secondAttribute="bottom" constant="440" id="Djm-ef-Flr"/>
+                                    <constraint firstItem="BRt-9p-8d8" firstAttribute="width" secondItem="1V4-cJ-8NB" secondAttribute="width" id="Jhk-Br-3D9"/>
+                                    <constraint firstAttribute="trailing" secondItem="BRt-9p-8d8" secondAttribute="trailing" id="ioK-gM-k3C"/>
+                                    <constraint firstItem="BRt-9p-8d8" firstAttribute="leading" secondItem="1V4-cJ-8NB" secondAttribute="leading" id="ltj-8U-bvx"/>
+                                    <constraint firstItem="BRt-9p-8d8" firstAttribute="top" secondItem="1V4-cJ-8NB" secondAttribute="top" id="zc3-PT-XKJ"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="1V4-cJ-8NB" secondAttribute="bottom" constant="-444" id="7Oz-96-u46"/>
+                            <constraint firstAttribute="trailing" secondItem="1V4-cJ-8NB" secondAttribute="trailing" id="OTv-uw-rXE"/>
+                            <constraint firstItem="1V4-cJ-8NB" firstAttribute="leading" secondItem="Rxi-rs-Wz0" secondAttribute="leading" id="kL6-Hq-YNs"/>
+                            <constraint firstItem="1V4-cJ-8NB" firstAttribute="top" secondItem="Rxi-rs-Wz0" secondAttribute="top" id="l3T-RK-7Qe"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="MFs-j0-loZ"/>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundImage" destination="ubG-VT-aCD" id="Ajr-zl-6AV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lzP-ve-f19" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="954.375" y="133.09859154929578"/>
         </scene>
     </scenes>
     <resources>

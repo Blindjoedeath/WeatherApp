@@ -14,21 +14,20 @@ extension Date {
     }
     
     func formatted(by format: String) -> String{
-        let now = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         dateFormatter.locale = Locale(identifier: "ru_RU")
-        return dateFormatter.string(from: now)
+        return dateFormatter.string(from: self)
     }
     
     func shortDate() -> String {
-        switch day() {
+        switch self.day() {
         case "понедельник":
-            return "Пн"
+            return "пн"
         case "вторник":
-            return "Вт"
+            return "вт"
         case "среда":
-            return "Ср"
+            return "ср"
         case "четверг":
             return "чт"
         case "пятница":
@@ -37,6 +36,25 @@ extension Date {
             return "сб"
         case "воскресенье":
             return "вс"
+        default:
+            return ""
+        }
+    }
+    
+    func season() -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM"
+        let numberOfMonth = Int(dateFormatter.string(from: self))!
+        
+        switch numberOfMonth {
+        case 12, 1, 2:
+            return "Winter"
+        case 3...5:
+            return "Spring"
+        case 6...8:
+            return "Summer"
+        case 9...11:
+            return "Autumn"
         default:
             return ""
         }
