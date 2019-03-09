@@ -27,8 +27,8 @@ class LocationViewController: UIViewController {
     private let geocoder = CLGeocoder()
     private var placemark: CLPlacemark?
     private var timer: Timer!
-    
-    private let forecastWeatherRequest = ForecastWeatherRequest()
+    private var forecast: Forecast!
+    private var forecastViewController: ForecastViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,16 +46,32 @@ class LocationViewController: UIViewController {
     }
     
     @IBAction func nextButtonTouch(){
-        let request = ForecastWeatherRequest()
-        request.perform(for: cityTextField.text!){ forecast in
-            self.performSegue(withIdentifier: "ForecastSegue", sender: forecast)
+        let city = cityTextField.text!
+        let weatherRequest = WeatherRequest<Weather>(url: ApiUrl.weatherUrl(for: city))
+        let forecastRequest = WeatherRequest<Forecast>(url: ApiUrl.forecastUrl(for: city))
+        
+        
+        forecastViewController = nil
+        
+        weatherRequest.perform { weather in
+            self.performSegue(withIdentifier: "ForecastSegue", sender: weather)
+        }
+        
+        forecastRequest.perform{forecast in
+            self.forecast = forecast
+            self.forecastViewController?.forecast = forecast
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ForecastSegue"{
-            let forecastViewController = segue.destination as! ForecastViewController
-            forecastViewController.forecast = sender as! Forecast
+            let navigationController = segue.destination as! UINavigationController
+            forecastViewController = navigationController.topViewController as! ForecastViewController
+            forecastViewController.currentWeather = sender as! Weather
+            forecastViewController.city = cityTextField.text
+            if let forecast = forecast{
+                forecastViewController.forecast = forecast
+            }
         }
     }
 }
@@ -215,7 +231,6 @@ extension LocationViewController: CLLocationManagerDelegate{
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
             presentUpdatingLocationIndicator()
-            print("Run timer")
             timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false){
                 _ in self.didTimeOut()
             }

@@ -28,7 +28,6 @@ class WeatherRequest<Result> where Result: Codable {
         let session = URLSession.shared
         task = session.dataTask(with: url, completionHandler: {
             data, response, error in
-            
             var result: Result?
             if let error = error as NSError?, error.code == -999 {
                 result = nil

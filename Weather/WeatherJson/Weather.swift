@@ -79,7 +79,6 @@ class Weather: Codable {
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             date = dateFormatter.date(from: dateStr)!
         } else {
-            print("LOL")
         }
     }
 }

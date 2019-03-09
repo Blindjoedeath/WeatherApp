@@ -12,7 +12,20 @@ class ForecastViewController: UIViewController {
 
     @IBOutlet weak var backgroundImage: UIImageView!
     
-    public var forecast: Forecast!
+    public var city: String!
+    
+    private var forecastVar : Forecast!
+    public var forecast: Forecast! {
+        set {
+            if newValue != nil && forecast == nil{
+                forecastVar = newValue
+            }
+        }
+        get{
+            return forecastVar
+        }
+    }
+    
     public var currentWeather: Weather!
     
     func loadBackground(){
@@ -20,11 +33,18 @@ class ForecastViewController: UIViewController {
         let season = now.season()
         let image = UIImage(named: season)
         backgroundImage.image = image
+        
+        print("here")
+    }
+    
+    func configureNavigationBar(){
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        configureNavigationBar()
+        
         loadBackground()
     }
 }

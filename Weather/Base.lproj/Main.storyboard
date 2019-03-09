@@ -128,7 +128,7 @@
                         <outlet property="nextButton" destination="bwD-ba-ujJ" id="ccD-8X-YxZ"/>
                         <outlet property="permissionNotificationLabel" destination="Gaz-v1-KRz" id="Kwg-OC-WBB"/>
                         <outlet property="todayLabel" destination="xY2-L5-7XO" id="g5F-wA-PAG"/>
-                        <segue destination="9Hr-nK-eMY" kind="presentation" identifier="ForecastSegue" id="hX3-lU-ZVc"/>
+                        <segue destination="iCp-nW-4b7" kind="presentation" identifier="ForecastSegue" id="bQz-ip-6rY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -146,48 +146,61 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1V4-cJ-8NB">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="1012"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BRt-9p-8d8">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1012"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qgm-Sd-Osi">
+                                        <rect key="frame" x="0.0" y="-64" width="320" height="1012"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ubG-VT-aCD" userLabel="BackgroundImage">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ubG-VT-aCD" userLabel="BackgroundImage">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="570"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="ubG-VT-aCD" secondAttribute="trailing" id="9zT-K0-F1f"/>
-                                            <constraint firstAttribute="bottom" secondItem="ubG-VT-aCD" secondAttribute="bottom" constant="442" id="CDf-bS-6IC"/>
-                                            <constraint firstItem="ubG-VT-aCD" firstAttribute="top" secondItem="BRt-9p-8d8" secondAttribute="top" id="sub-ni-tPd"/>
-                                            <constraint firstItem="ubG-VT-aCD" firstAttribute="leading" secondItem="BRt-9p-8d8" secondAttribute="leading" id="tU2-Pd-P7R"/>
-                                        </constraints>
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="BRt-9p-8d8" firstAttribute="height" secondItem="1V4-cJ-8NB" secondAttribute="height" id="Cf9-YW-5zO"/>
-                                    <constraint firstAttribute="bottom" secondItem="BRt-9p-8d8" secondAttribute="bottom" constant="440" id="Djm-ef-Flr"/>
-                                    <constraint firstItem="BRt-9p-8d8" firstAttribute="width" secondItem="1V4-cJ-8NB" secondAttribute="width" id="Jhk-Br-3D9"/>
-                                    <constraint firstAttribute="trailing" secondItem="BRt-9p-8d8" secondAttribute="trailing" id="ioK-gM-k3C"/>
-                                    <constraint firstItem="BRt-9p-8d8" firstAttribute="leading" secondItem="1V4-cJ-8NB" secondAttribute="leading" id="ltj-8U-bvx"/>
-                                    <constraint firstItem="BRt-9p-8d8" firstAttribute="top" secondItem="1V4-cJ-8NB" secondAttribute="top" id="zc3-PT-XKJ"/>
+                                    <constraint firstItem="qgm-Sd-Osi" firstAttribute="top" secondItem="1V4-cJ-8NB" secondAttribute="top" constant="-64" id="66D-5H-PTc"/>
+                                    <constraint firstAttribute="trailing" secondItem="qgm-Sd-Osi" secondAttribute="trailing" id="aai-5h-dep"/>
+                                    <constraint firstAttribute="bottom" secondItem="qgm-Sd-Osi" secondAttribute="bottom" constant="440" id="bwm-VT-7Rw"/>
+                                    <constraint firstItem="qgm-Sd-Osi" firstAttribute="width" secondItem="1V4-cJ-8NB" secondAttribute="width" id="oVd-Mj-Jkm"/>
+                                    <constraint firstItem="qgm-Sd-Osi" firstAttribute="height" secondItem="1V4-cJ-8NB" secondAttribute="height" id="pSD-ec-9ad"/>
+                                    <constraint firstItem="qgm-Sd-Osi" firstAttribute="leading" secondItem="1V4-cJ-8NB" secondAttribute="leading" id="u20-Bu-OL7"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="1V4-cJ-8NB" secondAttribute="bottom" constant="-444" id="7Oz-96-u46"/>
-                            <constraint firstAttribute="trailing" secondItem="1V4-cJ-8NB" secondAttribute="trailing" id="OTv-uw-rXE"/>
-                            <constraint firstItem="1V4-cJ-8NB" firstAttribute="leading" secondItem="Rxi-rs-Wz0" secondAttribute="leading" id="kL6-Hq-YNs"/>
-                            <constraint firstItem="1V4-cJ-8NB" firstAttribute="top" secondItem="Rxi-rs-Wz0" secondAttribute="top" id="l3T-RK-7Qe"/>
+                            <constraint firstAttribute="trailing" secondItem="1V4-cJ-8NB" secondAttribute="trailing" id="4po-d7-HW3"/>
+                            <constraint firstAttribute="top" secondItem="1V4-cJ-8NB" secondAttribute="top" id="BUY-eX-QFG"/>
+                            <constraint firstItem="1V4-cJ-8NB" firstAttribute="leading" secondItem="Rxi-rs-Wz0" secondAttribute="leading" id="Gvo-TS-pVP"/>
+                            <constraint firstItem="1V4-cJ-8NB" firstAttribute="bottom" secondItem="Rxi-rs-Wz0" secondAttribute="bottom" constant="444" id="Pmp-JU-K2p"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MFs-j0-loZ"/>
                     </view>
+                    <navigationItem key="navigationItem" id="eZz-8P-czD"/>
                     <connections>
                         <outlet property="backgroundImage" destination="ubG-VT-aCD" id="Ajr-zl-6AV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lzP-ve-f19" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="954.375" y="133.09859154929578"/>
+            <point key="canvasLocation" x="2146.875" y="130.98591549295776"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="saF-3n-8fY">
+            <objects>
+                <navigationController id="iCp-nW-4b7" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ri1-L7-Y9k">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0" green="1" blue="0.1938923223" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="9Hr-nK-eMY" kind="relationship" relationship="rootViewController" id="lyo-Kb-Uxc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A2k-gB-IKU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1104" y="133"/>
         </scene>
     </scenes>
     <resources>
