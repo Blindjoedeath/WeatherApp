@@ -12,6 +12,9 @@ class ForecastViewController: UIViewController {
 
     @IBOutlet weak var backgroundImage: UIImageView!
     
+    public var forecast: Forecast!
+    public var currentWeather: Weather!
+    
     func loadBackground(){
         let now = Date()
         let season = now.season()

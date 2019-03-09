@@ -37,7 +37,6 @@ class LocationViewController: UIViewController {
         addGestureRecognizer()
         
         updateLabels()
-    
     }
     
     func setDate(){
@@ -47,7 +46,17 @@ class LocationViewController: UIViewController {
     }
     
     @IBAction func nextButtonTouch(){
-        performSegue(withIdentifier: "ForecastSegue", sender: nil)
+        let request = ForecastWeatherRequest()
+        request.perform(for: cityTextField.text!){ forecast in
+            self.performSegue(withIdentifier: "ForecastSegue", sender: forecast)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ForecastSegue"{
+            let forecastViewController = segue.destination as! ForecastViewController
+            forecastViewController.forecast = sender as! Forecast
+        }
     }
 }
 

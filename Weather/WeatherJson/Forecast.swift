@@ -21,6 +21,7 @@ class Forecast: Codable{
     public func getHourBinsCount(for day: Int) -> Int{
         return weather[day].count
     }
+
     
     subscript(day: Int, hourBin: Int) -> Weather {
         get {
