@@ -12,6 +12,16 @@ class Forecast: Codable{
     
     private var weather: [[Weather]]
     
+    public var daysCount: Int {
+        get {
+            return weather.count
+        }
+    }
+    
+    public func getHourBinsCount(for day: Int) -> Int{
+        return weather[day].count
+    }
+    
     subscript(day: Int, hourBin: Int) -> Weather {
         get {
             return weather[day][hourBin]
@@ -31,11 +41,17 @@ class Forecast: Codable{
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let weatherList = try container.decode([Weather].self, forKey: .list)
         
+        var days = [String]()
+        weatherList.map{ w in
+            if !days.contains(w.date!.day()){
+                days.append(w.date!.day())
+            }
+        }
+        
         weather = []
-        weatherList.forEach{
-            let dateKey = $0.date!.day()
-            let filterArray = weatherList.filter { $0.date!.day() == dateKey }
-            let sorted = filterArray.sorted{
+        days.forEach{ day in
+            let oneDayDates = weatherList.filter { $0.date!.day() == day }
+            let sorted = oneDayDates.sorted{
                 $0.date! < $1.date!
             }
             weather.append(sorted)

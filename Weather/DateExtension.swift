@@ -9,8 +9,12 @@
 import Foundation
 
 extension Date {
-    func day() -> String {
+    func dayName() -> String {
         return formatted(by: "EEEE")
+    }
+    
+    func day() -> String{
+        return formatted(by: "YYYY-MM-dd")
     }
     
     func formatted(by format: String) -> String{
