@@ -52,13 +52,13 @@ extension Date {
         
         switch numberOfMonth {
         case 12, 1, 2:
-            return "Winter"
+            return "winter"
         case 3...5:
-            return "Spring"
+            return "spring"
         case 6...8:
-            return "Summer"
+            return "summer"
         case 9...11:
-            return "Autumn"
+            return "autumn"
         default:
             return ""
         }

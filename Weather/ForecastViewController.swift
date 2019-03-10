@@ -28,23 +28,27 @@ class ForecastViewController: UIViewController {
     
     public var currentWeather: Weather!
     
-    func loadBackground(){
+    func seasonImage(name: String) -> UIImage?{
         let now = Date()
         let season = now.season()
-        let image = UIImage(named: season)
-        backgroundImage.image = image
-        
-        print("here")
+        return UIImage(named: name + "_" + season)
+    }
+    
+    func loadBackground(){
+        backgroundImage.image = seasonImage(name: "background")
     }
     
     func configureNavigationBar(){
+        let navigationBar = navigationController!.navigationBar
+        navigationBar.setBackgroundImage(seasonImage(name: "navbar"), for: .default)
+        navigationBar.shadowImage = UIImage()
+        navigationBar.isTranslucent = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureNavigationBar()
-        
         loadBackground()
     }
 }
