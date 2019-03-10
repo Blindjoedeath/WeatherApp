@@ -11,6 +11,7 @@ import UIKit
 class ForecastViewController: UIViewController {
 
     @IBOutlet weak var backgroundImage: UIImageView!
+    @IBOutlet weak var substrateView: UIView!
     
     public var city: String!
     
@@ -28,27 +29,62 @@ class ForecastViewController: UIViewController {
     
     public var currentWeather: Weather!
     
-    func seasonImage(name: String) -> UIImage?{
+    func getSeason() -> String{
         let now = Date()
-        let season = now.season()
-        return UIImage(named: name + "_" + season)
+        return now.season()
+    }
+    
+    func seasonImage(name: String) -> UIImage?{
+        return UIImage(named: name + "_" + getSeason())
+    }
+    
+    func seasonSubstrateColor() -> UIColor{
+        switch getSeason() {
+        case "winter":
+            return UIColor(red: 66/255.0, green: 78/255.0, blue: 198/255.0, alpha: 0.7)
+        case "spring":
+            return UIColor(red: 255/255.0, green: 150/255.0, blue: 204/255.0, alpha: 0.7)
+        case "summer":
+            return UIColor(red: 204/255.0, green: 197/255.0, blue: 109/255.0, alpha: 0.7)
+        case "autumn":
+            return UIColor(red: 212/255.0, green: 137/255.0, blue: 28/255.0, alpha: 0.7)
+        default:
+            return .clear
+        }
+    }
+    
+    func seasonNavigationBarColor() -> UIColor{
+        switch getSeason() {
+        case "winter":
+            return UIColor(red: 48/255.0, green: 56/255.0, blue: 142/255.0, alpha: 1)
+        case "spring":
+            return UIColor(red: 154/255.0, green: 0/255.0, blue: 132/255.0, alpha: 1)
+        case "summer":
+            return UIColor(red: 161/255.0, green: 156/255.0, blue: 87/255.0, alpha: 1)
+        case "autumn":
+            return UIColor(red: 157/255.0, green: 102/255.0, blue: 21/255.0, alpha: 1)
+        default:
+            return .clear
+        }
     }
     
     func loadBackground(){
         backgroundImage.image = seasonImage(name: "background")
     }
     
+    func configureSubstrate(){
+        substrateView.backgroundColor = seasonSubstrateColor()
+    }
+    
     func configureNavigationBar(){
-        let navigationBar = navigationController!.navigationBar
-        navigationBar.setBackgroundImage(seasonImage(name: "navbar"), for: .default)
-        navigationBar.shadowImage = UIImage()
-        navigationBar.isTranslucent = true
+        navigationController!.navigationBar.barTintColor = seasonNavigationBarColor()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureNavigationBar()
+        configureSubstrate()
         loadBackground()
     }
 }

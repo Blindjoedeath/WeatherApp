@@ -149,12 +149,27 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qgm-Sd-Osi">
                                         <rect key="frame" x="0.0" y="-64" width="320" height="1012"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ubG-VT-aCD" userLabel="BackgroundImage">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ubG-VT-aCD" userLabel="BackgroundImage">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="570"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="570" id="iYe-vG-Ql9"/>
+                                                </constraints>
                                             </imageView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O5x-z5-uyz">
+                                                <rect key="frame" x="0.0" y="64" width="320" height="101"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="O5x-z5-uyz" firstAttribute="trailing" secondItem="ubG-VT-aCD" secondAttribute="trailing" id="HI0-7w-wjh"/>
+                                            <constraint firstAttribute="bottom" secondItem="O5x-z5-uyz" secondAttribute="bottom" constant="847" id="NkW-Gl-Xgd"/>
+                                            <constraint firstItem="O5x-z5-uyz" firstAttribute="leading" secondItem="ubG-VT-aCD" secondAttribute="leading" id="U3G-yj-Or4"/>
+                                            <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="qgm-Sd-Osi" secondAttribute="top" constant="64" id="mvK-1b-b1x"/>
+                                            <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="ubG-VT-aCD" secondAttribute="top" constant="64" id="oWg-mw-JJm"/>
+                                            <constraint firstItem="O5x-z5-uyz" firstAttribute="centerX" secondItem="qgm-Sd-Osi" secondAttribute="centerX" id="psV-Hy-QM7"/>
+                                            <constraint firstItem="O5x-z5-uyz" firstAttribute="leading" secondItem="qgm-Sd-Osi" secondAttribute="leading" id="yYP-gh-f4o"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -179,6 +194,7 @@
                     <navigationItem key="navigationItem" id="eZz-8P-czD"/>
                     <connections>
                         <outlet property="backgroundImage" destination="ubG-VT-aCD" id="Ajr-zl-6AV"/>
+                        <outlet property="substrateView" destination="O5x-z5-uyz" id="oNq-rv-4Z9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lzP-ve-f19" userLabel="First Responder" sceneMemberID="firstResponder"/>
