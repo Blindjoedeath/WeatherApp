@@ -9,27 +9,27 @@
 import Foundation
 
 class RawWeatherInfo: Codable{
-    var type: String
-    var description: String
+    var weatherId: Int
+    var iconCode: String
     
     enum CodingKeys: String, CodingKey {
-        case type = "main"
-        case description
+        case id
+        case icon
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(type, forKey: .type)
-        try container.encode(description, forKey: .description)
+        try container.encode(weatherId, forKey: .id)
+        try container.encode(iconCode, forKey: .icon)
     }
     required init(from decoder: Decoder) throws {
         var container = try decoder.container(keyedBy: CodingKeys.self)
-        type = try container.decode(String.self, forKey: .type)
-        description = try container.decode(String.self, forKey: .description)
+        weatherId = try container.decode(Int.self, forKey: .id)
+        iconCode = try container.decode(String.self, forKey: .icon)
     }
     
-    init(type t: String, description d: String){
-        type = t
-        description = d
+    init(weatherId: Int, iconCode: String){
+        self.weatherId = weatherId
+        self.iconCode = iconCode
     }
 }

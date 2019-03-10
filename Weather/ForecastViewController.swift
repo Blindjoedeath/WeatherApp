@@ -12,6 +12,11 @@ class ForecastViewController: UIViewController {
 
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var substrateView: UIView!
+    @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var perceivedTemperatureLabel: UILabel!
+    @IBOutlet weak var humidityLabel: UILabel!
+    @IBOutlet weak var iconImageView: UIImageView!
     
     public var city: String!
     
@@ -74,10 +79,16 @@ class ForecastViewController: UIViewController {
     
     func configureSubstrate(){
         substrateView.backgroundColor = seasonSubstrateColor()
+        temperatureLabel.text = currentWeather.temperature
+        descriptionLabel.text = currentWeather.description.firstLetterCapitalized
+        perceivedTemperatureLabel.text = "Ощущается \(currentWeather.perceivedTemperature) °C"
+        humidityLabel.text = "Влажность \(currentWeather.humidity)% "
+        iconImageView.image = currentWeather.icon
     }
     
     func configureNavigationBar(){
         navigationController!.navigationBar.barTintColor = seasonNavigationBarColor()
+        navigationItem.title = city
     }
     
     override func viewDidLoad() {

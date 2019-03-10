@@ -7,17 +7,25 @@
 //
 
 import Foundation
+import UIKit
 
 class Weather: Codable {
-    var temperature: Float
-    var humidity: Float
-    var type: String
+    var temperature: String
+    var humidity: Int
     var description: String
+    var icon: UIImage
     var date: Date?
     private var windSpeed: Float
+    private var weatherId: Int
+    private var iconCode: String
     
-    var perceivedTemperature: Int {
-        return 5
+    var perceivedTemperature: String {
+        get{
+            let first = 0.478 + 0.237 * sqrt(windSpeed) - 0.0124 * windSpeed
+            let second = Float(Int(temperature)! - 33)
+            let result = Int(33 + first * second)
+            return result.temperatureStyled
+        }
     }
     
     enum CodingKeys: String, CodingKey {
@@ -48,7 +56,7 @@ class Weather: Codable {
                                                           forKey: .wind)
         try windContainer.encode(windSpeed, forKey: .speed)
         
-        let rawWeatherInfo = RawWeatherInfo(type: type, description: description)
+        let rawWeatherInfo = RawWeatherInfo(weatherId: weatherId, iconCode: iconCode)
         try container.encode(rawWeatherInfo, forKey: .weather)
         
         if let date = date{
@@ -58,21 +66,31 @@ class Weather: Codable {
         }
     }
     
+    private static func kelvinToCelsius(kelvin: Float) -> Float{
+        return kelvin -  273.15
+    }
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         let mainContainer = try container.nestedContainer(keyedBy: MainCodingKeys.self,
                                                           forKey: .main)
-        temperature = try mainContainer.decode(Float.self, forKey: .temp)
-        humidity = try mainContainer.decode(Float.self, forKey: .humidity)
+        let kelvin = try mainContainer.decode(Float.self, forKey: .temp)
+        
+        let celsius = Int(Weather.kelvinToCelsius(kelvin: kelvin))
+        
+        temperature = celsius.temperatureStyled
+        
+        humidity = Int(try mainContainer.decode(Float.self, forKey: .humidity))
         
         let windContainer = try container.nestedContainer(keyedBy: WindCodingKeys.self,
                                                           forKey: .wind)
         windSpeed = try windContainer.decode(Float.self, forKey: .speed)
         
         let rawWeatherInfo = try container.decode([RawWeatherInfo].self, forKey: .weather)
-        type = rawWeatherInfo[0].type
-        description = rawWeatherInfo[0].description
+        weatherId = rawWeatherInfo[0].weatherId
+        iconCode = rawWeatherInfo[0].iconCode
+        (description, icon) = WeatherCodes.getDescriptionAndIcon(weatherId: weatherId, iconCode: iconCode)
         
         if let dateStr = try? container.decode(String.self, forKey: .date){
             let dateFormatter = DateFormatter()
