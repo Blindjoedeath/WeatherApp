@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class Weather: Codable {
-    var temperature: String
+    var temperature: Int
     var humidity: Int
     var description: String
     var icon: UIImage
@@ -22,7 +22,7 @@ class Weather: Codable {
     var perceivedTemperature: String {
         get{
             let a = 0.478 + 0.237 * sqrt(windSpeed) - 0.0124 * windSpeed
-            let b = Float(Int(temperature)! - 33)
+            let b = Float(temperature - 33)
             let c = Int(33 + a * b)
             return c.temperatureStyled
         }
@@ -77,9 +77,7 @@ class Weather: Codable {
                                                           forKey: .main)
         let kelvin = try mainContainer.decode(Float.self, forKey: .temp)
         
-        let celsius = Int(Weather.kelvinToCelsius(kelvin: kelvin))
-        
-        temperature = celsius.temperatureStyled
+        temperature = Int(Weather.kelvinToCelsius(kelvin: kelvin))
         
         humidity = Int(try mainContainer.decode(Float.self, forKey: .humidity))
         

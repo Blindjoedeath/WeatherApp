@@ -22,6 +22,9 @@ class DayWeatherViewController: UIScrollView {
     }
     
     func drawHourBins(){
+        
+        let indicatorScales = calculateIndicatorScales()
+        
         for (i, weather) in dayWeather.enumerated(){
             let hourBinView = Bundle.main.loadNibNamed("HourBinView", owner: self, options: nil)?.first as! HourBinView
             self.addSubview(hourBinView)
@@ -32,7 +35,7 @@ class DayWeatherViewController: UIScrollView {
             hourBinView.frame = frame
             
             let position : Position = i == 0 ? .left : (i == dayWeather.count-1 ? .right : .center)
-            hourBinView.configure(with: weather, on: position)
+            hourBinView.configure(with: weather, on: position, indicating: indicatorScales[i])
         }
     }
     
@@ -40,5 +43,26 @@ class DayWeatherViewController: UIScrollView {
         self.dayWeather = dayWeather + dayWeather + dayWeather
         resizeView()
         drawHourBins()
+    }
+
+    func calculateIndicatorScales() -> [Float]{
+        let absTemperatures = dayWeather.map{ abs($0.temperature) }
+        let average = Float(absTemperatures.reduce(0, +)) / Float(absTemperatures.count)
+        
+        print(absTemperatures)
+        print(average)
+        
+        var result = [Float]()
+        for temp in absTemperatures{
+            var value : Float = 0.5
+            if average != 0 {
+                value += (Float(temp) - average) / (3 * average)
+                value = value > 1 ? 1 : value
+                value = value < 0 ? 0 : value
+            }
+            result.append(value)
+        }
+        print(result)
+        return result
     }
 }

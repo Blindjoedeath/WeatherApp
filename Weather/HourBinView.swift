@@ -21,11 +21,11 @@ class HourBinView: UIView {
     @IBOutlet weak var horizontalBorderingLabel: UILabel!
 
     
-    func configure(with weather : Weather, on position: Position) {
+    func configure(with weather : Weather, on position: Position, indicating scale: Float) {
         iconImageView.image = weather.icon
         temperatureLabel.text = "\(weather.temperature)°C"
         hourLabel.text = weather.date!.hour
-        verticalIndicatorLabel.text = VerticalTemperatureIndicator(scaleOf: 0.2).build()
+        verticalIndicatorLabel.text = VerticalTemperatureIndicator(scaleOf: scale).build()
         makeHorizontalLabel(position: position)
     }
     
