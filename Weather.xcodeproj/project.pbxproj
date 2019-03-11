@@ -86,12 +86,12 @@
 		3D29E152218B2DE70090E9E1 /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				3DBF65C62233200B007CB6BD /* ForecastViewController.swift */,
+				3DD6DB472236A043000EF8D8 /* DayWeatherViewController.swift */,
 				3DD6DB4B2236A94B000EF8D8 /* HourBinView.swift */,
 				3DD6DB492236A85A000EF8D8 /* HourBinView.xib */,
 				3DD6DB4D2236C8AC000EF8D8 /* VerticalTemperatureIndicator.swift */,
 				3D34439922351997006A76EF /* Assets.xcassets */,
-				3DD6DB472236A043000EF8D8 /* DayWeatherViewController.swift */,
-				3DBF65C62233200B007CB6BD /* ForecastViewController.swift */,
 				3DF0F41821A6F5DB00685E15 /* Request */,
 				3DF0F41121A6DE7500685E15 /* WeatherJson */,
 				3D29E153218B2DE70090E9E1 /* AppDelegate.swift */,

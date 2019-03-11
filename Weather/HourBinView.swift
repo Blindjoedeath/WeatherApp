@@ -8,11 +8,11 @@
 
 import UIKit
 
-enum Position{
+enum Position {
     case left, center, right
 }
 
-class HourBinView: UIView{
+class HourBinView: UIView {
     
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -21,7 +21,7 @@ class HourBinView: UIView{
     @IBOutlet weak var horizontalBorderingLabel: UILabel!
 
     
-    func configure(with weather : Weather, on position: Position){
+    func configure(with weather : Weather, on position: Position) {
         iconImageView.image = weather.icon
         temperatureLabel.text = "\(weather.temperature)°C"
         hourLabel.text = weather.date!.hour
@@ -29,17 +29,16 @@ class HourBinView: UIView{
         makeHorizontalLabel(position: position)
     }
     
-    func makeHorizontalLabel(position: Position){
-        if position == .center{
+    func makeHorizontalLabel(position: Position) {
+        if position == .center {
             horizontalBorderingLabel.textAlignment = .center
-            horizontalBorderingLabel.text = "_ _ _ _ _ _ _ _"
-        }else{
-            horizontalBorderingLabel.text = "_ _ _ _"
-            if position == .left{
-                horizontalBorderingLabel.textAlignment = .left
-            } else{
-                horizontalBorderingLabel.textAlignment = .right
-            }
+            horizontalBorderingLabel.text = "_ _ _ _  _ _ _ _"
+        } else if position == .left {
+            horizontalBorderingLabel.textAlignment = .center
+            horizontalBorderingLabel.text = "           _ _ _ _"
+        } else {
+            horizontalBorderingLabel.textAlignment = .left
+            horizontalBorderingLabel.text = " _ _ _ _"
         }
     }
 }

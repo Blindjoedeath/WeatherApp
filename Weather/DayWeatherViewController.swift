@@ -13,7 +13,7 @@ class DayWeatherViewController: UIScrollView {
     private var dayWeather: [Weather]!
     
     private var cellWidth: Int = 52
-    private var indent = 10
+    private var indent = 8
     
     func resizeView(){
         var size = self.frame.size
@@ -31,7 +31,7 @@ class DayWeatherViewController: UIScrollView {
             frame.origin.x = CGFloat(indent + i * cellWidth)
             hourBinView.frame = frame
             
-            let position : Position = i == 0 ? .right : (i == dayWeather.count-1 ? .left : .center)
+            let position : Position = i == 0 ? .left : (i == dayWeather.count-1 ? .right : .center)
             hourBinView.configure(with: weather, on: position)
         }
     }
