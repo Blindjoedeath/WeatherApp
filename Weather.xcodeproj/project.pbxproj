@@ -21,6 +21,10 @@
 		3DBF65C72233200B007CB6BD /* ForecastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF65C62233200B007CB6BD /* ForecastViewController.swift */; };
 		3DBF65C922334347007CB6BD /* WeatherRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF65C822334347007CB6BD /* WeatherRequest.swift */; };
 		3DBF65CB2233489F007CB6BD /* ApiUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF65CA2233489F007CB6BD /* ApiUrl.swift */; };
+		3DD6DB482236A043000EF8D8 /* DayWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6DB472236A043000EF8D8 /* DayWeatherViewController.swift */; };
+		3DD6DB4A2236A85A000EF8D8 /* HourBinView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DD6DB492236A85A000EF8D8 /* HourBinView.xib */; };
+		3DD6DB4C2236A94B000EF8D8 /* HourBinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6DB4B2236A94B000EF8D8 /* HourBinView.swift */; };
+		3DD6DB4E2236C8AC000EF8D8 /* VerticalTemperatureIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6DB4D2236C8AC000EF8D8 /* VerticalTemperatureIndicator.swift */; };
 		3DF0F41321A6DE9800685E15 /* RawWeatherInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF0F41221A6DE9800685E15 /* RawWeatherInfo.swift */; };
 		3DF0F41521A6DEBA00685E15 /* Forecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF0F41421A6DEBA00685E15 /* Forecast.swift */; };
 		3DF0F41721A6EBB200685E15 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF0F41621A6EBB200685E15 /* DateExtension.swift */; };
@@ -36,13 +40,17 @@
 		3D29E162218B2DE90090E9E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D2A72F921942D190093A93C /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		3D2A72FB219430850093A93C /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
-		3D34439922351997006A76EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Weather/Assets.xcassets; sourceTree = "<group>"; };
+		3D34439922351997006A76EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3D34439B22354D58006A76EF /* WeatherCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCodes.swift; sourceTree = "<group>"; };
 		3D34439E22356121006A76EF /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		3D3443A022356948006A76EF /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
 		3DBF65C62233200B007CB6BD /* ForecastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ForecastViewController.swift; path = Weather/ForecastViewController.swift; sourceTree = SOURCE_ROOT; };
 		3DBF65C822334347007CB6BD /* WeatherRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRequest.swift; sourceTree = "<group>"; };
 		3DBF65CA2233489F007CB6BD /* ApiUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiUrl.swift; sourceTree = "<group>"; };
+		3DD6DB472236A043000EF8D8 /* DayWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherViewController.swift; sourceTree = "<group>"; };
+		3DD6DB492236A85A000EF8D8 /* HourBinView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HourBinView.xib; sourceTree = "<group>"; };
+		3DD6DB4B2236A94B000EF8D8 /* HourBinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourBinView.swift; sourceTree = "<group>"; };
+		3DD6DB4D2236C8AC000EF8D8 /* VerticalTemperatureIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalTemperatureIndicator.swift; sourceTree = "<group>"; };
 		3DF0F41221A6DE9800685E15 /* RawWeatherInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawWeatherInfo.swift; sourceTree = "<group>"; };
 		3DF0F41421A6DEBA00685E15 /* Forecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forecast.swift; sourceTree = "<group>"; };
 		3DF0F41621A6EBB200685E15 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
@@ -62,7 +70,6 @@
 		3D29E147218B2DE70090E9E1 = {
 			isa = PBXGroup;
 			children = (
-				3D34439922351997006A76EF /* Assets.xcassets */,
 				3D29E152218B2DE70090E9E1 /* Weather */,
 				3D29E151218B2DE70090E9E1 /* Products */,
 			);
@@ -79,6 +86,11 @@
 		3D29E152218B2DE70090E9E1 /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				3DD6DB4B2236A94B000EF8D8 /* HourBinView.swift */,
+				3DD6DB492236A85A000EF8D8 /* HourBinView.xib */,
+				3DD6DB4D2236C8AC000EF8D8 /* VerticalTemperatureIndicator.swift */,
+				3D34439922351997006A76EF /* Assets.xcassets */,
+				3DD6DB472236A043000EF8D8 /* DayWeatherViewController.swift */,
 				3DBF65C62233200B007CB6BD /* ForecastViewController.swift */,
 				3DF0F41821A6F5DB00685E15 /* Request */,
 				3DF0F41121A6DE7500685E15 /* WeatherJson */,
@@ -176,6 +188,7 @@
 			files = (
 				3D29E161218B2DE90090E9E1 /* LaunchScreen.storyboard in Resources */,
 				3D34439A22351997006A76EF /* Assets.xcassets in Resources */,
+				3DD6DB4A2236A85A000EF8D8 /* HourBinView.xib in Resources */,
 				3D29E159218B2DE70090E9E1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,7 +212,10 @@
 				3D3443A122356948006A76EF /* IntExtension.swift in Sources */,
 				3D29E154218B2DE70090E9E1 /* AppDelegate.swift in Sources */,
 				3DF0F41321A6DE9800685E15 /* RawWeatherInfo.swift in Sources */,
+				3DD6DB4C2236A94B000EF8D8 /* HourBinView.swift in Sources */,
+				3DD6DB482236A043000EF8D8 /* DayWeatherViewController.swift in Sources */,
 				3D34439F22356121006A76EF /* StringExtension.swift in Sources */,
+				3DD6DB4E2236C8AC000EF8D8 /* VerticalTemperatureIndicator.swift in Sources */,
 				3DBF65C72233200B007CB6BD /* ForecastViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

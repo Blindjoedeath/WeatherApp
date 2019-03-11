@@ -21,10 +21,10 @@ class Weather: Codable {
     
     var perceivedTemperature: String {
         get{
-            let first = 0.478 + 0.237 * sqrt(windSpeed) - 0.0124 * windSpeed
-            let second = Float(Int(temperature)! - 33)
-            let result = Int(33 + first * second)
-            return result.temperatureStyled
+            let a = 0.478 + 0.237 * sqrt(windSpeed) - 0.0124 * windSpeed
+            let b = Float(Int(temperature)! - 33)
+            let c = Int(33 + a * b)
+            return c.temperatureStyled
         }
     }
     

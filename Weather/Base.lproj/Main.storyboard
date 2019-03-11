@@ -165,7 +165,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="°C" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AQy-Jg-PwY">
-                                                        <rect key="frame" x="112.5" y="25" width="22.5" height="24"/>
+                                                        <rect key="frame" x="112.5" y="25" width="23" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -205,15 +205,29 @@
                                                     <constraint firstItem="3nV-Cx-Cdy" firstAttribute="firstBaseline" secondItem="AQy-Jg-PwY" secondAttribute="firstBaseline" id="thl-MY-1Gx"/>
                                                 </constraints>
                                             </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXg-3l-le2">
+                                                <rect key="frame" x="0.0" y="424" width="320" height="140"/>
+                                                <subviews>
+                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZLK-ne-p86" customClass="DayWeatherViewController" customModule="Weather" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </scrollView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="qXg-3l-le2" firstAttribute="leading" secondItem="qgm-Sd-Osi" secondAttribute="leading" id="BJq-p9-6EF"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="trailing" secondItem="ubG-VT-aCD" secondAttribute="trailing" id="HI0-7w-wjh"/>
                                             <constraint firstAttribute="bottom" secondItem="O5x-z5-uyz" secondAttribute="bottom" constant="847" id="NkW-Gl-Xgd"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="leading" secondItem="ubG-VT-aCD" secondAttribute="leading" id="U3G-yj-Or4"/>
+                                            <constraint firstAttribute="bottom" secondItem="qXg-3l-le2" secondAttribute="bottom" constant="448" id="alc-go-zk8"/>
+                                            <constraint firstItem="qXg-3l-le2" firstAttribute="top" secondItem="O5x-z5-uyz" secondAttribute="bottom" constant="259" id="bRN-VM-NQv"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="qgm-Sd-Osi" secondAttribute="top" constant="64" id="mvK-1b-b1x"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="ubG-VT-aCD" secondAttribute="top" constant="64" id="oWg-mw-JJm"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="centerX" secondItem="qgm-Sd-Osi" secondAttribute="centerX" id="psV-Hy-QM7"/>
+                                            <constraint firstAttribute="trailing" secondItem="qXg-3l-le2" secondAttribute="trailing" id="y3Y-kL-3cx"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="leading" secondItem="qgm-Sd-Osi" secondAttribute="leading" id="yYP-gh-f4o"/>
                                         </constraints>
                                     </view>
@@ -240,10 +254,12 @@
                     <navigationItem key="navigationItem" id="eZz-8P-czD"/>
                     <connections>
                         <outlet property="backgroundImage" destination="ubG-VT-aCD" id="Ajr-zl-6AV"/>
+                        <outlet property="currentWeatherSubstrateView" destination="O5x-z5-uyz" id="G9y-EN-nxj"/>
+                        <outlet property="dayWeatherScrollView" destination="ZLK-ne-p86" id="OaN-rZ-HlZ"/>
+                        <outlet property="dayWeatherSubstrateView" destination="qXg-3l-le2" id="Izh-bg-9ka"/>
                         <outlet property="descriptionLabel" destination="3nV-Cx-Cdy" id="Gdk-Ro-IPW"/>
                         <outlet property="humidityLabel" destination="ey4-6q-MPU" id="ILf-w0-V2s"/>
                         <outlet property="perceivedTemperatureLabel" destination="OYs-SX-P2d" id="beK-Ln-0sb"/>
-                        <outlet property="substrateView" destination="O5x-z5-uyz" id="oNq-rv-4Z9"/>
                         <outlet property="temperatureLabel" destination="qnp-LJ-4tE" id="Pa7-ML-JJb"/>
                     </connections>
                 </viewController>

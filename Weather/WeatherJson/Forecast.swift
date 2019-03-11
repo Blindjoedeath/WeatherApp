@@ -29,6 +29,12 @@ class Forecast: Codable{
         }
     }
     
+    subscript(day: Int) -> [Weather] {
+        get {
+            return weather[day]
+        }
+    }
+    
     enum CodingKeys: String, CodingKey{
         case list
     }
@@ -44,14 +50,14 @@ class Forecast: Codable{
         
         var days = [String]()
         weatherList.map{ w in
-            if !days.contains(w.date!.day()){
-                days.append(w.date!.day())
+            if !days.contains(w.date!.day){
+                days.append(w.date!.day)
             }
         }
         
         weather = []
         days.forEach{ day in
-            let oneDayDates = weatherList.filter { $0.date!.day() == day }
+            let oneDayDates = weatherList.filter { $0.date!.day == day }
             let sorted = oneDayDates.sorted{
                 $0.date! < $1.date!
             }

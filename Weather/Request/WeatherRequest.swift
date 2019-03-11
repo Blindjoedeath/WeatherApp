@@ -34,7 +34,6 @@ class WeatherRequest<Result> where Result: Codable {
             } else if let httpResponse = response as? HTTPURLResponse,
                 httpResponse.statusCode == 200,
                 let jsonData = data {
-                
                 result = self.parse(json: jsonData)
             }
             

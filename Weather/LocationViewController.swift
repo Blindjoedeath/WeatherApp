@@ -41,23 +41,22 @@ class LocationViewController: UIViewController {
     
     func setDate(){
         let date = Date()
-        todayLabel.text = "Сегодня " + date.day() + ","
+        todayLabel.text = "Сегодня " + date.day + ","
         dateLabel.text = date.formatted(by: "d MMMM yyyy")
     }
     
     @IBAction func nextButtonTouch(){
+        
         let city = cityTextField.text!
         let weatherRequest = WeatherRequest<Weather>(url: ApiUrl.weatherUrl(for: city))
         let forecastRequest = WeatherRequest<Forecast>(url: ApiUrl.forecastUrl(for: city))
-        
-        
         forecastViewController = nil
         
         weatherRequest.perform { weather in
             self.performSegue(withIdentifier: "ForecastSegue", sender: weather)
         }
         
-        forecastRequest.perform{forecast in
+        forecastRequest.perform{ forecast in
             self.forecast = forecast
             self.forecastViewController?.forecast = forecast
         }

@@ -11,12 +11,13 @@ import UIKit
 class ForecastViewController: UIViewController {
 
     @IBOutlet weak var backgroundImage: UIImageView!
-    @IBOutlet weak var substrateView: UIView!
+    @IBOutlet weak var currentWeatherSubstrateView: UIView!
+    @IBOutlet weak var dayWeatherSubstrateView: UIView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var perceivedTemperatureLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
-    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var dayWeatherScrollView: DayWeatherViewController!
     
     public var city: String!
     
@@ -25,6 +26,9 @@ class ForecastViewController: UIViewController {
         set {
             if newValue != nil && forecast == nil{
                 forecastVar = newValue
+                if self.isViewLoaded && !forecastLoaded{
+                    loadForecast()
+                }
             }
         }
         get{
@@ -36,7 +40,7 @@ class ForecastViewController: UIViewController {
     
     func getSeason() -> String{
         let now = Date()
-        return now.season()
+        return now.season
     }
     
     func seasonImage(name: String) -> UIImage?{
@@ -78,17 +82,25 @@ class ForecastViewController: UIViewController {
     }
     
     func configureSubstrate(){
-        substrateView.backgroundColor = seasonSubstrateColor()
+        let color = seasonSubstrateColor()
+        currentWeatherSubstrateView.backgroundColor = color
+        dayWeatherSubstrateView.backgroundColor = color
         temperatureLabel.text = currentWeather.temperature
         descriptionLabel.text = currentWeather.description.firstLetterCapitalized
         perceivedTemperatureLabel.text = "Ощущается \(currentWeather.perceivedTemperature) °C"
         humidityLabel.text = "Влажность \(currentWeather.humidity)% "
-        iconImageView.image = currentWeather.icon
     }
     
     func configureNavigationBar(){
         navigationController!.navigationBar.barTintColor = seasonNavigationBarColor()
         navigationItem.title = city
+    }
+    
+    private var forecastLoaded = false
+    func loadForecast(){
+        dayWeatherScrollView.configure(with: forecast[0])
+        
+        forecastLoaded = true
     }
     
     override func viewDidLoad() {
@@ -97,5 +109,9 @@ class ForecastViewController: UIViewController {
         configureNavigationBar()
         configureSubstrate()
         loadBackground()
+        
+        if forecast != nil{
+            loadForecast()
+        }
     }
 }
