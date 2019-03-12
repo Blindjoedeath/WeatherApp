@@ -136,6 +136,7 @@ extension ForecastViewController : UITableViewDelegate, UITableViewDataSource{
     func configureTableView(){
         forecastTableView.delegate = self
         forecastTableView.dataSource = self
+        forecastTableView.tableFooterView = UIView()
         
         let cellNib = UINib(nibName: ForecastViewIdentifiers.forecastTableViewCell, bundle: nil)
         forecastTableView.register(cellNib, forCellReuseIdentifier: ForecastViewIdentifiers.forecastTableViewCell)
@@ -143,15 +144,21 @@ extension ForecastViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let forecast = forecast{
-             return forecast.daysCount
+             return forecast.daysCount + 1
         }
         return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: ForecastViewIdentifiers.forecastTableViewCell) as! ForecastTableViewCell
-        cell.configure(with: forecast[indexPath.row][3])
+        if indexPath.row == 0{
+            cell.configure(with: currentWeather)
+            cell.separatorInset = .zero
+        } else{
+            print(forecast[indexPath.row - 1])
+            cell.configure(with: forecast[indexPath.row - 1][3])
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        }
         return cell
     }
 }

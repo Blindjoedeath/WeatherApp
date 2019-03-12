@@ -165,13 +165,13 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ощущается" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OYs-SX-P2d">
-                                                        <rect key="frame" x="149" y="56" width="78.5" height="17"/>
+                                                        <rect key="frame" x="149" y="56" width="79" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ощущается" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ey4-6q-MPU">
-                                                        <rect key="frame" x="149" y="74" width="78.5" height="17"/>
+                                                        <rect key="frame" x="149" y="74" width="79" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -217,14 +217,18 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXg-3l-le2">
                                                 <rect key="frame" x="0.0" y="424" width="320" height="140"/>
                                                 <subviews>
-                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZLK-ne-p86" customClass="DayWeatherViewController" customModule="Weather" customModuleProvider="target">
+                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZLK-ne-p86" customClass="DayWeatherViewController" customModule="Weather" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </scrollView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="ZLK-ne-p86" firstAttribute="top" secondItem="qXg-3l-le2" secondAttribute="top" id="UaH-Xq-RSM"/>
+                                                    <constraint firstAttribute="trailing" secondItem="ZLK-ne-p86" secondAttribute="trailing" id="Yoo-Q3-aGN"/>
+                                                    <constraint firstAttribute="bottom" secondItem="ZLK-ne-p86" secondAttribute="bottom" id="ckx-0M-9kc"/>
+                                                </constraints>
                                             </view>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ha7-Au-oNr">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ha7-Au-oNr">
                                                 <rect key="frame" x="0.0" y="568" width="320" height="444"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <sections/>
@@ -236,6 +240,7 @@
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="trailing" secondItem="ubG-VT-aCD" secondAttribute="trailing" id="HI0-7w-wjh"/>
                                             <constraint firstAttribute="bottom" secondItem="ha7-Au-oNr" secondAttribute="bottom" id="Tej-I6-Qfh"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="leading" secondItem="ubG-VT-aCD" secondAttribute="leading" id="U3G-yj-Or4"/>
+                                            <constraint firstItem="ZLK-ne-p86" firstAttribute="leading" secondItem="O5x-z5-uyz" secondAttribute="trailing" constant="-320" id="Vfl-GX-cKB"/>
                                             <constraint firstAttribute="bottom" secondItem="qXg-3l-le2" secondAttribute="bottom" constant="448" id="alc-go-zk8"/>
                                             <constraint firstItem="ha7-Au-oNr" firstAttribute="trailing" secondItem="qXg-3l-le2" secondAttribute="trailing" id="cDu-2C-hjN"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="qgm-Sd-Osi" secondAttribute="top" constant="64" id="mvK-1b-b1x"/>

@@ -19,8 +19,16 @@ class ForecastTableViewCell: UITableViewCell {
         super.awakeFromNib()
     }
     
-    func configure(with weather: Weather){
-        todayLabel.text = weather.date!.shortDayName
+    func configure(with weather: Weather) {
+        
+        if weather.date == nil {
+            todayLabel.text = "Сегодня"
+            todayLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
+            todayLabel.textAlignment = .left
+        } else {
+            todayLabel.text = weather.date!.shortDayName
+            todayLabel.textAlignment = .center
+        }
         weatherDescriptionLabel.text = weather.description
         tempAndHumidityLabel.text = "\(weather.temperature.temperatureStyled) / \(weather.humidity)%"
         iconImageview.image = weather.icon
