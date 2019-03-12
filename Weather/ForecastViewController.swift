@@ -85,6 +85,7 @@ class ForecastViewController: UIViewController {
         let color = seasonSubstrateColor()
         currentWeatherSubstrateView.backgroundColor = color
         dayWeatherSubstrateView.backgroundColor = color
+        view.backgroundColor = color
         temperatureLabel.text = currentWeather.temperature.temperatureStyled
         descriptionLabel.text = currentWeather.description.firstLetterCapitalized
         perceivedTemperatureLabel.text = "Ощущается \(currentWeather.perceivedTemperature) °C"

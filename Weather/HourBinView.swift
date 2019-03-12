@@ -12,6 +12,12 @@ enum Position {
     case left, center, right
 }
 
+struct HourBinInfo{
+    var position: Position
+    var indicatorHeight: Int
+    var weather: Weather
+}
+
 class HourBinView: UIView {
     
     @IBOutlet weak var iconImageView: UIImageView!
@@ -19,26 +25,56 @@ class HourBinView: UIView {
     @IBOutlet weak var hourLabel: UILabel!
     @IBOutlet weak var verticalIndicatorLabel: UILabel!
     @IBOutlet weak var horizontalBorderingLabel: UILabel!
-
     
-    func configure(with weather : Weather, on position: Position, indicating scale: Float) {
-        iconImageView.image = weather.icon
-        temperatureLabel.text = "\(weather.temperature)°C"
-        hourLabel.text = weather.date!.hour
-        verticalIndicatorLabel.text = VerticalTemperatureIndicator(scaleOf: scale).build()
-        makeHorizontalLabel(position: position)
+    private var hourBinInfo: HourBinInfo!
+    
+    func animateAppearance(completion: @escaping () -> Void){
+        for i in 1...hourBinInfo.indicatorHeight{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.03 * Double(i)){
+                self.verticalIndicatorLabel.text = VerticalTemperatureIndicator(height: i).build()
+            }
+        }
+        
+        let border = makeHorizontalBorder(position: hourBinInfo.position)
+        for i in 1...border.count-1{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.015 * Double(i)){
+                let index = border.index(border.startIndex, offsetBy: i)
+                self.horizontalBorderingLabel.text = String(border[border.startIndex...index])
+                if i == border.count - 1{
+                    completion()
+                }
+            }
+        }
     }
     
-    func makeHorizontalLabel(position: Position) {
-        if position == .center {
-            horizontalBorderingLabel.textAlignment = .center
-            horizontalBorderingLabel.text = "_ _ _ _  _ _ _ _"
-        } else if position == .left {
-            horizontalBorderingLabel.textAlignment = .center
-            horizontalBorderingLabel.text = "           _ _ _ _"
+    func configure(with hourBinInfo: HourBinInfo) {
+        self.hourBinInfo = hourBinInfo
+        
+        iconImageView.image = hourBinInfo.weather.icon
+        temperatureLabel.text = "\(hourBinInfo.weather.temperature)°C"
+        hourLabel.text = hourBinInfo.weather.date!.hour
+        horizontalBorderingLabel.text = ""
+        verticalIndicatorLabel.text = ""
+        
+        alignHorizontalBorder()
+    }
+    
+    func alignHorizontalBorder(){
+        if hourBinInfo.position == .center {
+            horizontalBorderingLabel.textAlignment = .left
+        } else if hourBinInfo.position == .left {
+            horizontalBorderingLabel.textAlignment = .right
         } else {
             horizontalBorderingLabel.textAlignment = .left
-            horizontalBorderingLabel.text = " _ _ _ _"
         }
+    }
+    
+    func makeHorizontalBorder(position: Position) -> String {
+        if position == .center {
+            return "_ _ _ _  _ _ _ _"
+        } else if position == .left {
+            return "           _ _ _ _"
+        }
+        return " _ _ _ _"
     }
 }

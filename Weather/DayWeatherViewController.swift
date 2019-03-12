@@ -22,9 +22,10 @@ class DayWeatherViewController: UIScrollView {
     }
     
     func drawHourBins(){
-        
         let indicatorScales = calculateIndicatorScales()
         
+        
+        var hourBinViews = [HourBinView]()
         for (i, weather) in dayWeather.enumerated(){
             let hourBinView = Bundle.main.loadNibNamed("HourBinView", owner: self, options: nil)?.first as! HourBinView
             self.addSubview(hourBinView)
@@ -33,9 +34,24 @@ class DayWeatherViewController: UIScrollView {
             
             frame.origin.x = CGFloat(indent + i * cellWidth)
             hourBinView.frame = frame
-            
             let position : Position = i == 0 ? .left : (i == dayWeather.count-1 ? .right : .center)
-            hourBinView.configure(with: weather, on: position, indicating: indicatorScales[i])
+            let hourBinInfo = HourBinInfo(position: position,
+                                          indicatorHeight: Int(indicatorScales[i] * 10),
+                                          weather: weather)
+            hourBinView.configure(with: hourBinInfo)
+            hourBinViews.append(hourBinView)
+        }
+        
+        animateСonsistently(for: hourBinViews)
+    }
+    
+    func animateСonsistently(for hourBinViews: [HourBinView], arg : Int = 0){
+        if arg == hourBinViews.count{
+            return
+        } else{
+            hourBinViews[arg].animateAppearance{
+                self.animateСonsistently(for: hourBinViews, arg: arg + 1)
+            }
         }
     }
     
@@ -49,9 +65,6 @@ class DayWeatherViewController: UIScrollView {
         let absTemperatures = dayWeather.map{ abs($0.temperature) }
         let average = Float(absTemperatures.reduce(0, +)) / Float(absTemperatures.count)
         
-        print(absTemperatures)
-        print(average)
-        
         var result = [Float]()
         for temp in absTemperatures{
             var value : Float = 0.5
@@ -62,7 +75,6 @@ class DayWeatherViewController: UIScrollView {
             }
             result.append(value)
         }
-        print(result)
         return result
     }
 }

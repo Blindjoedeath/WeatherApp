@@ -143,16 +143,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1V4-cJ-8NB">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1V4-cJ-8NB">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="1012"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qgm-Sd-Osi">
                                         <rect key="frame" x="0.0" y="-64" width="320" height="1012"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ubG-VT-aCD" userLabel="BackgroundImage">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="570"/>
+                                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="570" id="iYe-vG-Ql9"/>
+                                                    <constraint firstAttribute="height" constant="504" id="iYe-vG-Ql9"/>
                                                 </constraints>
                                             </imageView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O5x-z5-uyz">
@@ -215,7 +215,6 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="qXg-3l-le2" firstAttribute="leading" secondItem="qgm-Sd-Osi" secondAttribute="leading" id="BJq-p9-6EF"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="trailing" secondItem="ubG-VT-aCD" secondAttribute="trailing" id="HI0-7w-wjh"/>
@@ -224,7 +223,7 @@
                                             <constraint firstAttribute="bottom" secondItem="qXg-3l-le2" secondAttribute="bottom" constant="448" id="alc-go-zk8"/>
                                             <constraint firstItem="qXg-3l-le2" firstAttribute="top" secondItem="O5x-z5-uyz" secondAttribute="bottom" constant="259" id="bRN-VM-NQv"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="qgm-Sd-Osi" secondAttribute="top" constant="64" id="mvK-1b-b1x"/>
-                                            <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="ubG-VT-aCD" secondAttribute="top" constant="64" id="oWg-mw-JJm"/>
+                                            <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="ubG-VT-aCD" secondAttribute="top" id="oWg-mw-JJm"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="centerX" secondItem="qgm-Sd-Osi" secondAttribute="centerX" id="psV-Hy-QM7"/>
                                             <constraint firstAttribute="trailing" secondItem="qXg-3l-le2" secondAttribute="trailing" id="y3Y-kL-3cx"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="leading" secondItem="qgm-Sd-Osi" secondAttribute="leading" id="yYP-gh-f4o"/>

@@ -10,17 +10,16 @@ import Foundation
 
 class VerticalTemperatureIndicator{
     
-    private var scale : Float
+    private var height : Int
     
-    init(scaleOf : Float) {
-        scale = scaleOf
+    init(height : Int) {
+        self.height = height
     }
     
     func build() -> String {
         var result = ""
-        let it = Int(scale * 10)        
-        let lineBreaks = 9 - it
-        let lines = it - 1
+        let lineBreaks = 9 - height
+        let lines = height - 1
         
         if lineBreaks > 0 {
             for _ in 1...lineBreaks{
