@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct ForecastViewIdentifiers{
+    static let forecastTableViewCell  = "ForecastTableViewCell"
+}
+
+
 class ForecastViewController: UIViewController {
 
     @IBOutlet weak var backgroundImage: UIImageView!
@@ -18,6 +23,7 @@ class ForecastViewController: UIViewController {
     @IBOutlet weak var perceivedTemperatureLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
     @IBOutlet weak var dayWeatherScrollView: DayWeatherViewController!
+    @IBOutlet weak var forecastTableView: UITableView!
     
     public var city: String!
     
@@ -81,15 +87,20 @@ class ForecastViewController: UIViewController {
         backgroundImage.image = seasonImage(name: "background")
     }
     
-    func configureSubstrate(){
+    func colorElements(){
         let color = seasonSubstrateColor()
         currentWeatherSubstrateView.backgroundColor = color
         dayWeatherSubstrateView.backgroundColor = color
         view.backgroundColor = color
+        forecastTableView.backgroundColor = color
+    }
+    
+    func configureSubstrate(){
         temperatureLabel.text = currentWeather.temperature.temperatureStyled
         descriptionLabel.text = currentWeather.description.firstLetterCapitalized
         perceivedTemperatureLabel.text = "Ощущается \(currentWeather.perceivedTemperature) °C"
         humidityLabel.text = "Влажность \(currentWeather.humidity)% "
+        temperatureLabel.sizeToFit()
     }
     
     func configureNavigationBar(){
@@ -100,7 +111,7 @@ class ForecastViewController: UIViewController {
     private var forecastLoaded = false
     func loadForecast(){
         dayWeatherScrollView.configure(with: forecast[0])
-        
+        forecastTableView.reloadData()
         forecastLoaded = true
     }
     
@@ -110,9 +121,37 @@ class ForecastViewController: UIViewController {
         configureNavigationBar()
         configureSubstrate()
         loadBackground()
+        configureTableView()
+        colorElements()
         
         if forecast != nil{
             loadForecast()
         }
+    }
+}
+
+
+extension ForecastViewController : UITableViewDelegate, UITableViewDataSource{
+    
+    func configureTableView(){
+        forecastTableView.delegate = self
+        forecastTableView.dataSource = self
+        
+        let cellNib = UINib(nibName: ForecastViewIdentifiers.forecastTableViewCell, bundle: nil)
+        forecastTableView.register(cellNib, forCellReuseIdentifier: ForecastViewIdentifiers.forecastTableViewCell)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let forecast = forecast{
+             return forecast.daysCount
+        }
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: ForecastViewIdentifiers.forecastTableViewCell) as! ForecastTableViewCell
+        cell.configure(with: forecast[indexPath.row][3])
+        return cell
     }
 }

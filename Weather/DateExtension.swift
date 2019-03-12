@@ -34,9 +34,9 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
-    var shortDate : String {
+    var shortDayName : String {
         get{
-            switch self.day {
+            switch self.dayName {
             case "понедельник":
                 return "пн"
             case "вторник":
