@@ -23,6 +23,7 @@
 		3DBF65C72233200B007CB6BD /* ForecastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF65C62233200B007CB6BD /* ForecastViewController.swift */; };
 		3DBF65C922334347007CB6BD /* WeatherRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF65C822334347007CB6BD /* WeatherRequest.swift */; };
 		3DBF65CB2233489F007CB6BD /* ApiUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF65CA2233489F007CB6BD /* ApiUrl.swift */; };
+		3DD324A12239946200735797 /* ErrorAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD324A02239946200735797 /* ErrorAlerts.swift */; };
 		3DD6DB482236A043000EF8D8 /* DayWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6DB472236A043000EF8D8 /* DayWeatherViewController.swift */; };
 		3DD6DB4A2236A85A000EF8D8 /* HourBinView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DD6DB492236A85A000EF8D8 /* HourBinView.xib */; };
 		3DD6DB4C2236A94B000EF8D8 /* HourBinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6DB4B2236A94B000EF8D8 /* HourBinView.swift */; };
@@ -51,6 +52,7 @@
 		3DBF65C62233200B007CB6BD /* ForecastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ForecastViewController.swift; path = Weather/ForecastViewController.swift; sourceTree = SOURCE_ROOT; };
 		3DBF65C822334347007CB6BD /* WeatherRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRequest.swift; sourceTree = "<group>"; };
 		3DBF65CA2233489F007CB6BD /* ApiUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiUrl.swift; sourceTree = "<group>"; };
+		3DD324A02239946200735797 /* ErrorAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlerts.swift; sourceTree = "<group>"; };
 		3DD6DB472236A043000EF8D8 /* DayWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherViewController.swift; sourceTree = "<group>"; };
 		3DD6DB492236A85A000EF8D8 /* HourBinView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HourBinView.xib; sourceTree = "<group>"; };
 		3DD6DB4B2236A94B000EF8D8 /* HourBinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourBinView.swift; sourceTree = "<group>"; };
@@ -95,11 +97,11 @@
 				3DD6DB4B2236A94B000EF8D8 /* HourBinView.swift */,
 				3DD6DB492236A85A000EF8D8 /* HourBinView.xib */,
 				3DD6DB4D2236C8AC000EF8D8 /* VerticalTemperatureIndicator.swift */,
+				3D29E155218B2DE70090E9E1 /* LocationViewController.swift */,
 				3D34439922351997006A76EF /* Assets.xcassets */,
 				3DF0F41821A6F5DB00685E15 /* Request */,
 				3DF0F41121A6DE7500685E15 /* WeatherJson */,
 				3D29E153218B2DE70090E9E1 /* AppDelegate.swift */,
-				3D29E155218B2DE70090E9E1 /* LocationViewController.swift */,
 				3D29E157218B2DE70090E9E1 /* Main.storyboard */,
 				3D29E15F218B2DE90090E9E1 /* LaunchScreen.storyboard */,
 				3D29E162218B2DE90090E9E1 /* Info.plist */,
@@ -109,6 +111,7 @@
 				3D34439E22356121006A76EF /* StringExtension.swift */,
 				3D061D762237DBA800BFBD4F /* ForecastTableViewCell.xib */,
 				3D061D782237E07E00BFBD4F /* ForecastTableViewCell.swift */,
+				3DD324A02239946200735797 /* ErrorAlerts.swift */,
 			);
 			path = Weather;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				3D34439C22354D58006A76EF /* WeatherCodes.swift in Sources */,
 				3D2A72FC219430850093A93C /* Weather.swift in Sources */,
 				3D3443A122356948006A76EF /* IntExtension.swift in Sources */,
+				3DD324A12239946200735797 /* ErrorAlerts.swift in Sources */,
 				3D29E154218B2DE70090E9E1 /* AppDelegate.swift in Sources */,
 				3DF0F41321A6DE9800685E15 /* RawWeatherInfo.swift in Sources */,
 				3DD6DB4C2236A94B000EF8D8 /* HourBinView.swift in Sources */,

@@ -27,7 +27,7 @@ class LocationViewController: UIViewController {
     private let geocoder = CLGeocoder()
     private var placemark: CLPlacemark?
     private var timer: Timer!
-    private var forecast: Forecast!
+    private var forecastRequestResult: RequestResult<Forecast>!
     private var forecastViewController: ForecastViewController!
     
     override func viewDidLoad() {
@@ -52,13 +52,23 @@ class LocationViewController: UIViewController {
         let forecastRequest = WeatherRequest<Forecast>(url: ApiUrl.forecastUrl(for: city))
         forecastViewController = nil
         
-        weatherRequest.perform { weather in
-            self.performSegue(withIdentifier: "ForecastSegue", sender: weather)
+        weatherRequest.perform { result in
+            
+            switch result {
+            case .result(let weather):
+                self.performSegue(withIdentifier: "ForecastSegue", sender: weather)
+            case .noNetwork:
+                let alert = getNetworkAlert()
+                self.present(alert, animated: true, completion: nil)
+            case .noLocation:
+                let alert = getLocationAlert()
+                self.present(alert, animated: true, completion: nil)
+            }
         }
         
-        forecastRequest.perform{ forecast in
-            self.forecast = forecast
-            self.forecastViewController?.forecast = forecast
+        forecastRequest.perform{ result in
+            self.forecastRequestResult = result
+            self.forecastViewController?.setForecastRequestResult(result: result)
         }
     }
     
@@ -68,8 +78,8 @@ class LocationViewController: UIViewController {
             forecastViewController = navigationController.topViewController as! ForecastViewController
             forecastViewController.currentWeather = sender as! Weather
             forecastViewController.city = cityTextField.text
-            if let forecast = forecast{
-                forecastViewController.forecast = forecast
+            if let result = forecastRequestResult{
+                forecastViewController.setForecastRequestResult(result: result)
             }
         }
     }

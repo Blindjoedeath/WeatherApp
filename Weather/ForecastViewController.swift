@@ -25,24 +25,30 @@ class ForecastViewController: UIViewController {
     @IBOutlet weak var dayWeatherScrollView: DayWeatherViewController!
     @IBOutlet weak var forecastTableView: UITableView!
     
-    public var city: String!
+    var city: String!
+    private var forecast: Forecast!
+    var currentWeather: Weather!
     
-    private var forecastVar : Forecast!
-    public var forecast: Forecast! {
-        set {
-            if newValue != nil && forecast == nil{
-                forecastVar = newValue
-                if self.isViewLoaded && !forecastLoaded{
-                    loadForecast()
-                }
+    func setForecastRequestResult(result: RequestResult<Forecast>){
+        
+        switch result {
+        case .result(let forecast):
+            self.forecast = forecast
+            if isViewLoaded{
+                loadForecast()
+            }
+        case .noNetwork:
+            if isViewLoaded{
+                let alert = getNetworkAlert()
+                present(alert, animated: true, completion: nil)
+            }
+        case .noLocation:
+            if isViewLoaded{
+                let alert = getLocationAlert()
+                present(alert, animated: true, completion: nil)
             }
         }
-        get{
-            return forecastVar
-        }
     }
-    
-    public var currentWeather: Weather!
     
     func getSeason() -> String{
         let now = Date()
@@ -155,7 +161,6 @@ extension ForecastViewController : UITableViewDelegate, UITableViewDataSource{
             cell.configure(with: currentWeather)
             cell.separatorInset = .zero
         } else{
-            print(forecast[indexPath.row - 1])
             cell.configure(with: forecast[indexPath.row - 1][3])
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         }

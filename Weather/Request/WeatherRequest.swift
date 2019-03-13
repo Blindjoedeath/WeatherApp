@@ -9,7 +9,14 @@
 import Foundation
 import UIKit
 
-class WeatherRequest<Result> where Result: Codable {
+
+enum RequestResult<T> {
+    case noNetwork
+    case noLocation
+    case result(T)
+}
+
+class WeatherRequest<T> where T: Codable {
     
     private var task: URLSessionDataTask? = nil
     private var url: URL
@@ -22,19 +29,24 @@ class WeatherRequest<Result> where Result: Codable {
         task?.cancel()
     }
     
-    func perform(completion: @escaping (Result?) -> Void) {
+    func perform(completion: @escaping (RequestResult<T>) -> Void) {
         task?.cancel()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let session = URLSession.shared
         task = session.dataTask(with: url, completionHandler: {
             data, response, error in
-            var result: Result?
+            
+            var result: RequestResult<T>
             if let error = error as NSError?, error.code == -999 {
-                result = nil
-            } else if let httpResponse = response as? HTTPURLResponse,
-                httpResponse.statusCode == 200,
-                let jsonData = data {
-                result = self.parse(json: jsonData)
+                result = .noNetwork
+            } else if let httpResponse = response as? HTTPURLResponse{
+                if httpResponse.statusCode == 200{
+                    result = .result(self.parse(json: data!))
+                } else {
+                    result = .noLocation
+                }
+            } else {
+                result = .noNetwork
             }
             
             DispatchQueue.main.async{
@@ -45,7 +57,7 @@ class WeatherRequest<Result> where Result: Codable {
         task?.resume()
     }
     
-    private func parse(json data: Data) -> Result? {
-        return try? JSONDecoder().decode(Result.self, from: data)
+    private func parse(json data: Data) -> T {
+        return try! JSONDecoder().decode(T.self, from: data)
     }
 }
