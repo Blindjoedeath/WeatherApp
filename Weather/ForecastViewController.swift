@@ -50,6 +50,10 @@ class ForecastViewController: UIViewController {
         }
     }
     
+    @IBAction func closeButtonTouch(){
+        dismiss(animated: true, completion: nil)
+    }
+    
     func getSeason() -> String{
         let now = Date()
         return now.season

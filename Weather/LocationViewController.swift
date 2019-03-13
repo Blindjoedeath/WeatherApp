@@ -50,7 +50,6 @@ class LocationViewController: UIViewController {
         let city = cityTextField.text!
         let weatherRequest = WeatherRequest<Weather>(url: ApiUrl.weatherUrl(for: city))
         let forecastRequest = WeatherRequest<Forecast>(url: ApiUrl.forecastUrl(for: city))
-        forecastViewController = nil
         
         weatherRequest.perform { result in
             
@@ -67,19 +66,22 @@ class LocationViewController: UIViewController {
         }
         
         forecastRequest.perform{ result in
-            self.forecastRequestResult = result
             self.forecastViewController?.setForecastRequestResult(result: result)
+            self.forecastViewController = nil
+            self.forecastRequestResult = result
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ForecastSegue"{
             let navigationController = segue.destination as! UINavigationController
-            forecastViewController = navigationController.topViewController as! ForecastViewController
+            let forecastViewController = navigationController.topViewController as! ForecastViewController
             forecastViewController.currentWeather = sender as! Weather
             forecastViewController.city = cityTextField.text
             if let result = forecastRequestResult{
                 forecastViewController.setForecastRequestResult(result: result)
+            } else {
+                self.forecastViewController = forecastViewController
             }
         }
     }
