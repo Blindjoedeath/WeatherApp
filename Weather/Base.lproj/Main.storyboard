@@ -198,7 +198,7 @@
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.0" green="1" blue="0.1938923223" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstItem="qnp-LJ-4tE" firstAttribute="leading" secondItem="O5x-z5-uyz" secondAttribute="leading" constant="30" id="1uG-4E-NnK"/>
+                                                    <constraint firstItem="qnp-LJ-4tE" firstAttribute="leading" relation="lessThanOrEqual" secondItem="O5x-z5-uyz" secondAttribute="leading" constant="30" id="1uG-4E-NnK"/>
                                                     <constraint firstItem="3nV-Cx-Cdy" firstAttribute="top" relation="lessThanOrEqual" secondItem="O5x-z5-uyz" secondAttribute="top" constant="34" id="3Ky-ts-rcl"/>
                                                     <constraint firstItem="AQy-Jg-PwY" firstAttribute="leading" secondItem="qnp-LJ-4tE" secondAttribute="trailing" constant="-2" id="8fM-RL-6NT"/>
                                                     <constraint firstItem="OYs-SX-P2d" firstAttribute="top" secondItem="3nV-Cx-Cdy" secondAttribute="bottom" constant="2" id="Hmq-HF-qqM"/>
@@ -210,6 +210,7 @@
                                                     <constraint firstItem="qnp-LJ-4tE" firstAttribute="top" secondItem="O5x-z5-uyz" secondAttribute="top" constant="16" id="eqK-iv-Vbr"/>
                                                     <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="qnp-LJ-4tE" secondAttribute="trailing" constant="246" id="s9p-m0-MDB"/>
                                                     <constraint firstItem="3nV-Cx-Cdy" firstAttribute="leading" secondItem="O5x-z5-uyz" secondAttribute="leading" constant="149" id="uF0-sm-cNx"/>
+                                                    <constraint firstItem="3nV-Cx-Cdy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AQy-Jg-PwY" secondAttribute="trailing" constant="20" id="xtO-a4-EPx"/>
                                                     <constraint firstItem="ey4-6q-MPU" firstAttribute="top" secondItem="OYs-SX-P2d" secondAttribute="bottom" constant="1" id="yNV-bl-8QA"/>
                                                     <constraint firstItem="OYs-SX-P2d" firstAttribute="leading" secondItem="O5x-z5-uyz" secondAttribute="leading" constant="149" id="ytu-fg-YIf"/>
                                                 </constraints>
