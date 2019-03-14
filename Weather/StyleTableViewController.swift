@@ -16,6 +16,8 @@ class StyleTableViewController: UITableViewController {
 
     var delegate : StyleTableViewControllerDelegate?
     
+    var seasons = ["winter", "spring", "summer", "autumn"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setStyle()
@@ -29,7 +31,7 @@ class StyleTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
-        let styleName = AppStyleName(rawValue: indexPath.row)!
+        let styleName = seasons[indexPath.row]
         cell.textLabel?.text = appStyles[styleName]!.description
         cell.backgroundColor = .clear
         cell.textLabel?.textColor = .white
@@ -43,8 +45,8 @@ class StyleTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let styleName = AppStyleName(rawValue: indexPath.row)!
-        AppStyleController.currentStyle = appStyles[styleName]!
+        let styleName = seasons[indexPath.row]
+        AppStyleController.changeStyle(by: styleName)
         setStyle()
         delegate?.styleChanged()
     }

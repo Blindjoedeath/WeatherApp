@@ -56,11 +56,6 @@ class ForecastViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    func getSeason() -> String{
-        let now = Date()
-        return now.season
-    }
-    
     func seasonNavigationBarColor() -> UIColor{
         switch style.name {
         case "winter":

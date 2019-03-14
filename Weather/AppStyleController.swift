@@ -7,10 +7,24 @@
 //
 
 import Foundation
-enum AppStyleName: Int{
-    case winter = 0, spring = 1, summer = 2, autumn = 3
-}
 
 class AppStyleController{
-    static var currentStyle: AppStyle = appStyles[.winter]!
+    
+    static func changeStyle(by name: String){
+        currentStyle = appStyles[name]!
+        UserDefaults.standard.set(currentStyle.name, forKey: "AppStyle")
+    }
+    
+    private static func getSeason() -> String{
+        let now = Date()
+        return now.season
+    }
+    
+    private (set) static var currentStyle: AppStyle = {
+        if let style = UserDefaults.standard.string(forKey: "AppStyle"){
+            return appStyles[style]!
+        } else {
+            return appStyles[getSeason()]!
+        }
+    }()
 }
