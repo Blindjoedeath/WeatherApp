@@ -271,6 +271,7 @@
                             <constraint firstAttribute="top" secondItem="1V4-cJ-8NB" secondAttribute="top" id="BUY-eX-QFG"/>
                             <constraint firstItem="1V4-cJ-8NB" firstAttribute="leading" secondItem="Rxi-rs-Wz0" secondAttribute="leading" id="Gvo-TS-pVP"/>
                             <constraint firstItem="1V4-cJ-8NB" firstAttribute="bottom" secondItem="Rxi-rs-Wz0" secondAttribute="bottom" constant="444" id="Pmp-JU-K2p"/>
+                            <constraint firstItem="1V4-cJ-8NB" firstAttribute="centerX" secondItem="MFs-j0-loZ" secondAttribute="centerX" id="yfa-Za-tSI"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MFs-j0-loZ"/>
                     </view>
@@ -301,6 +302,7 @@
                         <outlet property="descriptionLabel" destination="3nV-Cx-Cdy" id="Gdk-Ro-IPW"/>
                         <outlet property="forecastTableView" destination="ha7-Au-oNr" id="C0F-nY-B72"/>
                         <outlet property="humidityLabel" destination="ey4-6q-MPU" id="ILf-w0-V2s"/>
+                        <outlet property="mainScrollView" destination="1V4-cJ-8NB" id="Qd1-rd-k1D"/>
                         <outlet property="perceivedTemperatureLabel" destination="OYs-SX-P2d" id="beK-Ln-0sb"/>
                         <outlet property="styleButton" destination="qJs-xe-L2b" id="oJR-Wm-apx"/>
                         <outlet property="temperatureLabel" destination="qnp-LJ-4tE" id="Pa7-ML-JJb"/>

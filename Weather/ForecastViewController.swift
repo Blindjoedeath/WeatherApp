@@ -10,10 +10,12 @@ import UIKit
 
 struct ForecastViewIdentifiers{
     static let forecastTableViewCell  = "ForecastTableViewCell"
+    static let kuranovSpinnerView = "KuranovSpinnerView"
 }
 
 class ForecastViewController: UIViewController {
 
+    @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var currentWeatherSubstrateView: UIView!
     @IBOutlet weak var dayWeatherSubstrateView: UIView!
@@ -25,6 +27,8 @@ class ForecastViewController: UIViewController {
     @IBOutlet weak var forecastTableView: UITableView!
     @IBOutlet weak var styleButton: UIButton!
     
+    var kuranovSpinnerView: KuranovSpinnerView!
+    var refreshControl: UIRefreshControl!
     var city: String!
     private var forecast: Forecast!
     var currentWeather: Weather!
@@ -101,7 +105,7 @@ class ForecastViewController: UIViewController {
     
     private var forecastLoaded = false
     func loadForecast(){
-        dayWeatherScrollView.configure(with: forecast[0])
+        dayWeatherScrollView.configure(with: forecast[Int.random(in: 0..<forecast.daysCount)])
         forecastTableView.reloadData()
         forecastLoaded = true
     }
@@ -112,12 +116,16 @@ class ForecastViewController: UIViewController {
         configureNavigationBar()
         configureSubstrate()
         configureTableView()
-        
+        addRefreshControl()
         setInterfaceStyle()
+        
+        mainScrollView.delegate = self
         
         if forecast != nil{
             loadForecast()
         }
+        
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -143,6 +151,34 @@ class ForecastViewController: UIViewController {
     
     @objc private func titleWasTapped() {
         performSegue(withIdentifier: "StyleTableSegue", sender: nil)
+    }
+    
+    func addRefreshControl(){
+        refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor.clear
+        refreshControl.backgroundColor = UIColor.clear
+//       refreshControl.addTarget(self, action: #selector(performForecastRequest), for: .valueChanged)
+        kuranovSpinnerView = Bundle.main.loadNibNamed(ForecastViewIdentifiers.kuranovSpinnerView, owner: self, options: nil)?.first as! KuranovSpinnerView
+        
+        refreshControl.addSubview(kuranovSpinnerView)
+        
+        kuranovSpinnerView.frame = refreshControl.frame
+        kuranovSpinnerView.backgroundColor = UIColor.clear
+        mainScrollView.refreshControl = refreshControl
+    }
+    
+    func performForecastRequest(){
+        
+        forecastLoaded = false
+        
+        let weatherRequest = WeatherRequest<Forecast>(url: ApiUrl.forecastUrl(for: city))
+        weatherRequest.perform{result in
+            self.kuranovSpinnerView.stopAnimation{
+                self.refreshControl.endRefreshing()
+                self.setForecastRequestResult(result: result)
+            }
+        }
+        kuranovSpinnerView.startAnimation()
     }
 }
 
@@ -182,5 +218,16 @@ extension ForecastViewController : UITableViewDelegate, UITableViewDataSource{
 extension ForecastViewController: StyleTableViewControllerDelegate{
     func styleChanged() {
         setInterfaceStyle()
+    }
+}
+
+extension ForecastViewController: UIScrollViewDelegate{
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -150 {
+            if  !self.refreshControl.isRefreshing {
+                refreshControl.beginRefreshing()
+                performForecastRequest()
+            }
+        }
     }
 }

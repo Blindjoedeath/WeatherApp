@@ -26,25 +26,49 @@ class HourBinView: UIView {
     @IBOutlet weak var verticalIndicatorLabel: UILabel!
     @IBOutlet weak var horizontalBorderingLabel: UILabel!
     
+    private var isAnimationStopped = false
+    private var isAnimating = false
     private var hourBinInfo: HourBinInfo!
     
+    
+    func delegateAnimation(animation: () -> Void){
+        if isAnimating {
+            animation()
+        } else if !isAnimationStopped{
+            verticalIndicatorLabel.text = ""
+            horizontalBorderingLabel.text = ""
+            isAnimationStopped = true
+        }
+    }
+    
     func animateAppearance(completion: @escaping () -> Void){
+        isAnimating = true
+        isAnimationStopped = false
+        
         for i in 1...hourBinInfo.indicatorHeight{
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.03 * Double(i)){
-                self.verticalIndicatorLabel.text = VerticalTemperatureIndicator(height: i).build()
+                self.delegateAnimation {
+                    self.verticalIndicatorLabel.text = VerticalTemperatureIndicator(height: i).build()
+                }
             }
         }
         
         let border = makeHorizontalBorder(position: hourBinInfo.position)
         for i in 1...border.count-1{
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.015 * Double(i)){
-                let index = border.index(border.startIndex, offsetBy: i)
-                self.horizontalBorderingLabel.text = String(border[border.startIndex...index])
-                if i == border.count - 1{
-                    completion()
+                self.delegateAnimation {
+                    let index = border.index(border.startIndex, offsetBy: i)
+                    self.horizontalBorderingLabel.text = String(border[border.startIndex...index])
+                    if i == border.count - 1{
+                        completion()
+                    }
                 }
             }
         }
+    }
+    
+    func calcelAnimation(){
+        isAnimating = false
     }
     
     func configure(with hourBinInfo: HourBinInfo) {

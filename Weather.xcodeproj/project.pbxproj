@@ -20,6 +20,8 @@
 		3D34439C22354D58006A76EF /* WeatherCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D34439B22354D58006A76EF /* WeatherCodes.swift */; };
 		3D34439F22356121006A76EF /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D34439E22356121006A76EF /* StringExtension.swift */; };
 		3D3443A122356948006A76EF /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3443A022356948006A76EF /* IntExtension.swift */; };
+		3D4BED61223B071C00C9271A /* KuranovSpinnerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D4BED60223B071C00C9271A /* KuranovSpinnerView.xib */; };
+		3D4BED63223B073300C9271A /* KuranovSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4BED62223B073300C9271A /* KuranovSpinnerView.swift */; };
 		3DBF65C72233200B007CB6BD /* ForecastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF65C62233200B007CB6BD /* ForecastViewController.swift */; };
 		3DBF65C922334347007CB6BD /* WeatherRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF65C822334347007CB6BD /* WeatherRequest.swift */; };
 		3DBF65CB2233489F007CB6BD /* ApiUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF65CA2233489F007CB6BD /* ApiUrl.swift */; };
@@ -52,6 +54,8 @@
 		3D34439B22354D58006A76EF /* WeatherCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCodes.swift; sourceTree = "<group>"; };
 		3D34439E22356121006A76EF /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		3D3443A022356948006A76EF /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
+		3D4BED60223B071C00C9271A /* KuranovSpinnerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KuranovSpinnerView.xib; path = ../../BBBAdmin/BBBAdmin/KuranovSpinnerView.xib; sourceTree = "<group>"; };
+		3D4BED62223B073300C9271A /* KuranovSpinnerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KuranovSpinnerView.swift; path = ../../BBBAdmin/BBBAdmin/KuranovSpinnerView.swift; sourceTree = "<group>"; };
 		3DBF65C62233200B007CB6BD /* ForecastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ForecastViewController.swift; path = Weather/ForecastViewController.swift; sourceTree = SOURCE_ROOT; };
 		3DBF65C822334347007CB6BD /* WeatherRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRequest.swift; sourceTree = "<group>"; };
 		3DBF65CA2233489F007CB6BD /* ApiUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiUrl.swift; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 		3D29E152218B2DE70090E9E1 /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				3D4BED62223B073300C9271A /* KuranovSpinnerView.swift */,
+				3D4BED60223B071C00C9271A /* KuranovSpinnerView.xib */,
 				3DBF65C62233200B007CB6BD /* ForecastViewController.swift */,
 				3DD6DB472236A043000EF8D8 /* DayWeatherViewController.swift */,
 				3DD6DB4B2236A94B000EF8D8 /* HourBinView.swift */,
@@ -209,6 +215,7 @@
 				3D34439A22351997006A76EF /* Assets.xcassets in Resources */,
 				3DD6DB4A2236A85A000EF8D8 /* HourBinView.xib in Resources */,
 				3D29E159218B2DE70090E9E1 /* Main.storyboard in Resources */,
+				3D4BED61223B071C00C9271A /* KuranovSpinnerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +237,7 @@
 				3D34439C22354D58006A76EF /* WeatherCodes.swift in Sources */,
 				3D2A72FC219430850093A93C /* Weather.swift in Sources */,
 				3D3443A122356948006A76EF /* IntExtension.swift in Sources */,
+				3D4BED63223B073300C9271A /* KuranovSpinnerView.swift in Sources */,
 				3DD324A12239946200735797 /* ErrorAlerts.swift in Sources */,
 				3D29E154218B2DE70090E9E1 /* AppDelegate.swift in Sources */,
 				3DD324A72239BF6A00735797 /* AppStyle.swift in Sources */,

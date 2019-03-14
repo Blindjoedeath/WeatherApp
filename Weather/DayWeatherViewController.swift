@@ -15,6 +15,8 @@ class DayWeatherViewController: UIScrollView {
     private var cellWidth: Int = 52
     private var indent = 8
     
+    private var hourBinViews: [HourBinView]!
+    
     func resizeView(){
         var size = self.frame.size
         size.width = CGFloat(cellWidth * dayWeather.count + 2 * indent)
@@ -24,10 +26,21 @@ class DayWeatherViewController: UIScrollView {
     func drawHourBins(){
         let indicatorScales = calculateIndicatorScales()
         
-        
-        var hourBinViews = [HourBinView]()
+        var firstTime = false
+        if hourBinViews == nil{
+            hourBinViews = [HourBinView]()
+            firstTime = true
+        }
         for (i, weather) in dayWeather.enumerated(){
-            let hourBinView = Bundle.main.loadNibNamed("HourBinView", owner: self, options: nil)?.first as! HourBinView
+            
+            var hourBinView: HourBinView!
+            if firstTime{
+                hourBinView = Bundle.main.loadNibNamed("HourBinView", owner: self, options: nil)?.first as! HourBinView
+                hourBinViews.append(hourBinView)
+            } else{
+                hourBinView = hourBinViews[i]
+            }
+            
             self.addSubview(hourBinView)
             
             var frame = hourBinView.frame
@@ -39,24 +52,44 @@ class DayWeatherViewController: UIScrollView {
                                           indicatorHeight: Int(indicatorScales[i] * 10),
                                           weather: weather)
             hourBinView.configure(with: hourBinInfo)
-            hourBinViews.append(hourBinView)
         }
         
+        isAnimating = true
         animateСonsistently(for: hourBinViews)
     }
     
+    
+    private var isAnimating = false
+    
     func animateСonsistently(for hourBinViews: [HourBinView], arg : Int = 0){
-        if arg == hourBinViews.count{
-            return
-        } else{
-            hourBinViews[arg].animateAppearance{
-                self.animateСonsistently(for: hourBinViews, arg: arg + 1)
+        if isAnimating{
+            if arg == hourBinViews.count{
+                return
+            } else{
+                hourBinViews[arg].animateAppearance{
+                    self.animateСonsistently(for: hourBinViews, arg: arg + 1)
+                }
+            }
+        }
+    }
+    
+    func cancelAnimation(){
+        isAnimating = false
+        if let hourBinViews = hourBinViews{
+            for hourBinView in hourBinViews{
+                hourBinView.calcelAnimation()
             }
         }
     }
     
     func configure(with dayWeather: [Weather]!) {
-        self.dayWeather = dayWeather + dayWeather + dayWeather
+        
+        if isAnimating{
+            cancelAnimation()
+        }
+        
+        self.dayWeather = dayWeather + dayWeather + dayWeather + dayWeather + dayWeather
+        self.dayWeather = Array(self.dayWeather.prefix(24))
         resizeView()
         drawHourBins()
     }
