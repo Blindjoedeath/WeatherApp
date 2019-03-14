@@ -12,7 +12,6 @@ struct ForecastViewIdentifiers{
     static let forecastTableViewCell  = "ForecastTableViewCell"
 }
 
-
 class ForecastViewController: UIViewController {
 
     @IBOutlet weak var backgroundImage: UIImageView!
@@ -24,10 +23,13 @@ class ForecastViewController: UIViewController {
     @IBOutlet weak var humidityLabel: UILabel!
     @IBOutlet weak var dayWeatherScrollView: DayWeatherViewController!
     @IBOutlet weak var forecastTableView: UITableView!
+    @IBOutlet weak var styleButton: UIButton!
     
     var city: String!
     private var forecast: Forecast!
     var currentWeather: Weather!
+    
+    private var style: AppStyle!
     
     func setForecastRequestResult(result: RequestResult<Forecast>){
         
@@ -50,7 +52,7 @@ class ForecastViewController: UIViewController {
         }
     }
     
-    @IBAction func closeButtonTouch(){
+    @IBAction func closeButtonAction(){
         dismiss(animated: true, completion: nil)
     }
     
@@ -59,27 +61,8 @@ class ForecastViewController: UIViewController {
         return now.season
     }
     
-    func seasonImage(name: String) -> UIImage?{
-        return UIImage(named: name + "_" + getSeason())
-    }
-    
-    func seasonSubstrateColor() -> UIColor{
-        switch getSeason() {
-        case "winter":
-            return UIColor(red: 66/255.0, green: 78/255.0, blue: 198/255.0, alpha: 0.7)
-        case "spring":
-            return UIColor(red: 255/255.0, green: 150/255.0, blue: 204/255.0, alpha: 0.7)
-        case "summer":
-            return UIColor(red: 204/255.0, green: 197/255.0, blue: 109/255.0, alpha: 0.7)
-        case "autumn":
-            return UIColor(red: 212/255.0, green: 137/255.0, blue: 28/255.0, alpha: 0.7)
-        default:
-            return .clear
-        }
-    }
-    
     func seasonNavigationBarColor() -> UIColor{
-        switch getSeason() {
+        switch style.name {
         case "winter":
             return UIColor(red: 48/255.0, green: 56/255.0, blue: 142/255.0, alpha: 1)
         case "spring":
@@ -93,18 +76,6 @@ class ForecastViewController: UIViewController {
         }
     }
     
-    func loadBackground(){
-        backgroundImage.image = seasonImage(name: "background")
-    }
-    
-    func colorElements(){
-        let color = seasonSubstrateColor()
-        currentWeatherSubstrateView.backgroundColor = color
-        dayWeatherSubstrateView.backgroundColor = color
-        view.backgroundColor = color
-        forecastTableView.backgroundColor = color
-    }
-    
     func configureSubstrate(){
         temperatureLabel.text = currentWeather.temperature.temperatureStyled
         descriptionLabel.text = currentWeather.description.firstLetterCapitalized
@@ -113,9 +84,24 @@ class ForecastViewController: UIViewController {
         temperatureLabel.sizeToFit()
     }
     
-    func configureNavigationBar(){
+    func colorElements(){
+        style = AppStyleController.currentStyle
+        let color = style.color.withAlphaComponent(0.7)
+        currentWeatherSubstrateView.backgroundColor = color
+        dayWeatherSubstrateView.backgroundColor = color
+        view.backgroundColor = color
+        forecastTableView.backgroundColor = color
+        
         navigationController!.navigationBar.barTintColor = seasonNavigationBarColor()
-        navigationItem.title = city
+    }
+    
+    func setInterfaceStyle(){
+        colorElements()
+        backgroundImage.image = UIImage(named: "background_" + style.name)
+    }
+    
+    func configureNavigationBar(){
+        initNavigationItemTitleView()
     }
     
     private var forecastLoaded = false
@@ -130,13 +116,38 @@ class ForecastViewController: UIViewController {
         
         configureNavigationBar()
         configureSubstrate()
-        loadBackground()
         configureTableView()
-        colorElements()
+        
+        setInterfaceStyle()
         
         if forecast != nil{
             loadForecast()
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "StyleTableSegue"{
+            let controller = segue.destination as! StyleTableViewController
+            controller.delegate = self
+        }
+    }
+    
+    private func initNavigationItemTitleView() {
+        let titleView = UILabel()
+        titleView.text = city
+        titleView.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        let width = titleView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)).width
+        titleView.frame = CGRect(origin:CGPoint.zero, size:CGSize(width: width, height: 500))
+        self.navigationItem.titleView = titleView
+        titleView.textColor = .white
+        
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(titleWasTapped))
+        titleView.isUserInteractionEnabled = true
+        titleView.addGestureRecognizer(recognizer)
+    }
+    
+    @objc private func titleWasTapped() {
+        performSegue(withIdentifier: "StyleTableSegue", sender: nil)
     }
 }
 
@@ -169,5 +180,12 @@ extension ForecastViewController : UITableViewDelegate, UITableViewDataSource{
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         }
         return cell
+    }
+}
+
+
+extension ForecastViewController: StyleTableViewControllerDelegate{
+    func styleChanged() {
+        setInterfaceStyle()
     }
 }

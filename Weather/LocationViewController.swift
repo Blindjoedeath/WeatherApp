@@ -45,7 +45,7 @@ class LocationViewController: UIViewController {
         dateLabel.text = date.formatted(by: "d MMMM yyyy")
     }
     
-    @IBAction func nextButtonTouch(){
+    @IBAction func nextButtonAction(){
         
         let city = cityTextField.text!
         let weatherRequest = WeatherRequest<Weather>(url: ApiUrl.weatherUrl(for: city))
