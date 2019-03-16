@@ -53,16 +53,18 @@ class LocationViewController: UIViewController {
         
         weatherRequest.perform { result in
             
+            var alert: UIAlertController! = nil
             switch result {
             case .result(let weather):
                 self.performSegue(withIdentifier: "ForecastSegue", sender: weather)
+                return
             case .noNetwork:
-                let alert = getNetworkAlert()
-                self.present(alert, animated: true, completion: nil)
+                alert = getNetworkAlert()
             case .noLocation:
-                let alert = getLocationAlert()
-                self.present(alert, animated: true, completion: nil)
+                alert = getLocationAlert()
             }
+            self.present(alert, animated: true, completion: nil)
+            self.nextButton.isHidden = true
         }
         
         forecastRequest.perform{ result in
@@ -113,6 +115,7 @@ extension LocationViewController: UITextFieldDelegate{
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         setDarkViewState(false)
+        nextButton.isHidden = textField.text == nil ? true : textField.text!.count == 0
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -161,7 +164,7 @@ extension LocationViewController: CLLocationManagerDelegate{
             locationError = nil
             location = newLocation
             
-            if newLocation.horizontalAccuracy <= 65 {
+            if newLocation.horizontalAccuracy <= 70 {
                 stopLocationManager()
                 geocoder.reverseGeocodeLocation(newLocation, completionHandler: {
                     placemarks, error in
@@ -278,6 +281,7 @@ extension LocationViewController: CLLocationManagerDelegate{
             present(alert, animated: true, completion: nil)
         } else if let placemark = placemark{
             cityTextField.text = placemark.locality
+            nextButton.isHidden = false
         }
         let authStatus = CLLocationManager.authorizationStatus()
         if authStatus == .denied || authStatus == .restricted ||

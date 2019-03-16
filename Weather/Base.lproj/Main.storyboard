@@ -44,7 +44,7 @@
                                     <action selector="getLocation" destination="BYZ-38-t0r" eventType="touchUpInside" id="oLJ-Fo-Y2D"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bwD-ba-ujJ">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bwD-ba-ujJ">
                                 <rect key="frame" x="137.5" y="382" width="45" height="30"/>
                                 <state key="normal" title="Далее">
                                     <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
