@@ -75,7 +75,7 @@ class ForecastViewController: UIViewController {
         }
     }
     
-    func configureSubstrate(){
+    func loadCurrentWeather(){
         temperatureLabel.text = currentWeather.temperature.temperatureStyled
         descriptionLabel.text = currentWeather.description.firstLetterCapitalized
         perceivedTemperatureLabel.text = "Ощущается \(currentWeather.perceivedTemperature) °C"
@@ -110,11 +110,18 @@ class ForecastViewController: UIViewController {
         forecastLoaded = true
     }
     
+    func loadBackground(){
+        let mask = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 64))
+        mask.backgroundColor = .red
+        backgroundImage.addSubview(mask)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         configureNavigationBar()
-        configureSubstrate()
+        loadCurrentWeather()
         configureTableView()
         addRefreshControl()
         setInterfaceStyle()
@@ -124,8 +131,6 @@ class ForecastViewController: UIViewController {
         if forecast != nil{
             loadForecast()
         }
-        
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -157,7 +162,6 @@ class ForecastViewController: UIViewController {
         refreshControl = UIRefreshControl()
         refreshControl.tintColor = UIColor.clear
         refreshControl.backgroundColor = UIColor.clear
-//       refreshControl.addTarget(self, action: #selector(performForecastRequest), for: .valueChanged)
         kuranovSpinnerView = Bundle.main.loadNibNamed(ForecastViewIdentifiers.kuranovSpinnerView, owner: self, options: nil)?.first as! KuranovSpinnerView
         
         refreshControl.addSubview(kuranovSpinnerView)
@@ -169,8 +173,8 @@ class ForecastViewController: UIViewController {
     
     func performForecastRequest(){
         
-        forecastLoaded = false
         
+        forecastLoaded = false
         let weatherRequest = WeatherRequest<Forecast>(url: ApiUrl.forecastUrl(for: city))
         weatherRequest.perform{result in
             self.kuranovSpinnerView.stopAnimation{
@@ -178,7 +182,19 @@ class ForecastViewController: UIViewController {
                 self.setForecastRequestResult(result: result)
             }
         }
+        
         kuranovSpinnerView.startAnimation()
+    }
+    
+    func createShareImage() -> UIImage{
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 320, height: 340))
+        
+        let image = renderer.image { ctx in
+            backgroundImage.image!.draw(in: view.bounds, blendMode: .normal, alpha: 1)
+            let bounds = CGRect(x: 0, y: 64, width: 320, height: 568)
+            view.drawHierarchy(in: bounds, afterScreenUpdates: true)
+        }
+        return image
     }
 }
 

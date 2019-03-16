@@ -12,7 +12,7 @@ class AppStyleController{
     
     static func changeStyle(by name: String){
         currentStyle = appStyles[name]!
-        UserDefaults.standard.set(currentStyle.name, forKey: "AppStyle")
+        UserDefaults.standard.set(currentStyle.name, forKey: "appStyle")
     }
     
     private static func getSeason() -> String{
@@ -21,7 +21,7 @@ class AppStyleController{
     }
     
     private (set) static var currentStyle: AppStyle = {
-        if let style = UserDefaults.standard.string(forKey: "AppStyle"){
+        if let style = UserDefaults.standard.string(forKey: "appStyle"){
             return appStyles[style]!
         } else {
             return appStyles[getSeason()]!

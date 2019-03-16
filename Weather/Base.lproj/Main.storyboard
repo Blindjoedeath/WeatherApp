@@ -245,7 +245,6 @@
                                             <constraint firstAttribute="bottom" secondItem="qXg-3l-le2" secondAttribute="bottom" constant="448" id="alc-go-zk8"/>
                                             <constraint firstItem="ha7-Au-oNr" firstAttribute="trailing" secondItem="qXg-3l-le2" secondAttribute="trailing" id="cDu-2C-hjN"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="qgm-Sd-Osi" secondAttribute="top" constant="64" id="mvK-1b-b1x"/>
-                                            <constraint firstItem="O5x-z5-uyz" firstAttribute="top" secondItem="ubG-VT-aCD" secondAttribute="top" id="oWg-mw-JJm"/>
                                             <constraint firstItem="O5x-z5-uyz" firstAttribute="centerX" secondItem="qgm-Sd-Osi" secondAttribute="centerX" id="psV-Hy-QM7"/>
                                             <constraint firstItem="ha7-Au-oNr" firstAttribute="leading" secondItem="qXg-3l-le2" secondAttribute="leading" id="qvz-d3-Mhh"/>
                                             <constraint firstItem="ha7-Au-oNr" firstAttribute="top" secondItem="qgm-Sd-Osi" secondAttribute="top" constant="568" id="t9t-x6-ru6"/>
@@ -262,6 +261,7 @@
                                     <constraint firstItem="qgm-Sd-Osi" firstAttribute="width" secondItem="1V4-cJ-8NB" secondAttribute="width" id="oVd-Mj-Jkm"/>
                                     <constraint firstItem="qgm-Sd-Osi" firstAttribute="height" secondItem="1V4-cJ-8NB" secondAttribute="height" id="pSD-ec-9ad"/>
                                     <constraint firstItem="qgm-Sd-Osi" firstAttribute="leading" secondItem="1V4-cJ-8NB" secondAttribute="leading" id="u20-Bu-OL7"/>
+                                    <constraint firstItem="ubG-VT-aCD" firstAttribute="top" secondItem="1V4-cJ-8NB" secondAttribute="top" id="uXY-Kc-cjp"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -283,7 +283,7 @@
                                 <action selector="closeButtonAction" destination="9Hr-nK-eMY" id="xVH-md-f7a"/>
                             </connections>
                         </barButtonItem>
-                        <button key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qJs-xe-L2b">
+                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qJs-xe-L2b">
                             <rect key="frame" x="134" y="5" width="52" height="34"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal">
