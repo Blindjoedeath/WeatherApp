@@ -250,9 +250,9 @@ extension ForecastViewController: StyleTableViewControllerDelegate{
 }
 
 extension ForecastViewController: UIScrollViewDelegate{
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollView.contentOffset.y < -150 {
-            if  !self.refreshControl.isRefreshing {
+            if  !kuranovSpinnerView.isAnimating {
                 refreshControl.beginRefreshing()
                 performForecastRequest()
             }
