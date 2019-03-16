@@ -57,6 +57,7 @@ class ForecastViewController: UIViewController {
     }
     
     @IBAction func closeButtonAction(){
+        mainScrollView = nil
         dismiss(animated: true, completion: nil)
     }
     
@@ -108,12 +109,6 @@ class ForecastViewController: UIViewController {
         dayWeatherScrollView.configure(with: forecast[Int.random(in: 0..<forecast.daysCount)])
         forecastTableView.reloadData()
         forecastLoaded = true
-    }
-    
-    func loadBackground(){
-        let mask = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 64))
-        mask.backgroundColor = .red
-        backgroundImage.addSubview(mask)
     }
     
     override func viewDidLoad() {
@@ -172,8 +167,6 @@ class ForecastViewController: UIViewController {
     }
     
     func performForecastRequest(){
-        
-        
         forecastLoaded = false
         let weatherRequest = WeatherRequest<Forecast>(url: ApiUrl.forecastUrl(for: city))
         weatherRequest.perform{result in
