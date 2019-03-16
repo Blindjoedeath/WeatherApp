@@ -293,6 +293,12 @@
                                 <segue destination="Ffn-J3-d6n" kind="show" identifier="StyleTableSegue" id="5Uu-NS-egU"/>
                             </connections>
                         </button>
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="Dd1-yA-YOE">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="shareButtonAction" destination="9Hr-nK-eMY" id="3sL-W2-4ey"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="backgroundImage" destination="ubG-VT-aCD" id="Ajr-zl-6AV"/>

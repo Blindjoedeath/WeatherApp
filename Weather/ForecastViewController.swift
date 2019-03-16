@@ -191,10 +191,22 @@ class ForecastViewController: UIViewController {
         
         let image = renderer.image { ctx in
             backgroundImage.image!.draw(in: view.bounds, blendMode: .normal, alpha: 1)
-            let bounds = CGRect(x: 0, y: 64, width: 320, height: 568)
-            view.drawHierarchy(in: bounds, afterScreenUpdates: true)
+            let bounds = CGRect(x: 0, y: 70, width: 320, height: 116)
+            currentWeatherSubstrateView.drawHierarchy(in: bounds, afterScreenUpdates: true)
         }
         return image
+    }
+    
+    @IBAction func shareButtonAction(){
+        let image = createShareImage()
+        let url = image.save("share.jpeg")
+        share(message: "Share", url: url)
+    }
+    
+    func share(message: String, url: URL) {
+        let objectsToShare = [message, url] as [Any]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        self.present(activityVC, animated: true, completion: nil)
     }
 }
 
