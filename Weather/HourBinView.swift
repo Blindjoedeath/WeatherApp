@@ -46,19 +46,19 @@ class HourBinView: UIView {
         isAnimationStopped = false
         
         for i in 1...hourBinInfo.indicatorHeight{
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.03 * Double(i)){
-                self.delegateAnimation {
-                    self.verticalIndicatorLabel.text = VerticalTemperatureIndicator(height: i).build()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.03 * Double(i)){ [weak self] in
+                self?.delegateAnimation {
+                    self?.verticalIndicatorLabel.text = VerticalTemperatureIndicator(height: i).build()
                 }
             }
         }
         
         let border = makeHorizontalBorder(position: hourBinInfo.position)
         for i in 1...border.count-1{
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.015 * Double(i)){
-                self.delegateAnimation {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.015 * Double(i)){ [weak self] in
+                self?.delegateAnimation {
                     let index = border.index(border.startIndex, offsetBy: i)
-                    self.horizontalBorderingLabel.text = String(border[border.startIndex...index])
+                    self?.horizontalBorderingLabel.text = String(border[border.startIndex...index])
                     if i == border.count - 1{
                         completion()
                     }
@@ -100,5 +100,9 @@ class HourBinView: UIView {
             return "           _ _ _ _"
         }
         return " _ _ _ _"
+    }
+    
+    deinit {
+        print(" Deinited hour bin view ")
     }
 }

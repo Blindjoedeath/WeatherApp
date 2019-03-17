@@ -24,12 +24,14 @@ class Forecast: Codable{
     
     subscript(day: Int, hourBin: Int) -> Weather {
         get {
+            print("Try to get \(day) day and \(hourBin) hour")
             return weather[day][hourBin]
         }
     }
     
     subscript(day: Int) -> [Weather] {
         get {
+            print("Try to get \(day) day")
             return weather[day]
         }
     }

@@ -25,14 +25,13 @@ class DayWeatherViewController: UIScrollView {
     
     func drawHourBins(){
         let indicatorScales = calculateIndicatorScales()
-        
+    
         var firstTime = false
         if hourBinViews == nil{
             hourBinViews = [HourBinView]()
             firstTime = true
         }
         for (i, weather) in dayWeather.enumerated(){
-            
             var hourBinView: HourBinView!
             if firstTime{
                 hourBinView = Bundle.main.loadNibNamed("HourBinView", owner: self, options: nil)?.first as! HourBinView
@@ -40,11 +39,11 @@ class DayWeatherViewController: UIScrollView {
             } else{
                 hourBinView = hourBinViews[i]
             }
-            
+    
             self.addSubview(hourBinView)
-            
+    
             var frame = hourBinView.frame
-            
+    
             frame.origin.x = CGFloat(indent + i * cellWidth)
             hourBinView.frame = frame
             let position : Position = i == 0 ? .left : (i == dayWeather.count-1 ? .right : .center)
@@ -53,7 +52,7 @@ class DayWeatherViewController: UIScrollView {
                                           weather: weather)
             hourBinView.configure(with: hourBinInfo)
         }
-        
+    
         isAnimating = true
         animateСonsistently(for: hourBinViews)
     }
@@ -84,11 +83,21 @@ class DayWeatherViewController: UIScrollView {
     
     func configure(with dayWeather: [Weather]!) {
         
+        if let hourBinViews = hourBinViews{
+            print(hourBinViews.count)
+        }
+        
+        
         if isAnimating{
             cancelAnimation()
         }
         
-        self.dayWeather = dayWeather + dayWeather + dayWeather + dayWeather + dayWeather
+        var multiple : [Weather]! = dayWeather
+        for _ in 1...5{
+            multiple += dayWeather
+        }
+        
+        self.dayWeather = multiple
         self.dayWeather = Array(self.dayWeather.prefix(24))
         resizeView()
         drawHourBins()
@@ -109,5 +118,9 @@ class DayWeatherViewController: UIScrollView {
             result.append(value)
         }
         return result
+    }
+    
+    deinit{
+        print("day weather deinit")
     }
 }

@@ -37,6 +37,8 @@ class ForecastViewController: UIViewController {
     
     func setForecastRequestResult(result: RequestResult<Forecast>){
         
+        print(result)
+        
         switch result {
         case .result(let forecast):
             self.forecast = forecast
@@ -57,8 +59,15 @@ class ForecastViewController: UIViewController {
     }
     
     @IBAction func closeButtonAction(){
+        
+        mainScrollView.delegate = nil
         mainScrollView = nil
+
         dismiss(animated: true, completion: nil)
+        
+        dayWeatherScrollView.cancelAnimation()
+        kuranovSpinnerView.stopAnimation(completion:{})
+//        kuranovSpinnerView = nil
     }
     
     func seasonNavigationBarColor() -> UIColor{
@@ -106,7 +115,8 @@ class ForecastViewController: UIViewController {
     
     private var forecastLoaded = false
     func loadForecast(){
-        dayWeatherScrollView.configure(with: forecast[Int.random(in: 0..<forecast.daysCount)])
+        let rand = Int.random(in: 0..<forecast.daysCount)
+        dayWeatherScrollView.configure(with: forecast[rand])
         forecastTableView.reloadData()
         forecastLoaded = true
     }
@@ -169,10 +179,10 @@ class ForecastViewController: UIViewController {
     func performForecastRequest(){
         forecastLoaded = false
         let weatherRequest = WeatherRequest<Forecast>(url: ApiUrl.forecastUrl(for: city))
-        weatherRequest.perform{result in
-            self.kuranovSpinnerView.stopAnimation{
-                self.refreshControl.endRefreshing()
-                self.setForecastRequestResult(result: result)
+        weatherRequest.perform{[weak self] result in
+            self?.kuranovSpinnerView.stopAnimation{[weak self] in
+                self?.refreshControl.endRefreshing()
+                self?.setForecastRequestResult(result: result)
             }
         }
         
@@ -201,6 +211,10 @@ class ForecastViewController: UIViewController {
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         self.present(activityVC, animated: true, completion: nil)
     }
+    
+    deinit {
+        print("deinit forecast")
+    }
 }
 
 
@@ -228,7 +242,7 @@ extension ForecastViewController : UITableViewDelegate, UITableViewDataSource{
             cell.configure(with: currentWeather)
             cell.separatorInset = .zero
         } else{
-            cell.configure(with: forecast[indexPath.row - 1][3])
+            cell.configure(with: forecast[indexPath.row - 1, 3])
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         }
         return cell
