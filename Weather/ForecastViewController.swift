@@ -196,6 +196,15 @@ class ForecastViewController: UIViewController {
             backgroundImage.image!.draw(in: view.bounds, blendMode: .normal, alpha: 1)
             let bounds = CGRect(x: 0, y: 70, width: 320, height: 116)
             currentWeatherSubstrateView.drawHierarchy(in: bounds, afterScreenUpdates: true)
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+            let font = UIFont(name: "HelveticaNeue-Medium", size: 18)!
+            let attrs = [NSAttributedString.Key.font: font,
+                         NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                         NSAttributedString.Key.foregroundColor: UIColor.white]
+            let strBounds = CGRect(x: 0, y: 35, width: 320, height: 340)
+            city!.draw(with: strBounds, options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
         }
         return image
     }

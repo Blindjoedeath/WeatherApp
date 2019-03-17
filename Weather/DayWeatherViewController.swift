@@ -83,11 +83,6 @@ class DayWeatherViewController: UIScrollView {
     
     func configure(with dayWeather: [Weather]!) {
         
-        if let hourBinViews = hourBinViews{
-            print(hourBinViews.count)
-        }
-        
-        
         if isAnimating{
             cancelAnimation()
         }
