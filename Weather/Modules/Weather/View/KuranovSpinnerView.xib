@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="KuranovSpinnerView" customModule="Weather">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kuranov" translatesAutoresizingMaskIntoConstraints="NO" id="Q9H-Ab-xYZ">
+                    <rect key="frame" x="156.5" y="5" width="65" height="90"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Q9H-Ab-xYZ" secondAttribute="height" multiplier="111:153" id="2pJ-Zx-SDk"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="90" id="lpx-j8-4I9"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Q9H-Ab-xYZ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" constant="1.5" id="Lyj-B0-0pc"/>
+                <constraint firstItem="Q9H-Ab-xYZ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Z66-UM-bUM"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Q9H-Ab-xYZ" secondAttribute="bottom" id="i45-l7-P4B"/>
+                <constraint firstItem="Q9H-Ab-xYZ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" id="nVG-sL-6Ca"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="kuanovView" destination="Q9H-Ab-xYZ" id="55J-MA-T7k"/>
+            </connections>
+            <point key="canvasLocation" x="16.800000000000001" y="-161.01949025487258"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="kuranov" width="111" height="153"/>
+    </resources>
+</document>

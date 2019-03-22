@@ -12,7 +12,7 @@
         <!--Location View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LocationViewController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LocationViewController" id="BYZ-38-t0r" customClass="LocationViewController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -41,7 +41,7 @@
                                     </attributedString>
                                 </state>
                                 <connections>
-                                    <action selector="getLocation" destination="BYZ-38-t0r" eventType="touchUpInside" id="oLJ-Fo-Y2D"/>
+                                    <action selector="geolocationButtonAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="4GP-l5-LOR"/>
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bwD-ba-ujJ">
@@ -50,7 +50,7 @@
                                     <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 </state>
                                 <connections>
-                                    <action selector="nextButtonAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="f6d-OO-moZ"/>
+                                    <action selector="nextButtonAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="mvk-sk-IOc"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Для определения геоданных, убедитесь, что на вашем телефоне включена функция геолокации." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gaz-v1-KRz">
@@ -88,7 +88,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="search"/>
                                 <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="qlN-S7-oqJ"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="N8R-M2-vhT"/>
                                 </connections>
                             </textField>
                             <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QwZ-lf-tn6" userLabel="DarkView">
@@ -121,24 +121,24 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="cityTextField" destination="Pe0-Hb-Lnw" id="JOA-mx-CMd"/>
-                        <outlet property="darkView" destination="QwZ-lf-tn6" id="nkC-W0-4FT"/>
-                        <outlet property="dateLabel" destination="ot1-78-f1A" id="L55-RP-IYd"/>
-                        <outlet property="defineLocationButton" destination="J03-Sb-0qJ" id="PHh-pN-PE7"/>
-                        <outlet property="nextButton" destination="bwD-ba-ujJ" id="ccD-8X-YxZ"/>
-                        <outlet property="permissionNotificationLabel" destination="Gaz-v1-KRz" id="Kwg-OC-WBB"/>
-                        <outlet property="todayLabel" destination="xY2-L5-7XO" id="g5F-wA-PAG"/>
-                        <segue destination="iCp-nW-4b7" kind="presentation" identifier="ForecastSegue" id="bQz-ip-6rY"/>
+                        <outlet property="cityTextField" destination="Pe0-Hb-Lnw" id="gw4-Hs-KaU"/>
+                        <outlet property="darkView" destination="QwZ-lf-tn6" id="ADf-SJ-M4Y"/>
+                        <outlet property="dateLabel" destination="ot1-78-f1A" id="lCJ-ky-NSF"/>
+                        <outlet property="defineLocationButton" destination="J03-Sb-0qJ" id="XEt-Zq-twZ"/>
+                        <outlet property="nextButton" destination="bwD-ba-ujJ" id="1t0-hx-GAx"/>
+                        <outlet property="permissionNotificationLabel" destination="Gaz-v1-KRz" id="zOj-ut-uGm"/>
+                        <outlet property="todayLabel" destination="xY2-L5-7XO" id="vHF-fc-Aon"/>
+                        <segue destination="iCp-nW-4b7" kind="presentation" identifier="WeatherSegue" id="bQz-ip-6rY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="133.125" y="133.09859154929578"/>
         </scene>
-        <!--Forecast View Controller-->
+        <!--Weather View Controller-->
         <scene sceneID="tiz-D2-5o5">
             <objects>
-                <viewController id="9Hr-nK-eMY" customClass="ForecastViewController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="9Hr-nK-eMY" customClass="WeatherViewController" customModule="Weather" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Rxi-rs-Wz0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -158,12 +158,6 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O5x-z5-uyz">
                                                 <rect key="frame" x="0.0" y="64" width="320" height="116"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qnp-LJ-4tE">
-                                                        <rect key="frame" x="30" y="16" width="44" height="84"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="60"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ощущается" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OYs-SX-P2d">
                                                         <rect key="frame" x="149" y="56" width="79" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -195,6 +189,12 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qnp-LJ-4tE">
+                                                        <rect key="frame" x="30" y="18" width="44" height="84"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="60"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.0" green="1" blue="0.1938923223" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -202,12 +202,12 @@
                                                     <constraint firstItem="3nV-Cx-Cdy" firstAttribute="top" relation="lessThanOrEqual" secondItem="O5x-z5-uyz" secondAttribute="top" constant="34" id="3Ky-ts-rcl"/>
                                                     <constraint firstItem="AQy-Jg-PwY" firstAttribute="leading" secondItem="qnp-LJ-4tE" secondAttribute="trailing" constant="-2" id="8fM-RL-6NT"/>
                                                     <constraint firstItem="OYs-SX-P2d" firstAttribute="top" secondItem="3nV-Cx-Cdy" secondAttribute="bottom" constant="2" id="Hmq-HF-qqM"/>
-                                                    <constraint firstItem="qnp-LJ-4tE" firstAttribute="centerY" secondItem="O5x-z5-uyz" secondAttribute="centerY" id="IiX-L5-pPL"/>
+                                                    <constraint firstItem="qnp-LJ-4tE" firstAttribute="centerY" secondItem="O5x-z5-uyz" secondAttribute="centerY" constant="2" id="IiX-L5-pPL"/>
                                                     <constraint firstItem="ey4-6q-MPU" firstAttribute="leading" secondItem="O5x-z5-uyz" secondAttribute="leading" constant="149" id="Mif-cL-2An"/>
                                                     <constraint firstAttribute="trailing" secondItem="3nV-Cx-Cdy" secondAttribute="trailing" constant="8" id="ToP-Ml-pFG"/>
                                                     <constraint firstItem="AQy-Jg-PwY" firstAttribute="top" secondItem="O5x-z5-uyz" secondAttribute="top" constant="32" id="Ymp-DR-fco"/>
                                                     <constraint firstAttribute="bottom" secondItem="ey4-6q-MPU" secondAttribute="bottom" constant="25" id="bVr-yA-v9D"/>
-                                                    <constraint firstItem="qnp-LJ-4tE" firstAttribute="top" secondItem="O5x-z5-uyz" secondAttribute="top" constant="16" id="eqK-iv-Vbr"/>
+                                                    <constraint firstItem="qnp-LJ-4tE" firstAttribute="top" secondItem="O5x-z5-uyz" secondAttribute="top" constant="18" id="eqK-iv-Vbr"/>
                                                     <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="qnp-LJ-4tE" secondAttribute="trailing" constant="246" id="s9p-m0-MDB"/>
                                                     <constraint firstItem="3nV-Cx-Cdy" firstAttribute="leading" secondItem="O5x-z5-uyz" secondAttribute="leading" constant="149" id="uF0-sm-cNx"/>
                                                     <constraint firstItem="3nV-Cx-Cdy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AQy-Jg-PwY" secondAttribute="trailing" constant="20" id="xtO-a4-EPx"/>
@@ -218,7 +218,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXg-3l-le2">
                                                 <rect key="frame" x="0.0" y="424" width="320" height="140"/>
                                                 <subviews>
-                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZLK-ne-p86" customClass="DayWeatherViewController" customModule="Weather" customModuleProvider="target">
+                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZLK-ne-p86" customClass="DayForecastViewController" customModule="Weather" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
                                                     </scrollView>
                                                 </subviews>
@@ -303,7 +303,7 @@
                     <connections>
                         <outlet property="backgroundImage" destination="ubG-VT-aCD" id="Ajr-zl-6AV"/>
                         <outlet property="currentWeatherSubstrateView" destination="O5x-z5-uyz" id="G9y-EN-nxj"/>
-                        <outlet property="dayWeatherScrollView" destination="ZLK-ne-p86" id="OaN-rZ-HlZ"/>
+                        <outlet property="dayForecastScrollView" destination="ZLK-ne-p86" id="4P2-iY-OKI"/>
                         <outlet property="dayWeatherSubstrateView" destination="qXg-3l-le2" id="Izh-bg-9ka"/>
                         <outlet property="descriptionLabel" destination="3nV-Cx-Cdy" id="Gdk-Ro-IPW"/>
                         <outlet property="forecastTableView" destination="ha7-Au-oNr" id="C0F-nY-B72"/>
