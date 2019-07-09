@@ -8,17 +8,23 @@
 
 import Foundation
 
-class LocationAssembly: NSObject {
+class LocationConfigurator: NSObject {
     
-    static func build() -> LocationRouter {
+    static func build(with view: LocationViewController) -> LocationRouter {
         let router = LocationRouter()
         let presenter = LocationPresenter()
         let interactor = LocationInteractor()
         
         presenter.interactor = interactor
         presenter.router = router
+        presenter.view = view
+        
+        view.presenter = presenter
+        
         interactor.output = presenter
-        router.presenter = presenter
+        
+        router.view = view
+        
         return router
     }
 }

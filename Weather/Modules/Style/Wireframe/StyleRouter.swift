@@ -8,28 +8,16 @@
 
 import Foundation
 
-class StyleRouter: NSObject{
+protocol StyleRouterProtocol{
+    func close()
+}
+
+class StyleRouter: NSObject, StyleRouterProtocol{
     weak var view: StyleTableViewController!
     weak var presenter: StylePresenter!
     
     func close(){
         view.dismiss(animated: true, completion: nil)
-        presenter.delegate = nil
-    }
-    
-    static func build(from view: StyleTableViewController) -> StyleRouter{
-        let router = StyleRouter()
-        let interactor = StyleInteractor()
-        let presenter = StylePresenter()
-        
-        view.presenter = presenter
-        presenter.view = view
-        presenter.interactor = interactor
-        router.presenter = presenter
-        router.view = view
-        
-        print(router)
-        return router
     }
     
     deinit {

@@ -9,42 +9,29 @@
 import Foundation
 import UIKit
 
-class LocationRouter: NSObject{
+protocol LocationRouterProtocol{
+    func route(with: Any?)
+}
+
+class LocationRouter: NSObject, LocationRouterProtocol{
     
     var weatherRouter : WeatherRouter!
-    var presenter : LocationPresenter!
+    
+    var presenter: LocationPresenterProtocol!
     var view : LocationViewController!
     
-    func presentLocationInterfaceFromWindow(window: UIWindow) {
-        view = locationViewControllerFromStoryboard()
-        view.presenter = presenter
-        presenter.view = view
-        window.rootViewController = view
-    }
-    
-    func prepare(with data: NSObject?){
-        let args = data as! [NSObject]
-        let board = args[0] as! UIStoryboardSegue
-        let nc = board.destination as! UINavigationController
-        let view = nc.topViewController as! WeatherViewController
+    func route(with data: Any?){
         
-        let city = args[1] as! String
-        weatherRouter = WeatherRouter.build(from: view)
-        weatherRouter.present(in: city)
+        view.performSegue(withIdentifier: "WeatherSegue", sender: {(segue: UIStoryboardSegue) in
+            self.nextModuleFrom(segue: segue, with: data)
+        })
     }
     
-    func presentWeatherInterface() {
-        view.performSegue(withIdentifier: "WeatherSegue", sender: nil)
-    }
-    
-    func locationViewControllerFromStoryboard() -> LocationViewController {
-        let storyboard = mainStoryboard()
-        let viewController = storyboard.instantiateViewController(withIdentifier: "LocationViewController") as! LocationViewController
-        return viewController
-    }
-    
-    func mainStoryboard() -> UIStoryboard {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        return storyboard
+    func nextModuleFrom(segue: UIStoryboardSegue, with data: Any?){
+        let navigationController = segue.destination as! UINavigationController
+        let weatherView = navigationController.topViewController as! WeatherViewController
+        let city = data as! String
+        weatherRouter = WeatherConfigurator.build(from: weatherView)
+        weatherRouter.present(for: city)
     }
 }

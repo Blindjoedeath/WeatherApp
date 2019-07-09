@@ -8,6 +8,17 @@
 
 import Foundation
 
+protocol StylePresenterProtocol: class{
+    func styleChanged(name: String)
+    func configureView()
+    func close()
+}
+
+protocol StylePresenterDelegate: class{
+    func styleChanged()
+}
+
+
 class StylePresenter: StylePresenterProtocol{
     
     var delegate: StylePresenterDelegate?
@@ -30,6 +41,7 @@ class StylePresenter: StylePresenterProtocol{
     
     func close(){
         router.close()
+        delegate = nil
     }
     
     deinit {

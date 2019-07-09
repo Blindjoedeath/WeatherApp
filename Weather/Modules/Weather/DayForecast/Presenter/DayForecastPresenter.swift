@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol DayForecastPresenterProtocol: class {
+    
+}
+
 class DayForecastPresenter: WeatherPresenterDelegate, DayForecastPresenterProtocol{
     
     weak var view: DayForecastViewProtocol!

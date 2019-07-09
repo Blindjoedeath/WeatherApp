@@ -8,11 +8,27 @@
 
 import Foundation
 
+protocol WeatherPresenterDelegate: class {
+    func updateWith(data forecast: [WeatherItem])
+    func animateDataAppearance()
+    func cancelAppearanceAnimation()
+    
+    var isUpdatingIndicatorEnabled: Bool {get set}
+}
+
+protocol WeatherPresenterProtocol: class{
+    func closeNavigationRequired()
+    func shareNavigationRequired()
+    func styleMenuNavigationRequired()
+    func updateDataRequired()
+    func configureView()
+}
+
 class WeatherPresenter: WeatherPresenterProtocol{
     
     weak var view: WeatherViewProtocol!
     var interactor: WeatherInteractorInput!
-    var router: WeatherRouter!
+    var router: WeatherRouterProtocol!
     weak var delegate: WeatherPresenterDelegate?
     
     var city: String!
@@ -29,7 +45,7 @@ class WeatherPresenter: WeatherPresenterProtocol{
         interactor.close()
         delegate?.cancelAppearanceAnimation()
         setIndicatorState(state: false)
-        router.close()
+        router.unload()
         view.close()
     }
     
@@ -38,7 +54,7 @@ class WeatherPresenter: WeatherPresenterProtocol{
     }
     
     func styleMenuNavigationRequired() {
-        router.presentStyleMenu()
+        router.routeToStyle()
     }
     
     func updateDataRequired() {
@@ -61,10 +77,6 @@ class WeatherPresenter: WeatherPresenterProtocol{
         setIndicatorState(state: true)
         interactor.configure()
         interactor.getAllWeather()
-    }
-    
-    func prepareToRoute(with object: NSObject?){
-        router.pepareStyleMenu(from: object)
     }
     
     deinit {

@@ -9,6 +9,18 @@
 import Foundation
 import UIKit
 
+protocol LocationViewProtocol: class {
+    
+    func showAlert(title: String, message: String)
+    func setCurrentDate(date: String)
+    func setToday(day: String)
+    func setCity(city: String)
+    
+    var isNextNavigationEnabled: Bool {get set}
+    var isPermissionNotificationEnabled: Bool {get set}
+    var isDataLoadingIndicatorEnabled: Bool {get set}
+}
+
 class LocationViewController: UIViewController{
     
     var presenter: LocationPresenterProtocol!
@@ -39,7 +51,7 @@ class LocationViewController: UIViewController{
     }
     
     @IBAction func nextButtonAction(){
-        presenter?.nextNavigationRequired(with: cityTextField.text!)
+        presenter?.nextNavigationRequired()
     }
     
     @IBAction func geolocationButtonAction(){
@@ -47,7 +59,8 @@ class LocationViewController: UIViewController{
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        presenter?.prepareToRoute(with: [segue, cityTextField.text] as NSObject)
+        let closure = sender as! (UIStoryboardSegue) -> ()
+        closure(segue)
     }
 }
 

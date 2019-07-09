@@ -8,13 +8,25 @@
 
 import Foundation
 
+protocol LocationPresenterProtocol: class {
+    func cityNameChanged(on: String)
+    
+    // or button clicked
+    func nextNavigationRequired()
+    func geolocationRequired()
+    func configureView()
+}
+
 class LocationPresenter: LocationPresenterProtocol{
     
     var view: LocationViewProtocol!
-    var router: LocationRouter!
+    var router: LocationRouterProtocol!
     var interactor: LocationInteractorInput!
+    
+    var city: String!
 
     func cityNameChanged(on city: String) {
+        self.city = city
         if city == ""{
             view?.isNextNavigationEnabled = false
         } else{
@@ -22,7 +34,7 @@ class LocationPresenter: LocationPresenterProtocol{
         }
     }
     
-    func nextNavigationRequired(with city: String) {
+    func nextNavigationRequired() {
         view.isDataLoadingIndicatorEnabled = true
         interactor.getWeather(for: city)
     }
@@ -65,6 +77,7 @@ extension LocationPresenter: LocationInteractorOutput{
     }
     
     func foundLocality(locality: String) {
+        self.city = locality
         view.setCity(city: locality)
         view.isDataLoadingIndicatorEnabled = false
         view.isNextNavigationEnabled = true
@@ -90,11 +103,6 @@ extension LocationPresenter: LocationInteractorOutput{
     
     func foundWeather() {
         view.isDataLoadingIndicatorEnabled = false
-        router.presentWeatherInterface()
-    }
-    
-    func prepareToRoute(with object: NSObject?) {
-        view.isDataLoadingIndicatorEnabled = false
-        router.prepare(with: object)
+        router.route(with: city)
     }
 }

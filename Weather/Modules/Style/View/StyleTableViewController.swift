@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol StyleViewProtocol: class {
+    func setStyle(style: AppStyleModel)
+    func setItems(items: [AppStyleModel])
+}
+
 class StyleTableViewController: UITableViewController {
     
     var items: [AppStyleModel]!

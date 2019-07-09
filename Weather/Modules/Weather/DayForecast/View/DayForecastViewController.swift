@@ -8,6 +8,18 @@
 
 import UIKit
 
+protocol DayForecastViewProtocol: class {
+    func cancelAnimation()
+    func animateAppearance()
+    func configure(with: [WeatherItem])
+    func resizeViewToinitialSize()
+    func resizeViewToData()
+    
+    var isAnimating: Bool {get }
+    var isUpdatingIndicatorEnabled: Bool {get set}
+    var isItemsEnabled: Bool {get set}
+}
+
 class DayForecastViewController: UIScrollView, DayForecastViewProtocol {
     
     var presenter: DayForecastPresenterProtocol!

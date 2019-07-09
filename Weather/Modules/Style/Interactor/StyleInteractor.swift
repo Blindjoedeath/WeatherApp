@@ -8,6 +8,12 @@
 
 import Foundation
 
+protocol StyleInteractorProtocol: class {
+    func getStyle() -> AppStyleModel
+    func setStyle(name: String)
+    func getAllStyles() -> [AppStyleModel]
+}
+
 class StyleInteractor: StyleInteractorProtocol {
     
     func styleToModel(style: AppStyle) -> AppStyleModel{

@@ -14,7 +14,5 @@ protocol LocationPresenterProtocol: class {
     // or button clicked
     func nextNavigationRequired(with: String)
     func geolocationRequired()
-    
-    func prepareToRoute(with: NSObject?)
     func configureView()
 }

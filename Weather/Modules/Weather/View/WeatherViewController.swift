@@ -9,6 +9,22 @@
 import Foundation
 import UIKit
 
+
+protocol WeatherViewProtocol: class{
+    
+    func showAlert(title: String, message: String)
+    func setTitle(title: String)
+    
+    func setAppStyle(style: AppStyleModel)
+    func setCurrentWeather(weather: WeatherModel)
+    func setWeekForecastData(forecast: [WeatherItem])
+    func shareImage(with: String)
+    func close()
+    
+    var isUpdateIndicatorEnabled: Bool {get set}
+}
+
+
 struct WeatherViewIdentifiers{
     static let tableViewCell  = "WeatherTableViewCell"
     static let kuranovSpinnerView = "KuranovSpinnerView"
@@ -121,7 +137,8 @@ class WeatherViewController: UIViewController{
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        presenter.prepareToRoute(with: segue)
+        let closure = sender as! (UIStoryboardSegue) -> ()
+        closure(segue)
     }
     
     func close(){
