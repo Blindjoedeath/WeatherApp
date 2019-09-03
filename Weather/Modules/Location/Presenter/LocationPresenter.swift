@@ -50,20 +50,21 @@ class LocationPresenter: LocationPresenterProtocol{
         view.setToday(day: date.day)
         view.setCurrentDate(date: date.formatted(by: "d MMMM yyyy"))
         view.isNextNavigationEnabled = false
-        view.isPermissionNotificationEnabled = !interactor.geolocationAccess
+        if !interactor.locationAccessDetermined{
+            view.isLocalityButtonEnabled = true
+            view.isPermissionNotificationEnabled = true
+        }
     }
 }
 
 extension LocationPresenter: LocationInteractorOutput{
     
-    func geolocationAccessChanged(state: Bool) {
-        if state{
-            view.isPermissionNotificationEnabled = false
-        } else{
-            view.showAlert(title: "Опаньки..", message: "Проверьте локацию")
-            view.isPermissionNotificationEnabled = true
+    func geolocationAccessDetermined(state: Bool) {
+        if !state{
             view.isDataLoadingIndicatorEnabled = false
         }
+        view.isPermissionNotificationEnabled = !state
+        view.isLocalityButtonEnabled = state
     }
     
     func geolocationTimeOut() {

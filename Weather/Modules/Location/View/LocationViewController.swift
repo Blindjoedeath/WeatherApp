@@ -18,6 +18,7 @@ protocol LocationViewProtocol: class {
     
     var isNextNavigationEnabled: Bool {get set}
     var isPermissionNotificationEnabled: Bool {get set}
+    var isLocalityButtonEnabled: Bool{get set}
     var isDataLoadingIndicatorEnabled: Bool {get set}
 }
 
@@ -32,6 +33,8 @@ class LocationViewController: UIViewController{
     @IBOutlet weak var defineLocationButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var darkView: UIView!
+    @IBOutlet weak var orLabel: UILabel!
+    
     private var updatingIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
@@ -117,6 +120,16 @@ extension LocationViewController: LocationViewProtocol{
             } else{
                 updatingIndicator.stopAnimating()
             }
+        }
+    }
+    
+    var isLocalityButtonEnabled: Bool {
+        get {
+            return !defineLocationButton.isHidden
+        }
+        set {
+            orLabel.isHidden = !newValue
+            defineLocationButton.isHidden = !newValue
         }
     }
 }
