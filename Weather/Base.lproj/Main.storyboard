@@ -91,11 +91,21 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="N8R-M2-vhT"/>
                                 </connections>
                             </textField>
-                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QwZ-lf-tn6" userLabel="DarkView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="30" estimatedRowHeight="-1" sectionHeaderHeight="26" sectionFooterHeight="26" translatesAutoresizingMaskIntoConstraints="NO" id="qdI-3Z-hVk">
+                                <rect key="frame" x="77" y="261" width="166" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <viewLayoutGuide key="safeArea" id="KhE-Sx-7Pd"/>
-                            </view>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CitiesTableViewCell" rowHeight="26" id="9zH-8U-56f">
+                                        <rect key="frame" x="0.0" y="26" width="166" height="26"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9zH-8U-56f" id="MGD-B5-yOf">
+                                            <rect key="frame" x="0.0" y="0.0" width="166" height="26"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -121,8 +131,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="citiesTableView" destination="qdI-3Z-hVk" id="QgZ-Hp-FzJ"/>
                         <outlet property="cityTextField" destination="Pe0-Hb-Lnw" id="gw4-Hs-KaU"/>
-                        <outlet property="darkView" destination="QwZ-lf-tn6" id="ADf-SJ-M4Y"/>
                         <outlet property="dateLabel" destination="ot1-78-f1A" id="lCJ-ky-NSF"/>
                         <outlet property="defineLocationButton" destination="J03-Sb-0qJ" id="XEt-Zq-twZ"/>
                         <outlet property="nextButton" destination="bwD-ba-ujJ" id="1t0-hx-GAx"/>

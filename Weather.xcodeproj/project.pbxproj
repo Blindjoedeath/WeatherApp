@@ -58,6 +58,9 @@
 		751D301A22D47EF4003999F6 /* WeatherConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D301922D47EF4003999F6 /* WeatherConfigurator.swift */; };
 		751D301C22D481AE003999F6 /* DayForecastConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D301B22D481AE003999F6 /* DayForecastConfigurator.swift */; };
 		751D301E22D4876C003999F6 /* StyleConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D301D22D4876C003999F6 /* StyleConfigurator.swift */; };
+		75B5C728231FA11600B60BBA /* CityRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5C727231FA11600B60BBA /* CityRepository.swift */; };
+		75B5C72A231FA13900B60BBA /* CsvReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5C729231FA13900B60BBA /* CsvReader.swift */; };
+		75B5C72C231FA15700B60BBA /* geo.csv in Resources */ = {isa = PBXBuildFile; fileRef = 75B5C72B231FA15700B60BBA /* geo.csv */; };
 		AFE8793A80DB5BC1CF7B4C97 /* Pods_Weather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277A4BAEF28E5733E9539523 /* Pods_Weather.framework */; };
 /* End PBXBuildFile section */
 
@@ -116,6 +119,9 @@
 		751D301922D47EF4003999F6 /* WeatherConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherConfigurator.swift; sourceTree = "<group>"; };
 		751D301B22D481AE003999F6 /* DayForecastConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayForecastConfigurator.swift; sourceTree = "<group>"; };
 		751D301D22D4876C003999F6 /* StyleConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleConfigurator.swift; sourceTree = "<group>"; };
+		75B5C727231FA11600B60BBA /* CityRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityRepository.swift; sourceTree = "<group>"; };
+		75B5C729231FA13900B60BBA /* CsvReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvReader.swift; sourceTree = "<group>"; };
+		75B5C72B231FA15700B60BBA /* geo.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = geo.csv; sourceTree = "<group>"; };
 		A1C7E7B06F16A2ADF5735DF8 /* Pods-Weather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weather.debug.xcconfig"; path = "Target Support Files/Pods-Weather/Pods-Weather.debug.xcconfig"; sourceTree = "<group>"; };
 		C4A5500476B9180D792905DA /* Pods-Weather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weather.release.xcconfig"; path = "Target Support Files/Pods-Weather/Pods-Weather.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -159,6 +165,7 @@
 				3D29E153218B2DE70090E9E1 /* AppDelegate.swift */,
 				3D29E157218B2DE70090E9E1 /* Main.storyboard */,
 				3D29E15F218B2DE90090E9E1 /* LaunchScreen.storyboard */,
+				75B5C72B231FA15700B60BBA /* geo.csv */,
 				3D29E162218B2DE90090E9E1 /* Info.plist */,
 				3D29E15A218B2DE70090E9E1 /* Weather.xcdatamodeld */,
 			);
@@ -168,6 +175,7 @@
 		3D2D0BB72242D285002E0097 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				75B5C726231FA0FE00B60BBA /* Repository */,
 				3DC0A24C22443E7100C85F83 /* Extensions */,
 				3D2D0BB92242D3B2002E0097 /* Service */,
 				3D2D0BB82242D29F002E0097 /* Entity */,
@@ -197,6 +205,7 @@
 				3DBF65CA2233489F007CB6BD /* ApiUrlService.swift */,
 				3D2A72F921942D190093A93C /* Secret.swift */,
 				3D2D0BBA2242D958002E0097 /* WeatherRequestStorage.swift */,
+				75B5C729231FA13900B60BBA /* CsvReader.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -415,8 +424,15 @@
 				A1C7E7B06F16A2ADF5735DF8 /* Pods-Weather.debug.xcconfig */,
 				C4A5500476B9180D792905DA /* Pods-Weather.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		75B5C726231FA0FE00B60BBA /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				75B5C727231FA11600B60BBA /* CityRepository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -480,6 +496,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D061D772237DBA800BFBD4F /* WeatherTableViewCell.xib in Resources */,
+				75B5C72C231FA15700B60BBA /* geo.csv in Resources */,
 				3D29E161218B2DE90090E9E1 /* LaunchScreen.storyboard in Resources */,
 				3D34439A22351997006A76EF /* Assets.xcassets in Resources */,
 				3DC0A27622446C5500C85F83 /* KuranovSpinnerView.xib in Resources */,
@@ -556,6 +573,7 @@
 				3DBF65CB2233489F007CB6BD /* ApiUrlService.swift in Sources */,
 				3DC0A26A2244540200C85F83 /* StylePresenter.swift in Sources */,
 				3DD3BB53224413E9002C7F4B /* LocationRouter.swift in Sources */,
+				75B5C728231FA11600B60BBA /* CityRepository.swift in Sources */,
 				3D2D0BC22242EF8D002E0097 /* LocationInteractor.swift in Sources */,
 				3DBF65C922334347007CB6BD /* WeatherRequest.swift in Sources */,
 				3D2A72FA21942D190093A93C /* Secret.swift in Sources */,
@@ -572,6 +590,7 @@
 				3D3443A122356948006A76EF /* IntExtension.swift in Sources */,
 				3D29E154218B2DE70090E9E1 /* AppDelegate.swift in Sources */,
 				3DD324A72239BF6A00735797 /* AppStyle.swift in Sources */,
+				75B5C72A231FA13900B60BBA /* CsvReader.swift in Sources */,
 				3DD324A92239C1B200735797 /* AppStyleService.swift in Sources */,
 				3DD3BB5022441300002C7F4B /* WeatherPresenter.swift in Sources */,
 				3DD324A32239B66100735797 /* StyleTableViewController.swift in Sources */,

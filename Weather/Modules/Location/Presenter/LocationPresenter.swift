@@ -47,8 +47,9 @@ class LocationPresenter: LocationPresenterProtocol{
     
     func configureView() {       
         let date = Date()
-        view.setToday(day: date.day)
-        view.setCurrentDate(date: date.formatted(by: "d MMMM yyyy"))
+        view.set(day: date.day)
+        view.set(date: date.formatted(by: "d MMMM yyyy"))
+        view.set(cities: CityRepository.cities)
         view.isNextNavigationEnabled = false
         if !interactor.locationAccessDetermined{
             view.isLocalityButtonEnabled = true
@@ -79,7 +80,7 @@ extension LocationPresenter: LocationInteractorOutput{
     
     func foundLocality(locality: String) {
         self.city = locality
-        view.setCity(city: locality)
+        view.set(city: locality)
         view.isDataLoadingIndicatorEnabled = false
         view.isNextNavigationEnabled = true
     }

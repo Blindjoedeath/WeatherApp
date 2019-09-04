@@ -1,1 +1,4 @@
 Weather/Secret.swift
+Pods/
+*.DS_Store
+*.lock
