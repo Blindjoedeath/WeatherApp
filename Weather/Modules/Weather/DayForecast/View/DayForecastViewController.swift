@@ -166,6 +166,6 @@ class DayForecastViewController: UIScrollView, DayForecastViewProtocol {
     }
     
     deinit{
-        print("day forecast view deinit")
+        //print("day forecast view deinit")
     }
 }

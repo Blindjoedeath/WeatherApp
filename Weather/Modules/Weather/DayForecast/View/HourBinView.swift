@@ -102,6 +102,6 @@ class HourBinView: UIView {
     }
     
     deinit {
-        print(" Deinited hour bin view ")
+        //print(" Deinited hour bin view ")
     }
 }

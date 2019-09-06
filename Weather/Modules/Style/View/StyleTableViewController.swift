@@ -49,7 +49,7 @@ class StyleTableViewController: UITableViewController {
     }
     
     deinit {
-        print("Deinited style table view")
+        //print("Deinited style table view")
     }
 }
 

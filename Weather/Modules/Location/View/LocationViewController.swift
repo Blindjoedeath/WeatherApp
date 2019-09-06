@@ -8,22 +8,29 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 protocol LocationViewProtocol: class {
     
     func showAlert(title: String, message: String)
-    func setCurrentDate(date: String)
-    func setToday(day: String)
-    func setCity(city: String)
+    func set(date: String)
+    func set(day: String)
+    func set(city: String)
+    func set(cities: [String])
     
     var isNextNavigationEnabled: Bool {get set}
     var isPermissionNotificationEnabled: Bool {get set}
+    var isLocalityButtonEnabled: Bool{get set}
     var isDataLoadingIndicatorEnabled: Bool {get set}
 }
 
 class LocationViewController: UIViewController{
     
     var presenter: LocationPresenterProtocol!
+    var cities = [""]
+    var filteredCities = [""]
+    var defaultCountInTableView = 5
+    var citySelected = false
     
     @IBOutlet weak var todayLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -31,8 +38,12 @@ class LocationViewController: UIViewController{
     @IBOutlet weak var cityTextField: UITextField!
     @IBOutlet weak var defineLocationButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var darkView: UIView!
-    private var updatingIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var orLabel: UILabel!
+    @IBOutlet weak var citiesTableView: UITableView!
+    
+    var updatingIndicator: UIActivityIndicatorView!
+    
+    var bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +51,46 @@ class LocationViewController: UIViewController{
         addGestureRecognizer()
         presenter.configureView()
         initUpdatingLocationIndicator()
+        configureCityTextField()
+    }
+    
+    func configureCityTextField(){
+        cityTextField.rx
+            .text
+            .orEmpty
+            .debounce(RxTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .do(onNext: {[weak self] text in
+                if let self = self{
+                    self.citiesTableView.isHidden = text.isEmpty || self.citySelected
+                    self.citySelected = false
+                }
+            })
+            .filter{!$0.isEmpty}
+            .subscribe(onNext:{[weak self] text in
+                if let self = self{
+                    self.presenter.cityNameChanged(on: text)
+                    
+                    let query = text.lowercased().trimmingCharacters(in: .whitespaces)
+                    self.filteredCities = self.cities.filter{element in
+                        let city = element.lowercased()
+                        if city.contains(" "){
+                            let words = city.split(separator: " ")
+                            return words.reduce(false, {begins, word in
+                                return word.hasPrefix(query) || begins
+                            })
+                        } else {
+                            return city.hasPrefix(query)
+                        }
+                    }.sorted()
+                    self.citiesTableView.reloadData()
+                }
+            })
+            .disposed(by: bag)
+        
+        citiesTableView.dataSource = self
+        citiesTableView.delegate = self
+        cityTextField.clearButtonMode = .whileEditing
     }
     
     func initUpdatingLocationIndicator(){
@@ -76,16 +127,20 @@ extension LocationViewController: LocationViewProtocol{
         present(alert, animated: true, completion: nil)
     }
     
-    func setCity(city: String){
+    func set(city: String){
         cityTextField.text = city
     }
     
-    func setCurrentDate(date: String) {
+    func set(date: String) {
         dateLabel.text = date
     }
     
-    func setToday(day: String) {
+    func set(day: String) {
         todayLabel.text = "Сегодня " + day + ","
+    }
+    
+    func set(cities: [String]) {
+        self.cities = cities
     }
     
     var isNextNavigationEnabled: Bool {
@@ -119,13 +174,23 @@ extension LocationViewController: LocationViewProtocol{
             }
         }
     }
+    
+    var isLocalityButtonEnabled: Bool {
+        get {
+            return !defineLocationButton.isHidden
+        }
+        set {
+            orLabel.isHidden = !newValue
+            defineLocationButton.isHidden = !newValue
+        }
+    }
 }
 
 extension LocationViewController: UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                            shouldReceive touch: UITouch) -> Bool {
-        return (touch.view === darkView)
+        return (touch.view === self.view)
     }
     
     func addGestureRecognizer(){
@@ -140,33 +205,52 @@ extension LocationViewController: UITextFieldDelegate{
     
     @objc
     func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
-    func setDarkViewState(_ state : Bool){
-        darkView.isHidden = !state
-        
-        var alpha = 0.0
-        if (state){
-            alpha = 0.4
+        if cityTextField.isEditing{
+            view.endEditing(true)
+        } else {
+            citiesTableView.isHidden = true
         }
-        
-        UIView.animate(withDuration: 0.2, delay: 0.0, options:[], animations: {
-            self.darkView.backgroundColor =  UIColor(red: 0, green: 0, blue: 0, alpha: CGFloat(alpha))
-        }, completion:nil)
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        setDarkViewState(true)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        setDarkViewState(false)
-        presenter.cityNameChanged(on: textField.text!)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
         return true
     }
+}
+
+
+extension LocationViewController: UITableViewDataSource, UITableViewDelegate{
+    
+    func resizeTableView(){
+        let cellHeight = Int(citiesTableView.rowHeight)
+        let rect = citiesTableView.frame
+        
+        var height = CGFloat(defaultCountInTableView * cellHeight)
+        if filteredCities.count < defaultCountInTableView{
+            height = CGFloat(cellHeight * filteredCities.count)
+        }
+        citiesTableView.frame = CGRect(x: rect.origin.x, y: rect.origin.y,
+                                        width: rect.width, height: height)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        resizeTableView()
+        return filteredCities.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CitiesTableViewCell")!
+        cell.textLabel?.text = filteredCities[indexPath.row]
+        let fontName = cell.textLabel!.font.fontName
+        cell.textLabel!.font = UIFont(name: fontName, size: 15)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        cityTextField.text = filteredCities[indexPath.row]
+        tableView.isHidden = true
+        presenter.cityNameChanged(on: cityTextField.text!)
+        self.citySelected = true
+    }
+    
 }

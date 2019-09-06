@@ -8,141 +8,93 @@
 
 import Foundation
 import CoreLocation
+import RxSwift
+import RxCoreLocation
 
-protocol GeolocationServiceProtocol{
-    func accessState(state: Bool)
-    func timeOut()
-    func endWithError(error: NSError)
-    func foundLocation(locality: String)
-}
-
-class GeolocationService: NSObject, CLLocationManagerDelegate{
+class GeolocationService: NSObject{
     
-    var delegate: GeolocationServiceProtocol?
+    private lazy var locationManager = CLLocationManager()
+    private lazy var geocoder = CLGeocoder()
+    private lazy var bag = DisposeBag()
     
-    var access: Bool {
-        get{
-            return CLLocationManager.locationServicesEnabled()
-        }
+    lazy var error = {
+        locationManager.rx
+            .didError
+            .share()
+    }()
+    
+    lazy var access = {
+        locationManager.rx
+            .didChangeAuthorization
+            .map{ _, status in
+                return status == .authorizedAlways || status == .authorizedWhenInUse
+            }
+            .share()
+    }()
+    
+    lazy var accessDetermined = {
+        locationManager.rx
+            .didChangeAuthorization
+            .map{ _, status in
+                return status != .notDetermined
+            }
+            .share()
+    }()
+    
+    func getLocality() -> Observable<String?>{
+        startUpdatingLocations()
+        
+        return locationManager.rx
+            .didUpdateLocations
+            .filter{ $1.count > 0 }
+            .map{ $1.last! }
+            .filter{ 0 < $0.horizontalAccuracy && $0.horizontalAccuracy < 70 && $0.timestamp.timeIntervalSinceNow >= -5}
+            .take(1)
+            .timeout(10, scheduler: MainScheduler.instance)
+            .do(onNext: {_ in self.locationManager.stopUpdatingLocation()})
+            .flatMap{ return self.reverse(location: $0)}
     }
     
-    private var locationError: NSError?
-    private var location: CLLocation?
-    private var locationManager: CLLocationManager!
-    private let geocoder = CLGeocoder()
-    private var placemark: CLPlacemark?
-    private var timer: Timer?
-    private var updatingLocation = false
-    
-    func locationManager(_ manager: CLLocationManager,
-                         didFailWithError error: Error) {    
-        
-        locationError = error as NSError
-        stopLocationManager()
-        delegate?.endWithError(error: locationError!)
+    private func startUpdatingLocations(){
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        locationManager.startUpdatingLocation()
     }
     
-    func locationManager(_ manager: CLLocationManager,
-                         didUpdateLocations locations: [CLLocation]) {
-        let newLocation = locations.last!
-        
-        if newLocation.timestamp.timeIntervalSinceNow < -5 ||
-            newLocation.horizontalAccuracy < 0 {
-            return
-        }
-        
-        if location == nil || newLocation.horizontalAccuracy < location!.horizontalAccuracy {
-            locationError = nil
-            location = newLocation
-            
-            if newLocation.horizontalAccuracy <= 70 {
-                stopLocationManager()
-                geocoder.reverseGeocodeLocation(newLocation, completionHandler: {
-                    placemarks, error in
-                    if error == nil, let p = placemarks, !p.isEmpty {
-                        self.placemark = p.last!
-                        self.delegate?.foundLocation(locality: self.placemark!.locality!)
-                    } else {
-                        self.locationError = error! as NSError
-                        self.placemark = nil
-                        self.delegate?.endWithError(error: self.locationError!)
+    private func reverse(location: CLLocation) -> Observable<String?>{
+        return Observable.create{ observser in
+            self.geocoder.reverseGeocodeLocation(location){placemarks, error in
+                if let error = error{
+                    observser.onError(error)
+                } else {
+                    if let placemarks = placemarks, !placemarks.isEmpty{
+                        let locality = placemarks.last!.locality
+                        observser.onNext(locality)
+                        observser.onCompleted()
                     }
-                })
+                }
             }
-        }
-    }
-    
-    func getLocation() {
-        if locationManager == nil{
-            locationManager = CLLocationManager()
-            locationManager.delegate = self
-        }
-        
-        let authStatus = CLLocationManager.authorizationStatus()
-        if authStatus == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-            return
-        }
-        
-        if authStatus == .denied || authStatus == .restricted {
-            delegate?.accessState(state: false)
-            stopLocationManager()
-            return
-        }
-        
-        if !updatingLocation{
-            startLocationManager()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .notDetermined {
-            return
-        }
-        if status == .denied || status == .restricted {
-            delegate?.accessState(state: false)
-        } else {
-            delegate?.accessState(state: true)
-            getLocation()
-        }
-    }
-    
-    private func startLocationManager() {
-        if CLLocationManager.locationServicesEnabled() {
-            updatingLocation = true
-            location = nil
-            placemark = nil
-            locationError = nil
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(withTimeInterval: 3,
-                                         repeats: false) { timer in
-                self.didTimeOut()
-            }
-            locationManager.startUpdatingLocation()
-        }
-    }
-    
-    private func stopLocationManager() {
-        if updatingLocation {
-            locationManager.stopUpdatingLocation()
-            locationManager.delegate = nil
-            updatingLocation = false
             
-            if let timer = timer {
-                timer.invalidate()
+            return Disposables.create {
+                self.geocoder.cancelGeocode()
             }
-            timer = nil
         }
     }
     
-    @objc
-    private func didTimeOut() {
-        print("time out")
-        locationError = NSError(domain: "Время вышло.",
-                                code: 1, userInfo: nil)
-        stopLocationManager()
-        delegate?.timeOut()
+    override init() {
+        super.init()
+        
+        
+        let _ = access
+            .bind(onNext: {[unowned self] status in
+                if status{
+                    self.startUpdatingLocations()
+                } else{
+                    self.locationManager.requestWhenInUseAuthorization()
+                }
+            }).disposed(by: bag)
+    }
+    
+    deinit {
+        print("Deiniting geolocation service")
     }
 }

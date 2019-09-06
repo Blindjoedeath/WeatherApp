@@ -22,6 +22,7 @@ class LocationPresenter: LocationPresenterProtocol{
     var view: LocationViewProtocol!
     var router: LocationRouterProtocol!
     var interactor: LocationInteractorInput!
+    var repository = CitiesBaseRepository.instance
     
     var city: String!
 
@@ -47,23 +48,25 @@ class LocationPresenter: LocationPresenterProtocol{
     
     func configureView() {       
         let date = Date()
-        view.setToday(day: date.day)
-        view.setCurrentDate(date: date.formatted(by: "d MMMM yyyy"))
+        view.set(day: date.day)
+        view.set(date: date.formatted(by: "d MMMM yyyy"))
+        view.set(cities: repository.cities)
         view.isNextNavigationEnabled = false
-        view.isPermissionNotificationEnabled = !interactor.geolocationAccess
+        if !interactor.locationAccessDetermined{
+            view.isLocalityButtonEnabled = true
+            view.isPermissionNotificationEnabled = true
+        }
     }
 }
 
 extension LocationPresenter: LocationInteractorOutput{
     
-    func geolocationAccessChanged(state: Bool) {
-        if state{
-            view.isPermissionNotificationEnabled = false
-        } else{
-            view.showAlert(title: "Опаньки..", message: "Проверьте локацию")
-            view.isPermissionNotificationEnabled = true
+    func geolocationAccessDetermined(state: Bool) {
+        if !state{
             view.isDataLoadingIndicatorEnabled = false
         }
+        view.isPermissionNotificationEnabled = !state
+        view.isLocalityButtonEnabled = state
     }
     
     func geolocationTimeOut() {
@@ -78,7 +81,7 @@ extension LocationPresenter: LocationInteractorOutput{
     
     func foundLocality(locality: String) {
         self.city = locality
-        view.setCity(city: locality)
+        view.set(city: locality)
         view.isDataLoadingIndicatorEnabled = false
         view.isNextNavigationEnabled = true
     }
@@ -103,6 +106,7 @@ extension LocationPresenter: LocationInteractorOutput{
     
     func foundWeather() {
         view.isDataLoadingIndicatorEnabled = false
-        router.route(with: city)
+        interactor.set(city: city)
+        router.route(with: nil)
     }
 }
