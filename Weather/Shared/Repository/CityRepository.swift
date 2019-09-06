@@ -2,7 +2,7 @@
 //  CityRepository.swift
 //  Weather
 //
-//  Created by Oskar on 04/09/2019.
+//  Created by Oskar on 06/09/2019.
 //  Copyright © 2019 Codezavod. All rights reserved.
 //
 
@@ -10,15 +10,25 @@ import Foundation
 
 class CityRepository{
     
-    static var cities: [String] = {
-        var cities = [""]
-        if let data = CsvReader.read(file: "geo"){
-            for row in data{
-                if row.count > 6 {
-                    cities.append(row[6])
-                }
-            }
+    static var instance = CityRepository()
+    
+    private init(){
+        
+    }
+    
+    private var city: String?
+    
+    func set(city: String){
+        self.city = city
+        // save city
+    }
+    
+    func getCity() -> String?{
+        if let city = city{
+            return city
         }
-        return cities
-    }()
+        city = ""
+        return city
+    }
+    
 }

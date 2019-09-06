@@ -30,8 +30,6 @@ class LocationRouter: NSObject, LocationRouterProtocol{
     func nextModuleFrom(segue: UIStoryboardSegue, with data: Any?){
         let navigationController = segue.destination as! UINavigationController
         let weatherView = navigationController.topViewController as! WeatherViewController
-        let city = data as! String
         weatherRouter = WeatherConfigurator.build(from: weatherView)
-        weatherRouter.present(for: city)
     }
 }

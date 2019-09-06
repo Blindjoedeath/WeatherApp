@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 protocol WeatherRouterProtocol {
-    func present(for: String)
     func presentDayForecast()
     func routeToStyle()
     func unload()
@@ -34,10 +33,6 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
         let view = segue.destination as! StyleTableViewController
         styleRouter = StyleConfigurator.build(from: view)
         styleRouter.presenter.delegate = presenter
-    }
-    
-    func present(for city: String){
-        presenter.configure(with: city)
     }
     
     func presentDayForecast(){

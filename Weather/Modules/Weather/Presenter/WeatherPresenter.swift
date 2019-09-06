@@ -31,8 +31,6 @@ class WeatherPresenter: WeatherPresenterProtocol{
     var router: WeatherRouterProtocol!
     weak var delegate: WeatherPresenterDelegate?
     
-    var city: String!
-    
     var setWeather = false
     var setForecast = false
     
@@ -61,22 +59,17 @@ class WeatherPresenter: WeatherPresenterProtocol{
         setIndicatorState(state: true)
         setWeather = false
         setForecast = false
-        interactor.refreshData(for: city)
-    }
-    
-    func configure(with city: String){
-        self.city = city
+        interactor.refreshData()
     }
     
     func configureView() {
         let style = interactor.getStyle()
         view.setAppStyle(style: style)
-        view.setTitle(title: city)
+        view.setTitle(title: interactor.getCity())
         
         router.presentDayForecast()
         setIndicatorState(state: true)
         interactor.configure()
-        interactor.getAllWeather()
     }
     
     deinit {

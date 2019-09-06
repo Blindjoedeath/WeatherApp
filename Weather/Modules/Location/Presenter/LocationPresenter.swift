@@ -22,6 +22,7 @@ class LocationPresenter: LocationPresenterProtocol{
     var view: LocationViewProtocol!
     var router: LocationRouterProtocol!
     var interactor: LocationInteractorInput!
+    var repository = CitiesBaseRepository.instance
     
     var city: String!
 
@@ -49,7 +50,7 @@ class LocationPresenter: LocationPresenterProtocol{
         let date = Date()
         view.set(day: date.day)
         view.set(date: date.formatted(by: "d MMMM yyyy"))
-        view.set(cities: CityRepository.cities)
+        view.set(cities: repository.cities)
         view.isNextNavigationEnabled = false
         if !interactor.locationAccessDetermined{
             view.isLocalityButtonEnabled = true
@@ -105,6 +106,7 @@ extension LocationPresenter: LocationInteractorOutput{
     
     func foundWeather() {
         view.isDataLoadingIndicatorEnabled = false
-        router.route(with: city)
+        interactor.set(city: city)
+        router.route(with: nil)
     }
 }

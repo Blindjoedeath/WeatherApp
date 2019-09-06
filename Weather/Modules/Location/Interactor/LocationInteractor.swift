@@ -12,6 +12,7 @@ import RxSwift
 protocol LocationInteractorInput: class {
     func getLocation()
     func getWeather(for: String)
+    func set(city: String)
     var locationAccessDetermined: Bool {get}
 }
 
@@ -34,6 +35,8 @@ class LocationInteractor: LocationInteractorInput{
     var output: LocationInteractorOutput?
     lazy var geolocationService = GeolocationService()
     lazy var bag = DisposeBag()
+    var weatherRepository = WeatherRepository.instance
+    var cityRepository = CityRepository.instance
     
     init() {
         let _ = geolocationService.access
@@ -73,26 +76,40 @@ class LocationInteractor: LocationInteractorInput{
     }
     
     func getWeather(for city: String){
-        WeatherRequestStorage.clear()
         
-        let weatherRequest = WeatherRequest<Weather>(url: ApiUrlService.weatherUrl(for: city))
-        weatherRequest.perform{ result in
-            switch result {
-            case .result(let weather):
-                self.output?.foundWeather()
-            case .noNetwork:
-                self.output?.noNetwork()
-            case .noLocation:
-                self.output?.noLocation()
-            case .timeOut:
-                self.output?.weatherRequestTimeOut()
-            }
-            WeatherRequestStorage.weather = result
-        }
-        
-        let forecastRequest = WeatherRequest<Forecast>(url: ApiUrlService.forecastUrl(for: city))
-        forecastRequest.perform{ result in
-            WeatherRequestStorage.forecast = result
-        }
+        let weather = weatherRepository.getWeather(for: city)
+        weather
+            .observeOn(MainScheduler.instance)
+            .subscribe(
+                onNext: {weather in
+                    self.output?.foundWeather()
+                },
+                onError: {error in
+                    if let requestError = error as? ReactiveRequestError{
+                        switch requestError{
+                        case .badResponse:
+                            self.output?.noLocation()
+                            break
+                        case .noResponce:
+                            self.output?.noNetwork()
+                            break
+                        }
+                    } else if let rxError = error as? RxError{
+                        switch rxError{
+                        case .timeout:
+                            self.output?.geolocationTimeOut()
+                        default:
+                            break
+                        }
+                    }
+                },
+                onDisposed: {
+                    print("disposed weather")
+                }
+            ).disposed(by: bag)
+    }
+    
+    func set(city: String) {
+        cityRepository.set(city: city)
     }
 }

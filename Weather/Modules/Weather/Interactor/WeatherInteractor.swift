@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol WeatherInteractorInput: class{
     func configure()
     func close()
-    func refreshData(for: String)
-    func getAllWeather()
+    func refreshData()
+    func getCity() -> String
     func getStyle() -> AppStyleModel
 }
 
@@ -28,17 +29,17 @@ protocol WeatherInteractorOutput: class{
 class WeatherInteractor{
     
     weak var output: WeatherInteractorOutput!
-    var weatherRequest: WeatherRequest<Weather>?
-    var forecastRequest: WeatherRequest<Forecast>?
+    var subscripion: Disposable!
     
-    func checkWeather() -> Bool{
-        if let weather = WeatherRequestStorage.weather{
-            if let result = checkRequestResult(for: weather){
-                output.found(weather: ModelService.WeatherToModel(from: result))
-                return true
-            }
+    var weather: Observable<Weather>!
+    var forecast: Observable<Forecast>!
+    let bag = DisposeBag()
+    
+    var weatherRepository = WeatherRepository.instance
+    var city: String {
+        get{
+            return CityRepository.instance.getCity()!
         }
-        return false
     }
     
     func weekForecast(from forecast: Forecast) -> [Weather]{
@@ -49,31 +50,6 @@ class WeatherInteractor{
         return result
     }
     
-    func checkForecast(){
-        if let forecast = WeatherRequestStorage.forecast{
-            if let result = checkRequestResult(for: forecast){
-                let weekModels = weekForecast(from: result).map{ModelService.WeatherToModel(from: $0)}
-                let dayModels = result[0].map{ModelService.WeatherToModel(from: $0)}
-                output.found(weekForecast: weekModels)
-                output.found(dayForecast: dayModels)
-            }
-        }
-    }
-    
-    func checkRequestResult<T>(for result: RequestResult<T>) -> T?{
-        switch result {
-        case .result(let data):
-            return data
-        case .noNetwork:
-            self.output.noNetwork()
-        case .noLocation:
-            self.output.noLocation()
-        case .timeOut:
-            self.output.weatherRequestTimeOut()
-        }
-        return nil
-    }
-    
     deinit {
         print("Weather Interactor deinited")
     }
@@ -81,42 +57,64 @@ class WeatherInteractor{
 
 extension WeatherInteractor: WeatherInteractorInput{
     
+    func createSubscription(){
+        subscripion = Observable.combineLatest(weather, forecast)
+            .observeOn(MainScheduler.instance)
+            .subscribe(
+                onNext: {(weather, forecast) in
+                    
+                    self.output.found(weather: ModelService.WeatherToModel(from: weather))
+                    
+                    let weekModels = self.weekForecast(from: forecast).map{ModelService.WeatherToModel(from: $0)}
+                    let dayModels = forecast[0].map{ModelService.WeatherToModel(from: $0)}
+                    self.output.found(weekForecast: weekModels)
+                    self.output.found(dayForecast: dayModels)
+                    
+                },
+                onError: {error in
+                    print(error)
+                    if let requestError = error as? ReactiveRequestError{
+                        switch requestError{
+                        case .badResponse:
+                            self.output.noLocation()
+                            break
+                        case .noResponce:
+                            self.output.noNetwork()
+                            break
+                        }
+                    } else if let rxError = error as? RxError{
+                        switch rxError{
+                        case .timeout:
+                            self.output.weatherRequestTimeOut()
+                        default:
+                            break
+                        }
+                    }
+                })
+        subscripion.disposed(by: bag)
+    }
+    
     func configure() {
-        WeatherRequestStorage.registerDelegate(my: self)
+        weather = weatherRepository.lastWeather ?? weatherRepository.getWeather(for: city)
+        forecast = weatherRepository.lastForecast ?? weatherRepository.getForecast(for: city)
+        
+        createSubscription()
     }
     
     func close(){
-        WeatherRequestStorage.unregisterDelegate(my: self)
-        weatherRequest?.cancel()
-        forecastRequest?.cancel()
     }
     
-    func refreshData(for city: String) {
-        WeatherRequestStorage.clear()
-        weatherRequest?.cancel()
-        forecastRequest?.cancel()
-        
-        weatherRequest = WeatherRequest<Weather>(url: ApiUrlService.weatherUrl(for: city))
-        forecastRequest = WeatherRequest<Forecast>(url: ApiUrlService.forecastUrl(for: city))
-        
-        weatherRequest!.perform{result in
-            WeatherRequestStorage.weather = result
-        }
-        
-        forecastRequest!.perform{result in
-            WeatherRequestStorage.forecast = result
-        }
+    func getCity() -> String {
+        return city
     }
     
-    func getAllWeather() {
-        if let _ = WeatherRequestStorage.weather{
-            let success = checkWeather()
-            if success{
-                checkForecast()
-            }
-        } else {
-            checkForecast()
-        }
+    func refreshData() {
+        subscripion.dispose()
+        
+        weather = weatherRepository.getWeather(for: city)
+        forecast = weatherRepository.getForecast(for: city)
+        
+        createSubscription()
     }
     
     func getStyle() -> AppStyleModel {
@@ -128,16 +126,5 @@ extension WeatherInteractor: WeatherInteractorInput{
         return AppStyleModel(name: style.name,
                              description: style.description,
                              color: color)
-    }
-}
-
-
-extension WeatherInteractor: WeatherRequestStorageDelegate{
-    func weatherDidSet() {
-        checkWeather()
-    }
-    
-    func forecastDidSet() {
-        checkForecast()
     }
 }
