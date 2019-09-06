@@ -18,6 +18,6 @@ class DayForecastRouter: NSObject, DayForecastRouterProtocol{
     weak var presenter: DayForecastPresenter!
     
     deinit {
-        print("day forecast router deinited")
+       // print("day forecast router deinited")
     }
 }

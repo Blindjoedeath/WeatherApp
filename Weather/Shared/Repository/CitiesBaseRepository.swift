@@ -10,7 +10,7 @@ import Foundation
 
 class CitiesBaseRepository{
     
-    static var instance = CitiesBaseRepository()
+    static let instance = CitiesBaseRepository()
     
     private init(){
         

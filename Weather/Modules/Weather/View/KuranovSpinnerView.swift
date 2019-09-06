@@ -58,6 +58,6 @@ class KuranovSpinnerView: UIView {
     }
     
     deinit {
-        print("deinited kuranov spiner view")
+        //print("deinited kuranov spiner view")
     }
 }

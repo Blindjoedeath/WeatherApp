@@ -14,14 +14,8 @@ protocol StylePresenterProtocol: class{
     func close()
 }
 
-protocol StylePresenterDelegate: class{
-    func styleChanged()
-}
-
-
 class StylePresenter: StylePresenterProtocol{
     
-    var delegate: StylePresenterDelegate?
     weak var view: StyleViewProtocol!
     var interactor: StyleInteractorProtocol!
     var router: StyleRouter!
@@ -30,7 +24,6 @@ class StylePresenter: StylePresenterProtocol{
     
     func styleChanged(name: String) {
         interactor.setStyle(name: name)
-        delegate?.styleChanged()
         view.setStyle(style: interactor.getStyle())
     }
     
@@ -41,10 +34,9 @@ class StylePresenter: StylePresenterProtocol{
     
     func close(){
         router.close()
-        delegate = nil
     }
     
     deinit {
-        print("Deinited style presenter")
+        //print("Deinited style presenter")
     }
 }

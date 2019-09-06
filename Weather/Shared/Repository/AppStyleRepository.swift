@@ -7,28 +7,35 @@
 //
 
 import Foundation
+import RxSwift
+import RxRelay
 
-class AppStyleService{
+class AppStyleRepository{
     
-    static func changeStyle(by name: String){
-        currentStyle = appStyles[name]!
-        UserDefaults.standard.set(currentStyle.name, forKey: "appStyle")
-    }
+    static let instance = AppStyleRepository()
+    let appStyle: BehaviorRelay<AppStyle>
     
-    private static func getSeason() -> String{
-        let now = Date()
-        return now.season
-    }
+    private var bag = DisposeBag()
     
-    private (set) static var currentStyle: AppStyle = {
-        if let style = UserDefaults.standard.string(forKey: "appStyle"){
-            return appStyles[style]!
+    private init(){
+        var style: AppStyle! = nil
+        if let styleName = UserDefaults.standard.string(forKey: "appStyle"){
+            style = appStyles[styleName]!
         } else {
-            return appStyles[getSeason()]!
+            let season = Date().season
+            style = appStyles[season]!
         }
-    }()
+        appStyle = BehaviorRelay(value: style)
+        
+        appStyle
+            .subscribe(onNext: {[weak self] value in
+                UserDefaults.standard.set(value.name, forKey: "appStyle")
+            })
+            .disposed(by: bag)
+        
+    }
     
-    private(set) static var appStyles: [String : AppStyle] = {
+    private(set) var appStyles: [String : AppStyle] = {
         var result: [String : AppStyle] = [:]
         result["winter"] = AppStyle(name: "winter",
                                     description: "Зима",

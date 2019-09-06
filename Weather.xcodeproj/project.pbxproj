@@ -39,7 +39,7 @@
 		3DC0A27622446C5500C85F83 /* KuranovSpinnerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DC0A24A22443E5100C85F83 /* KuranovSpinnerView.xib */; };
 		3DD324A32239B66100735797 /* StyleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD324A22239B66100735797 /* StyleTableViewController.swift */; };
 		3DD324A72239BF6A00735797 /* AppStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD324A62239BF6A00735797 /* AppStyle.swift */; };
-		3DD324A92239C1B200735797 /* AppStyleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD324A82239C1B200735797 /* AppStyleService.swift */; };
+		3DD324A92239C1B200735797 /* AppStyleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD324A82239C1B200735797 /* AppStyleRepository.swift */; };
 		3DD3BB4A22440322002C7F4B /* AppStyleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD3BB4922440322002C7F4B /* AppStyleModel.swift */; };
 		3DD3BB4C224404F4002C7F4B /* NavigationBarColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD3BB4B224404F4002C7F4B /* NavigationBarColor.swift */; };
 		3DD3BB4E22440C0B002C7F4B /* WeatherItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD3BB4D22440C0B002C7F4B /* WeatherItem.swift */; };
@@ -100,7 +100,7 @@
 		3DC0A272224458DD00C85F83 /* StyleRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleRouter.swift; sourceTree = "<group>"; };
 		3DD324A22239B66100735797 /* StyleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTableViewController.swift; sourceTree = "<group>"; };
 		3DD324A62239BF6A00735797 /* AppStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyle.swift; sourceTree = "<group>"; };
-		3DD324A82239C1B200735797 /* AppStyleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleService.swift; sourceTree = "<group>"; };
+		3DD324A82239C1B200735797 /* AppStyleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleRepository.swift; sourceTree = "<group>"; };
 		3DD3BB4922440322002C7F4B /* AppStyleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleModel.swift; sourceTree = "<group>"; };
 		3DD3BB4B224404F4002C7F4B /* NavigationBarColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarColor.swift; sourceTree = "<group>"; };
 		3DD3BB4D22440C0B002C7F4B /* WeatherItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherItem.swift; sourceTree = "<group>"; };
@@ -200,7 +200,6 @@
 		3D2D0BB92242D3B2002E0097 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				3DD324A82239C1B200735797 /* AppStyleService.swift */,
 				3D2A72F921942D190093A93C /* Secret.swift */,
 				75B5C729231FA13900B60BBA /* CsvReader.swift */,
 				753FECC22322539E00AE50F1 /* ReactiveRequest.swift */,
@@ -428,6 +427,7 @@
 		75B5C726231FA0FE00B60BBA /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				3DD324A82239C1B200735797 /* AppStyleRepository.swift */,
 				75B5C727231FA11600B60BBA /* CitiesBaseRepository.swift */,
 				753FECC02322527B00AE50F1 /* WeatherRepository.swift */,
 				753FECC423225E9D00AE50F1 /* CityRepository.swift */,
@@ -589,7 +589,7 @@
 				3D29E154218B2DE70090E9E1 /* AppDelegate.swift in Sources */,
 				3DD324A72239BF6A00735797 /* AppStyle.swift in Sources */,
 				75B5C72A231FA13900B60BBA /* CsvReader.swift in Sources */,
-				3DD324A92239C1B200735797 /* AppStyleService.swift in Sources */,
+				3DD324A92239C1B200735797 /* AppStyleRepository.swift in Sources */,
 				3DD3BB5022441300002C7F4B /* WeatherPresenter.swift in Sources */,
 				3DD324A32239B66100735797 /* StyleTableViewController.swift in Sources */,
 				3D415AFC2243FA4F006B4CD5 /* WeatherModel.swift in Sources */,

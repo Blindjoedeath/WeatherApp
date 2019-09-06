@@ -81,30 +81,29 @@ class LocationInteractor: LocationInteractorInput{
         weather
             .observeOn(MainScheduler.instance)
             .subscribe(
-                onNext: {weather in
-                    self.output?.foundWeather()
+                onNext: {[weak self] weather in
+                    self?.output?.foundWeather()
                 },
-                onError: {error in
-                    if let requestError = error as? ReactiveRequestError{
-                        switch requestError{
-                        case .badResponse:
-                            self.output?.noLocation()
-                            break
-                        case .noResponce:
-                            self.output?.noNetwork()
-                            break
-                        }
-                    } else if let rxError = error as? RxError{
-                        switch rxError{
-                        case .timeout:
-                            self.output?.geolocationTimeOut()
-                        default:
-                            break
+                onError: {[weak self] error in
+                    if let self = self{
+                        if let requestError = error as? ReactiveRequestError{
+                            switch requestError{
+                            case .badResponse:
+                                self.output?.noLocation()
+                                break
+                            case .noResponce:
+                                self.output?.noNetwork()
+                                break
+                            }
+                        } else if let rxError = error as? RxError{
+                            switch rxError{
+                            case .timeout:
+                                self.output?.geolocationTimeOut()
+                            default:
+                                break
+                            }
                         }
                     }
-                },
-                onDisposed: {
-                    print("disposed weather")
                 }
             ).disposed(by: bag)
     }

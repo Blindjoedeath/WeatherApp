@@ -14,7 +14,6 @@ protocol WeatherInteractorInput: class{
     func close()
     func refreshData()
     func getCity() -> String
-    func getStyle() -> AppStyleModel
 }
 
 protocol WeatherInteractorOutput: class{
@@ -24,6 +23,7 @@ protocol WeatherInteractorOutput: class{
     func found(weather: WeatherModel)
     func found(weekForecast: [WeatherModel])
     func found(dayForecast: [WeatherModel])
+    func setStyle(appStyle: AppStyleModel)
 }
 
 class WeatherInteractor{
@@ -35,7 +35,9 @@ class WeatherInteractor{
     var forecast: Observable<Forecast>!
     let bag = DisposeBag()
     
-    var weatherRepository = WeatherRepository.instance
+    let weatherRepository = WeatherRepository.instance
+    let styleRepository = AppStyleRepository.instance
+    
     var city: String {
         get{
             return CityRepository.instance.getCity()!
@@ -57,40 +59,41 @@ class WeatherInteractor{
 
 extension WeatherInteractor: WeatherInteractorInput{
     
-    func createSubscription(){
+    func createWeatherSubscription(){
         subscripion = Observable.combineLatest(weather, forecast)
             .observeOn(MainScheduler.instance)
             .subscribe(
-                onNext: {(weather, forecast) in
-                    
-                    self.output.found(weather: ModelService.WeatherToModel(from: weather))
-                    
-                    let weekModels = self.weekForecast(from: forecast).map{ModelService.WeatherToModel(from: $0)}
-                    let dayModels = forecast[0].map{ModelService.WeatherToModel(from: $0)}
-                    self.output.found(weekForecast: weekModels)
-                    self.output.found(dayForecast: dayModels)
-                    
+                onNext: {[weak self] (weather, forecast) in
+                    if let self = self{
+                        self.output.found(weather: ModelService.WeatherToModel(from: weather))
+                        
+                        let weekModels = self.weekForecast(from: forecast).map{ModelService.WeatherToModel(from: $0)}
+                        let dayModels = forecast[0].map{ModelService.WeatherToModel(from: $0)}
+                        self.output.found(weekForecast: weekModels)
+                        self.output.found(dayForecast: dayModels)
+                    }
                 },
-                onError: {error in
-                    print(error)
-                    if let requestError = error as? ReactiveRequestError{
-                        switch requestError{
-                        case .badResponse:
-                            self.output.noLocation()
-                            break
-                        case .noResponce:
-                            self.output.noNetwork()
-                            break
-                        }
-                    } else if let rxError = error as? RxError{
-                        switch rxError{
-                        case .timeout:
-                            self.output.weatherRequestTimeOut()
-                        default:
-                            break
+                onError: {[weak self] error in
+                    if let self = self{
+                        if let requestError = error as? ReactiveRequestError{
+                            switch requestError{
+                            case .badResponse:
+                                self.output.noLocation()
+                                break
+                            case .noResponce:
+                                self.output.noNetwork()
+                                break
+                            }
+                        } else if let rxError = error as? RxError{
+                            switch rxError{
+                            case .timeout:
+                                self.output.weatherRequestTimeOut()
+                            default:
+                                break
+                            }
                         }
                     }
-                })
+            })
         subscripion.disposed(by: bag)
     }
     
@@ -98,7 +101,17 @@ extension WeatherInteractor: WeatherInteractorInput{
         weather = weatherRepository.lastWeather ?? weatherRepository.getWeather(for: city)
         forecast = weatherRepository.lastForecast ?? weatherRepository.getForecast(for: city)
         
-        createSubscription()
+        styleRepository.appStyle
+            .subscribe(
+                onNext: {[weak self] value in
+                    if let self = self{
+                        let style = self.styleToModel(value)
+                        self.output.setStyle(appStyle: style)
+                    }
+                })
+            .disposed(by: bag)
+        
+        createWeatherSubscription()
     }
     
     func close(){
@@ -114,11 +127,10 @@ extension WeatherInteractor: WeatherInteractorInput{
         weather = weatherRepository.getWeather(for: city)
         forecast = weatherRepository.getForecast(for: city)
         
-        createSubscription()
+        createWeatherSubscription()
     }
     
-    func getStyle() -> AppStyleModel {
-        let style = AppStyleService.currentStyle
+    func styleToModel(_ style: AppStyle) -> AppStyleModel {
         let color = AppColor(r: style.color.r,
                              g: style.color.g,
                              b: style.color.b)

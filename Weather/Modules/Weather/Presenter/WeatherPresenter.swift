@@ -63,8 +63,6 @@ class WeatherPresenter: WeatherPresenterProtocol{
     }
     
     func configureView() {
-        let style = interactor.getStyle()
-        view.setAppStyle(style: style)
         view.setTitle(title: interactor.getCity())
         
         router.presentDayForecast()
@@ -117,11 +115,8 @@ extension WeatherPresenter: WeatherInteractorOutput{
         delegate?.animateDataAppearance()
         delegate?.isUpdatingIndicatorEnabled = false
     }
-}
-
-extension WeatherPresenter: StylePresenterDelegate{
-    func styleChanged() {
-        let style = interactor.getStyle()
-        view.setAppStyle(style: style)
+    
+    func setStyle(appStyle: AppStyleModel) {
+        view.setAppStyle(style: appStyle)
     }
 }

@@ -60,28 +60,31 @@ class LocationViewController: UIViewController{
             .orEmpty
             .debounce(RxTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .do(onNext: {
-                self.citiesTableView.isHidden = $0.isEmpty || self.citySelected
-                self.citySelected = false
+            .do(onNext: {[weak self] text in
+                if let self = self{
+                    self.citiesTableView.isHidden = text.isEmpty || self.citySelected
+                    self.citySelected = false
+                }
             })
             .filter{!$0.isEmpty}
-            .subscribe(onNext:{[unowned self] text in
-                
-                self.presenter.cityNameChanged(on: text)
-                
-                let query = text.lowercased().trimmingCharacters(in: .whitespaces)
-                self.filteredCities = self.cities.filter{element in
-                    let city = element.lowercased()
-                    if city.contains(" "){
-                        let words = city.split(separator: " ")
-                        return words.reduce(false, {begins, word in
-                            return word.hasPrefix(query) || begins
-                        })
-                    } else {
-                        return city.hasPrefix(query)
-                    }
-                }.sorted()
-                self.citiesTableView.reloadData()
+            .subscribe(onNext:{[weak self] text in
+                if let self = self{
+                    self.presenter.cityNameChanged(on: text)
+                    
+                    let query = text.lowercased().trimmingCharacters(in: .whitespaces)
+                    self.filteredCities = self.cities.filter{element in
+                        let city = element.lowercased()
+                        if city.contains(" "){
+                            let words = city.split(separator: " ")
+                            return words.reduce(false, {begins, word in
+                                return word.hasPrefix(query) || begins
+                            })
+                        } else {
+                            return city.hasPrefix(query)
+                        }
+                    }.sorted()
+                    self.citiesTableView.reloadData()
+                }
             })
             .disposed(by: bag)
         

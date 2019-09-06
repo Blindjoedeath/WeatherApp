@@ -21,6 +21,6 @@ class StyleRouter: NSObject, StyleRouterProtocol{
     }
     
     deinit {
-        print("Style router deinited")
+        //print("Style router deinited")
     }
 }

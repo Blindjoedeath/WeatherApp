@@ -48,6 +48,6 @@ class DayForecastPresenter: WeatherPresenterDelegate, DayForecastPresenterProtoc
     }
     
     deinit {
-        print("day forecast presenter deinit")
+        //print("day forecast presenter deinit")
     }
 }

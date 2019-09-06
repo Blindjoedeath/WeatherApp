@@ -32,7 +32,6 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
     func styleModuleFrom(segue: UIStoryboardSegue){
         let view = segue.destination as! StyleTableViewController
         styleRouter = StyleConfigurator.build(from: view)
-        styleRouter.presenter.delegate = presenter
     }
     
     func presentDayForecast(){
