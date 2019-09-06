@@ -9,22 +9,22 @@
 import Foundation
 
 protocol StyleInteractorProtocol: class {
-    func getStyle() -> AppStyleModel
+    func getStyle() -> AppStyle
     func setStyle(name: String)
-    func getAllStyles() -> [AppStyleModel]
+    func getAllStyles() -> [AppStyle]
 }
 
 class StyleInteractor: StyleInteractorProtocol {
     
     var styleRepository = AppStyleRepository.instance
     
-    func styleToModel(style: AppStyle) -> AppStyleModel{
-        return AppStyleModel(name: style.name,
-                             description: style.description,
-                             color: style.color)
+    func styleToModel(style: AppStyle) -> AppStyle{
+        return AppStyle(name: style.name,
+                        description: style.description,
+                        color: style.color)
     }
     
-    func getStyle() -> AppStyleModel {
+    func getStyle() -> AppStyle {
         return styleToModel(style: styleRepository.appStyle.value)
     }
     
@@ -33,7 +33,7 @@ class StyleInteractor: StyleInteractorProtocol {
         styleRepository.appStyle.accept(style)
     }
     
-    func getAllStyles() -> [AppStyleModel] {
+    func getAllStyles() -> [AppStyle] {
         return styleRepository.appStyles.map{styleToModel(style: $0.value)}
     }
     

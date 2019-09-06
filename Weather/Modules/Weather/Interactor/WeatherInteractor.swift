@@ -11,7 +11,6 @@ import RxSwift
 
 protocol WeatherInteractorInput: class{
     func configure()
-    func close()
     func refreshData()
     func getCity() -> String
 }
@@ -20,10 +19,10 @@ protocol WeatherInteractorOutput: class{
     func noNetwork()
     func noLocation()
     func weatherRequestTimeOut()
-    func found(weather: WeatherModel)
-    func found(weekForecast: [WeatherModel])
-    func found(dayForecast: [WeatherModel])
-    func setStyle(appStyle: AppStyleModel)
+    func found(weather: Weather)
+    func found(weekForecast: [Weather])
+    func found(dayForecast: [Weather])
+    func setStyle(appStyle: AppStyle)
 }
 
 class WeatherInteractor{
@@ -65,10 +64,10 @@ extension WeatherInteractor: WeatherInteractorInput{
             .subscribe(
                 onNext: {[weak self] (weather, forecast) in
                     if let self = self{
-                        self.output.found(weather: ModelService.WeatherToModel(from: weather))
+                        self.output.found(weather: weather)
                         
-                        let weekModels = self.weekForecast(from: forecast).map{ModelService.WeatherToModel(from: $0)}
-                        let dayModels = forecast[0].map{ModelService.WeatherToModel(from: $0)}
+                        let weekModels = self.weekForecast(from: forecast)
+                        let dayModels = forecast[0].map{$0}
                         self.output.found(weekForecast: weekModels)
                         self.output.found(dayForecast: dayModels)
                     }
@@ -103,18 +102,14 @@ extension WeatherInteractor: WeatherInteractorInput{
         
         styleRepository.appStyle
             .subscribe(
-                onNext: {[weak self] value in
+                onNext: {[weak self] style in
                     if let self = self{
-                        let style = self.styleToModel(value)
                         self.output.setStyle(appStyle: style)
                     }
                 })
             .disposed(by: bag)
         
         createWeatherSubscription()
-    }
-    
-    func close(){
     }
     
     func getCity() -> String {
@@ -128,15 +123,5 @@ extension WeatherInteractor: WeatherInteractorInput{
         forecast = weatherRepository.getForecast(for: city)
         
         createWeatherSubscription()
-    }
-    
-    func styleToModel(_ style: AppStyle) -> AppStyleModel {
-        let color = AppColor(r: style.color.r,
-                             g: style.color.g,
-                             b: style.color.b)
-        
-        return AppStyleModel(name: style.name,
-                             description: style.description,
-                             color: color)
     }
 }

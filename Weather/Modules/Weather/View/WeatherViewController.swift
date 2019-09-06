@@ -15,8 +15,8 @@ protocol WeatherViewProtocol: class{
     func showAlert(title: String, message: String)
     func setTitle(title: String)
     
-    func setAppStyle(style: AppStyleModel)
-    func setCurrentWeather(weather: WeatherModel)
+    func setAppStyle(style: AppStyle)
+    func setCurrentWeather(weather: WeatherItem)
     func setWeekForecastData(forecast: [WeatherItem])
     func shareImage(with: String)
     func close()
@@ -169,7 +169,7 @@ extension WeatherViewController: WeatherViewProtocol{
         titleView.text = title
     }
     
-    func setAppStyle(style: AppStyleModel) {
+    func setAppStyle(style: AppStyle) {
         let color = UIColor(red: CGFloat(style.color.r),
                             green: CGFloat(style.color.g),
                             blue: CGFloat(style.color.b), alpha: 0.7)
@@ -179,7 +179,7 @@ extension WeatherViewController: WeatherViewProtocol{
         backgroundImage.image = UIImage(named: "background_" + style.name)
     }
     
-    func setCurrentWeather(weather: WeatherModel) {
+    func setCurrentWeather(weather: WeatherItem) {
         temperatureLabel.text = weather.temperature
         descriptionLabel.text = weather.description
         perceivedTemperatureLabel.text = "Ощущается \(weather.perceivedTemperature) °C"

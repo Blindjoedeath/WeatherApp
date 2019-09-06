@@ -40,7 +40,6 @@ class WeatherPresenter: WeatherPresenterProtocol{
     }
     
     func closeNavigationRequired() {
-        interactor.close()
         delegate?.cancelAppearanceAnimation()
         setIndicatorState(state: false)
         router.unload()
@@ -91,15 +90,16 @@ extension WeatherPresenter: WeatherInteractorOutput{
         setIndicatorState(state: false)
     }
     
-    func found(weather: WeatherModel) {
+    func found(weather: Weather) {
+        let weather = WeatherItem.from(weather: weather, date: "Сегодня")
         view.setCurrentWeather(weather: weather)
         setWeather = true
         view.isUpdateIndicatorEnabled = !(setWeather && setForecast)
     }
     
-    func found(weekForecast: [WeatherModel]) {
+    func found(weekForecast: [Weather]) {
         var items = weekForecast.map{
-            return WeatherItem.from(model: $0, date: $0.date!.shortDayName)
+            return WeatherItem.from(weather: $0, date: $0.date!.shortDayName)
         }
         items[0].date = "Сегодня"
         view.setWeekForecastData(forecast: items)
@@ -107,16 +107,16 @@ extension WeatherPresenter: WeatherInteractorOutput{
         view.isUpdateIndicatorEnabled = !(setWeather && setForecast)
     }
     
-    func found(dayForecast: [WeatherModel]) {
+    func found(dayForecast: [Weather]) {
         let items = dayForecast.map{
-            return WeatherItem.from(model: $0, date: $0.date!.hour)
+            return WeatherItem.from(weather: $0, date: $0.date!.hour)
         }
         delegate?.updateWith(data: items)
         delegate?.animateDataAppearance()
         delegate?.isUpdatingIndicatorEnabled = false
     }
     
-    func setStyle(appStyle: AppStyleModel) {
+    func setStyle(appStyle: AppStyle) {
         view.setAppStyle(style: appStyle)
     }
 }

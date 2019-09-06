@@ -9,13 +9,13 @@
 import UIKit
 
 protocol StyleViewProtocol: class {
-    func setStyle(style: AppStyleModel)
-    func setItems(items: [AppStyleModel])
+    func setStyle(style: AppStyle)
+    func setItems(items: [AppStyle])
 }
 
 class StyleTableViewController: UITableViewController {
     
-    var items: [AppStyleModel]!
+    var items: [AppStyle]!
     var presenter: StylePresenterProtocol!
     
     override func viewDidLoad() {
@@ -54,11 +54,11 @@ class StyleTableViewController: UITableViewController {
 }
 
 extension StyleTableViewController: StyleViewProtocol{
-    func setItems(items: [AppStyleModel]) {
+    func setItems(items: [AppStyle]) {
         self.items = items
     }
     
-    func setStyle(style: AppStyleModel){
+    func setStyle(style: AppStyle){
         let color = UIColor(red: CGFloat(style.color.r),
                             green: CGFloat(style.color.g),
                             blue: CGFloat(style.color.b),

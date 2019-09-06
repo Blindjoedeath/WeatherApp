@@ -16,12 +16,12 @@ struct WeatherItem{
     var iconCode: String
     var perceivedTemperature: String
     
-    static func from(model: WeatherModel, date: String) -> WeatherItem{
-        return WeatherItem(temperature: model.temperature,
-                               humidity: model.humidity,
-                               description: model.description,
+    static func from(weather: Weather, date: String) -> WeatherItem{
+        return WeatherItem(temperature: String(weather.temperature),
+                               humidity: String(weather.humidity),
+                               description: weather.description,
                                date: date,
-                               iconCode: model.iconCode,
-                               perceivedTemperature: model.perceivedTemperature)
+                               iconCode: weather.iconCode,
+                               perceivedTemperature: String(weather.perceivedTemperature))
     }
 }
