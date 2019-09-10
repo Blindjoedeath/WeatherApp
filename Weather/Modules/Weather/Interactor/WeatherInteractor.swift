@@ -39,7 +39,7 @@ class WeatherInteractor{
     
     var city: String {
         get{
-            return CityRepository.instance.getCity()!
+            return CityRepository.instance.city.value!
         }
     }
     

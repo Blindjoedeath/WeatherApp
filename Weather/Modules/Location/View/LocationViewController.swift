@@ -13,10 +13,10 @@ import RxSwift
 protocol LocationViewProtocol: class {
     
     func showAlert(title: String, message: String)
-    func set(date: String)
-    func set(day: String)
-    func set(city: String)
-    func set(cities: [String])
+    func setDate(_: String)
+    func setDay(_: String)
+    func setCity(_: String)
+    func setCities(_: [String])
     
     var isNextNavigationEnabled: Bool {get set}
     var isPermissionNotificationEnabled: Bool {get set}
@@ -30,7 +30,7 @@ class LocationViewController: UIViewController{
     var cities = [""]
     var filteredCities = [""]
     var defaultCountInTableView = 5
-    var citySelected = false
+    var isCitySet = false
     
     @IBOutlet weak var todayLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -62,8 +62,8 @@ class LocationViewController: UIViewController{
             .distinctUntilChanged()
             .do(onNext: {[weak self] text in
                 if let self = self{
-                    self.citiesTableView.isHidden = text.isEmpty || self.citySelected
-                    self.citySelected = false
+                    self.citiesTableView.isHidden = text.isEmpty || self.isCitySet
+                    self.isCitySet = false
                 }
             })
             .filter{!$0.isEmpty}
@@ -127,19 +127,20 @@ extension LocationViewController: LocationViewProtocol{
         present(alert, animated: true, completion: nil)
     }
     
-    func set(city: String){
+    func setCity(_ city: String){
         cityTextField.text = city
+        self.isCitySet = true
     }
     
-    func set(date: String) {
+    func setDate(_ date: String) {
         dateLabel.text = date
     }
     
-    func set(day: String) {
+    func setDay(_ day: String) {
         todayLabel.text = "Сегодня " + day + ","
     }
     
-    func set(cities: [String]) {
+    func setCities(_ cities: [String]) {
         self.cities = cities
     }
     
@@ -250,7 +251,7 @@ extension LocationViewController: UITableViewDataSource, UITableViewDelegate{
         cityTextField.text = filteredCities[indexPath.row]
         tableView.isHidden = true
         presenter.cityNameChanged(on: cityTextField.text!)
-        self.citySelected = true
+        self.isCitySet = true
     }
     
 }

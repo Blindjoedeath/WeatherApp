@@ -7,28 +7,19 @@
 //
 
 import Foundation
+import RxRelay
 
 class CityRepository{
     
     static let instance = CityRepository()
     
+    let city: BehaviorRelay<String?>
+    
     private init(){
-        
+        let savedCity = UserDefaults.standard.object(forKey: "city") as? String
+        city = BehaviorRelay<String?>(value: savedCity)
+        city.subscribe(onNext: {value in
+            UserDefaults.standard.set(value, forKey: "city")
+        })
     }
-    
-    private var city: String?
-    
-    func set(city: String){
-        self.city = city
-        // save city
-    }
-    
-    func getCity() -> String?{
-        if let city = city{
-            return city
-        }
-        city = ""
-        return city
-    }
-    
 }

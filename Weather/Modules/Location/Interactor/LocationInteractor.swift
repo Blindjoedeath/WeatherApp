@@ -12,7 +12,8 @@ import RxSwift
 protocol LocationInteractorInput: class {
     func getLocation()
     func getWeather(for: String)
-    func set(city: String)
+    func setCity(_: String)
+    func getCity() -> String?
     var locationAccessDetermined: Bool {get}
 }
 
@@ -108,7 +109,11 @@ class LocationInteractor: LocationInteractorInput{
             ).disposed(by: bag)
     }
     
-    func set(city: String) {
-        cityRepository.set(city: city)
+    func setCity(_ city: String) {
+        cityRepository.city.accept(city)
+    }
+    
+    func getCity() -> String? {
+        return cityRepository.city.value
     }
 }
