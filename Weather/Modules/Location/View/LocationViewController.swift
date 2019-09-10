@@ -253,5 +253,4 @@ extension LocationViewController: UITableViewDataSource, UITableViewDelegate{
         presenter.cityNameChanged(on: cityTextField.text!)
         self.isCitySet = true
     }
-    
 }

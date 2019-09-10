@@ -24,6 +24,7 @@ class LocationConfigurator: NSObject {
         interactor.output = presenter
         
         router.view = view
+        router.presenter = presenter
         
         return router
     }
