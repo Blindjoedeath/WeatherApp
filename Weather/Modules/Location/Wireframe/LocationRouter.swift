@@ -10,18 +10,18 @@ import Foundation
 import UIKit
 
 protocol LocationRouterProtocol{
+    var presenter: LocationPresenterProtocol! {get set}
+
     func route(with: Any?)
 }
 
 class LocationRouter: NSObject, LocationRouterProtocol{
-    
+    weak var presenter: LocationPresenterProtocol!
     var weatherRouter : WeatherRouterProtocol!
-    var view : LocationViewController!
-    var presenter: LocationPresenter!
     
     func route(with data: Any?){
-        
-        view.performSegue(withIdentifier: "WeatherSegue", sender: {(segue: UIStoryboardSegue) in
+        let view = self.presenter.view as? LocationViewController
+        view?.performSegue(withIdentifier: "WeatherSegue", sender: {(segue: UIStoryboardSegue) in
             self.nextModuleFrom(segue: segue, with: data)
         })
     }

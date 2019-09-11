@@ -12,32 +12,36 @@ import UIKit
 
 class LocationConfiguratorTests: XCTestCase {
     
-    var router: LocationRouter!
+    var router: LocationRouterProtocol!
+    var controller: LocationViewProtocol!
     
     override func setUp() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "LocationViewController") as! LocationViewController
-        router = LocationConfigurator.build(with: controller)
-        controller.loadView()
+        let configurator = LocationConfigurator()
+        
+        controller = LocationViewController()
+        configurator.view = controller
+        router = configurator.build()
     }
     
     override func tearDown() {
         router = nil
+        controller = nil
     }
     
     func testModuleConnectionsNotNil() {
         
-        let presenter = router.presenter
+        let presenter = router?.presenter
         let view = presenter?.view
-        let interactor = router.presenter.interactor
+        let interactor = presenter?.interactor
         
-        XCTAssertNotNil(router.presenter)
+        XCTAssertNotNil(router?.presenter)
         XCTAssertNotNil(presenter?.router)
         
         XCTAssertNotNil(presenter?.view)
-        XCTAssertNotNil((view as? LocationViewController)?.presenter)
+        XCTAssertNotNil(view?.presenter)
         
         XCTAssertNotNil(presenter?.interactor)
-        XCTAssertNotNil((interactor as? LocationInteractor)?.output)
+        XCTAssertNotNil(interactor?.presenter)
+        
     }
 }

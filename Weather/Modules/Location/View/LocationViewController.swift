@@ -12,6 +12,8 @@ import RxSwift
 
 protocol LocationViewProtocol: class {
     
+    var presenter: LocationPresenterProtocol! {get set}
+    
     func showAlert(title: String, message: String)
     func setDate(_: String)
     func setDay(_: String)
@@ -112,6 +114,10 @@ class LocationViewController: UIViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let closure = sender as! (UIStoryboardSegue) -> ()
         closure(segue)
+    }
+    
+    deinit {
+        print("deinit controller")
     }
 }
 

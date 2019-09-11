@@ -24,7 +24,7 @@
 		3D34439F22356121006A76EF /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D34439E22356121006A76EF /* StringExtension.swift */; };
 		3D3443A122356948006A76EF /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3443A022356948006A76EF /* IntExtension.swift */; };
 		3D415AFE224401E3006B4CD5 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D415AFD224401E3006B4CD5 /* WeatherViewController.swift */; };
-		3D94F5E32327ED76003C906B /* WeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D94F5E22327ED76003C906B /* WeatherTests.swift */; };
+		3D94F5E32327ED76003C906B /* LocationConfiguratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D94F5E22327ED76003C906B /* LocationConfiguratorTests.swift */; };
 		3D94F5EC2327FD8F003C906B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D29E157218B2DE70090E9E1 /* Main.storyboard */; };
 		3D959135223DAA5600F5E61F /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D959134223DAA5600F5E61F /* ImageExtension.swift */; };
 		3DC0A23F22441B1500C85F83 /* LocationConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC0A23E22441B1500C85F83 /* LocationConfigurator.swift */; };
@@ -57,6 +57,11 @@
 		753FECC12322527B00AE50F1 /* WeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753FECC02322527B00AE50F1 /* WeatherRepository.swift */; };
 		753FECC32322539E00AE50F1 /* ReactiveRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753FECC22322539E00AE50F1 /* ReactiveRequest.swift */; };
 		753FECC523225E9D00AE50F1 /* CityRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753FECC423225E9D00AE50F1 /* CityRepository.swift */; };
+		75A605D22328EE430007C5B7 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A605D12328EE430007C5B7 /* TestView.swift */; };
+		75A605D62328FBB70007C5B7 /* LocationRoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A605D52328FBB70007C5B7 /* LocationRoutingTests.swift */; };
+		75A605D823290A900007C5B7 /* LocationInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A605D723290A900007C5B7 /* LocationInteractorTests.swift */; };
+		75A605DA23290B200007C5B7 /* LocationInteractorSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A605D923290B200007C5B7 /* LocationInteractorSpy.swift */; };
+		75A605DC232913250007C5B7 /* CityRepositoryStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A605DB232913250007C5B7 /* CityRepositoryStub.swift */; };
 		75B5C728231FA11600B60BBA /* CitiesBaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5C727231FA11600B60BBA /* CitiesBaseRepository.swift */; };
 		75B5C72A231FA13900B60BBA /* CsvReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B5C729231FA13900B60BBA /* CsvReader.swift */; };
 		75B5C72C231FA15700B60BBA /* geo.csv in Resources */ = {isa = PBXBuildFile; fileRef = 75B5C72B231FA15700B60BBA /* geo.csv */; };
@@ -95,7 +100,7 @@
 		3D3443A022356948006A76EF /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
 		3D415AFD224401E3006B4CD5 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		3D94F5E02327ED76003C906B /* WeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3D94F5E22327ED76003C906B /* WeatherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTests.swift; sourceTree = "<group>"; };
+		3D94F5E22327ED76003C906B /* LocationConfiguratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationConfiguratorTests.swift; sourceTree = "<group>"; };
 		3D94F5E42327ED76003C906B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D959134223DAA5600F5E61F /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		3DC0A23E22441B1500C85F83 /* LocationConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationConfigurator.swift; sourceTree = "<group>"; };
@@ -128,6 +133,11 @@
 		753FECC02322527B00AE50F1 /* WeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRepository.swift; sourceTree = "<group>"; };
 		753FECC22322539E00AE50F1 /* ReactiveRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveRequest.swift; sourceTree = "<group>"; };
 		753FECC423225E9D00AE50F1 /* CityRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityRepository.swift; sourceTree = "<group>"; };
+		75A605D12328EE430007C5B7 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		75A605D52328FBB70007C5B7 /* LocationRoutingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRoutingTests.swift; sourceTree = "<group>"; };
+		75A605D723290A900007C5B7 /* LocationInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInteractorTests.swift; sourceTree = "<group>"; };
+		75A605D923290B200007C5B7 /* LocationInteractorSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInteractorSpy.swift; sourceTree = "<group>"; };
+		75A605DB232913250007C5B7 /* CityRepositoryStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityRepositoryStub.swift; sourceTree = "<group>"; };
 		75B5C727231FA11600B60BBA /* CitiesBaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesBaseRepository.swift; sourceTree = "<group>"; };
 		75B5C729231FA13900B60BBA /* CsvReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvReader.swift; sourceTree = "<group>"; };
 		75B5C72B231FA15700B60BBA /* geo.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = geo.csv; sourceTree = "<group>"; };
@@ -157,7 +167,11 @@
 		3D0D194D23280186008008A2 /* Location */ = {
 			isa = PBXGroup;
 			children = (
-				3D94F5E22327ED76003C906B /* WeatherTests.swift */,
+				3D94F5E22327ED76003C906B /* LocationConfiguratorTests.swift */,
+				75A605D52328FBB70007C5B7 /* LocationRoutingTests.swift */,
+				75A605D723290A900007C5B7 /* LocationInteractorTests.swift */,
+				75A605D923290B200007C5B7 /* LocationInteractorSpy.swift */,
+				75A605DB232913250007C5B7 /* CityRepositoryStub.swift */,
 			);
 			path = Location;
 			sourceTree = "<group>";
@@ -225,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				3D2A72F921942D190093A93C /* Secret.swift */,
+				3D2D0BCF22430845002E0097 /* GeolocationService.swift */,
 				75B5C729231FA13900B60BBA /* CsvReader.swift */,
 				753FECC22322539E00AE50F1 /* ReactiveRequest.swift */,
 			);
@@ -256,7 +271,6 @@
 			isa = PBXGroup;
 			children = (
 				3D2D0BC12242EF8D002E0097 /* LocationInteractor.swift */,
-				3D2D0BCF22430845002E0097 /* GeolocationService.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
@@ -322,6 +336,7 @@
 		3D94F5E12327ED76003C906B /* WeatherTests */ = {
 			isa = PBXGroup;
 			children = (
+				75A605D12328EE430007C5B7 /* TestView.swift */,
 				3D0D194D23280186008008A2 /* Location */,
 				3D94F5E42327ED76003C906B /* Info.plist */,
 			);
@@ -679,7 +694,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D94F5E32327ED76003C906B /* WeatherTests.swift in Sources */,
+				75A605DC232913250007C5B7 /* CityRepositoryStub.swift in Sources */,
+				75A605D22328EE430007C5B7 /* TestView.swift in Sources */,
+				75A605D62328FBB70007C5B7 /* LocationRoutingTests.swift in Sources */,
+				3D94F5E32327ED76003C906B /* LocationConfiguratorTests.swift in Sources */,
+				75A605D823290A900007C5B7 /* LocationInteractorTests.swift in Sources */,
+				75A605DA23290B200007C5B7 /* LocationInteractorSpy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

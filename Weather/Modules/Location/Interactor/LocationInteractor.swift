@@ -9,15 +9,19 @@
 import Foundation
 import RxSwift
 
-protocol LocationInteractorInput: class {
+protocol LocationInteractorProtocol: class {
+    
+    var presenter: LocationInteractorOutput! {get set}
+    
     func getLocation()
     func getWeather(for: String)
-    func setCity(_: String)
+    func setCity(_ city: String)
     func getCity() -> String?
     var locationAccessDetermined: Bool {get}
 }
 
 protocol LocationInteractorOutput: class {
+    
     func noNetwork()
     func noLocation()
     func weatherRequestTimeOut()
@@ -29,11 +33,11 @@ protocol LocationInteractorOutput: class {
     func foundLocality(locality: String)
 }
 
-class LocationInteractor: LocationInteractorInput{
+class LocationInteractor: LocationInteractorProtocol{
     
     var locationAccessDetermined: Bool = false
     
-    var output: LocationInteractorOutput?
+    weak var presenter: LocationInteractorOutput!
     lazy var geolocationService = GeolocationService()
     lazy var bag = DisposeBag()
     var weatherRepository = WeatherRepository.instance
@@ -43,7 +47,7 @@ class LocationInteractor: LocationInteractorInput{
         let _ = geolocationService.access
             .subscribe(onNext: { state in
                 self.locationAccessDetermined = true
-                self.output?.geolocationAccessDetermined(state: state)
+                self.presenter?.geolocationAccessDetermined(state: state)
             }).disposed(by: bag)
         
         let _ = geolocationService.accessDetermined
@@ -57,21 +61,21 @@ class LocationInteractor: LocationInteractorInput{
             .subscribe(
                 onNext: { locality in
                     if let locality = locality{
-                        self.output?.foundLocality(locality: locality)
+                        self.presenter.foundLocality(locality: locality)
                     } else {
-                        self.output?.geolocationError(error: "Couldn't get locality")
+                        self.presenter.geolocationError(error: "Couldn't get locality")
                     }
                 },
                 onError:{ error in
                     if let rxError = error as? RxError{
                         switch rxError{
                         case .timeout:
-                            self.output?.geolocationTimeOut()
+                            self.presenter.geolocationTimeOut()
                         default:
                             break
                         }
                     } else {
-                        self.output?.geolocationError(error: error.localizedDescription)
+                        self.presenter.geolocationError(error: error.localizedDescription)
                     }
             }).disposed(by: bag)
     }
@@ -83,23 +87,23 @@ class LocationInteractor: LocationInteractorInput{
             .observeOn(MainScheduler.instance)
             .subscribe(
                 onNext: {[weak self] weather in
-                    self?.output?.foundWeather()
+                    self?.presenter.foundWeather()
                 },
                 onError: {[weak self] error in
                     if let self = self{
                         if let requestError = error as? ReactiveRequestError{
                             switch requestError{
                             case .badResponse:
-                                self.output?.noLocation()
+                                self.presenter?.noLocation()
                                 break
                             case .noResponce:
-                                self.output?.noNetwork()
+                                self.presenter?.noNetwork()
                                 break
                             }
                         } else if let rxError = error as? RxError{
                             switch rxError{
                             case .timeout:
-                                self.output?.geolocationTimeOut()
+                                self.presenter?.geolocationTimeOut()
                             default:
                                 break
                             }
@@ -115,5 +119,9 @@ class LocationInteractor: LocationInteractorInput{
     
     func getCity() -> String? {
         return cityRepository.city.value
+    }
+    
+    deinit {
+        print("deinit location interactor")
     }
 }

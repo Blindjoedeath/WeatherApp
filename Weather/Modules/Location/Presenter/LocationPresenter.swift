@@ -9,19 +9,26 @@
 import Foundation
 
 protocol LocationPresenterProtocol: class {
+    
+    var view: LocationViewProtocol! {get set}
+    var interactor: LocationInteractorProtocol! {get set}
+    var router: LocationRouterProtocol! {get set}
+    
     func cityNameChanged(on: String)
     
     // or button clicked
     func nextNavigationRequired()
     func geolocationRequired()
     func configureView()
+    
+    func close()
 }
 
 class LocationPresenter: LocationPresenterProtocol{
     
-    var view: LocationViewProtocol!
+    weak var view: LocationViewProtocol!
     var router: LocationRouterProtocol!
-    var interactor: LocationInteractorInput!
+    var interactor: LocationInteractorProtocol!
     var repository = CitiesBaseRepository.instance
     
     var city: String!
@@ -65,6 +72,15 @@ class LocationPresenter: LocationPresenterProtocol{
                 }
             }
         }
+    }
+    
+    func close(){
+        interactor.setCity(city)
+        router.route(with: nil)
+    }
+    
+    deinit {
+        print("deinit presenter")
     }
 }
 
@@ -115,7 +131,6 @@ extension LocationPresenter: LocationInteractorOutput{
     
     func foundWeather() {
         view.isDataLoadingIndicatorEnabled = false
-        interactor.setCity(city)
-        router.route(with: nil)
+        close()
     }
 }

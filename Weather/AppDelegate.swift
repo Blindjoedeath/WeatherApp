@@ -14,11 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
+    var router: LocationRouterProtocol!
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UIApplication.shared.statusBarStyle = .lightContent
         
         let view = window?.rootViewController as! LocationViewController
-        let _ = LocationConfigurator.build(with: view)
+        let configurator = LocationConfigurator()
+        configurator.view = view
+        router = configurator.build()
         return true
     }
 
