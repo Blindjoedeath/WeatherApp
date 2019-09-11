@@ -9,5 +9,14 @@ target 'Weather' do
   # Pods for Weather
 	pod 'RxCoreLocation', '~> 1.4'	
 	pod 'RxSwift', '~> 5'
-    	pod 'RxCocoa', '~> 5'
+  pod 'RxCocoa', '~> 5'
+  
+  target 'WeatherTests' do
+    inherit! :search_paths
+    pod 'RxSwift', '~> 5'
+  	pod 'RxCocoa', '~> 5'
+    pod 'RxBlocking', '~> 5'
+    pod 'RxTest', '~> 5'
+  end
+  
 end

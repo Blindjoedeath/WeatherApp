@@ -8,43 +8,111 @@
 
 import XCTest
 @testable import Weather
-@testable import Pods_Weather
 import RxRelay
+import RxSwift
+
+enum CustomError: Error{
+    case empty
+}
 
 class LocationInteractorTests: XCTestCase {
     
-    func buildWith(interactor: LocationInteractorProtocol) -> LocationRouterProtocol{
-        let configurator = LocationConfigurator()
-        configurator.interactor = interactor
-        return configurator.build()
-    }
-
+    var configurator: LocationConfigurator!
+    
     override func setUp() {
+        configurator = LocationConfigurator()
     }
 
     override func tearDown() {
-    }
-
-    func testGivenCitySetsWhenPresenterCloses(){
-        
-        let interactor = LocationInteractorSpy()
-        let presenter = buildWith(interactor: interactor).presenter!
-        
-        let city = "Unexisting city"
-        presenter.cityNameChanged(on: city)
-        presenter.close()
-        
-        XCTAssertEqual(interactor.invokedSetCityParameters?.city, city)
+        configurator = nil
     }
     
     func testInteractorShouldReturnCityFromRepository(){
-        let city = "Unexisting city"
-        let repository = CityRepositoryStub()
-        repository.stubbedCity.accept(city)
+        let testCity = "Unexisting city"
+        let repository = CityRepositoryFake.instance
+        repository.city.accept(testCity)
         
         let interactor = LocationInteractor()
-        interactor.cityRepository = CityRepositoryStub.instance
+        interactor.cityRepository = repository
         
-        XCTAssertEqual(interactor.getCity(), city)
+        guard let city = interactor.getCity() else{
+            XCTFail("Excected city not to be nil")
+            return
+        }
+        XCTAssertEqual(city, testCity)
+    }
+    
+    func testInteractorShouldSendLocalityFromGeolocationService(){
+        
+        let localityToSend = "Бангладеш"
+        let service = GeolocationServiceLocalityStub()
+        let interactorOutput = LocationInteractorOutputSpy()
+        configurator.interactorOutput = interactorOutput
+        let interactor = configurator.build().presenter?.interactor as! LocationInteractor
+        
+        interactor.geolocationService = service
+        service.localityToSend = localityToSend
+        interactor.getLocation()
+        
+        guard interactorOutput.invokedFoundLocality else{
+            return XCTFail("Expected found locality to be invoked")
+        }
+        
+        XCTAssertEqual(interactorOutput.invokedFoundLocalityParameters?.locality, localityToSend)
+    }
+    
+    func testInteractorShouldSendErrorWhenGeolocationServiceErrors(){
+        
+        let service = GeolocationServiceErrorStub()
+        let interactorOutput = LocationInteractorOutputSpy()
+        configurator.interactorOutput = interactorOutput
+        let interactor = configurator.build().presenter?.interactor as! LocationInteractor
+
+        interactor.geolocationService = service
+        service.errorToSend = CustomError.empty
+        interactor.getLocation()
+        
+        XCTAssertTrue(interactorOutput.invokedGeolocationError)
+    }
+    
+    func testInteractorShouldSendTimeoutErrorWhenGeolocationServiceTimeouts(){
+        
+        let interactorOutput = LocationInteractorOutputSpy()
+        configurator.interactorOutput = interactorOutput
+        let interactor = configurator.build().presenter?.interactor as! LocationInteractor
+        
+        interactor.geolocationService.timeLimit = 0
+        interactor.getLocation()
+        
+        let expect = expectation(description: "Expect geolocation timeout called")
+        
+        interactorOutput.geolocationTimeOutHandler = {
+            XCTAssertTrue(interactorOutput.invokedGeolocationTimeOut)
+            expect.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+    }
+    
+    func testInteractorShouldSendAccessFromGeolocationService(){
+        
+        let service = GeolocationServiceAccessStub()
+        
+        let interactorOutput = LocationInteractorOutputSpy()
+        configurator.interactorOutput = interactorOutput
+        let interactor = configurator.build().presenter?.interactor as! LocationInteractor
+        
+        interactor.geolocationService = service
+        service.setAccess(true)
+        
+        guard interactorOutput.invokedGeolocationAccessDetermined else {
+            return XCTFail("Expected geolocation access determined to call")
+        }
+        
+        XCTAssertTrue(interactorOutput.invokedGeolocationAccessDeterminedParameters!.state)
     }
 }

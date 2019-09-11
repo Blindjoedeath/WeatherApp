@@ -32,6 +32,8 @@ class LocationInteractorSpy: LocationInteractorProtocol {
             return stubbedPresenter
         }
     }
+    
+    
     var invokedLocationAccessDeterminedGetter = false
     var invokedLocationAccessDeterminedGetterCount = 0
     var stubbedLocationAccessDetermined: Bool! = false
@@ -40,12 +42,16 @@ class LocationInteractorSpy: LocationInteractorProtocol {
         invokedLocationAccessDeterminedGetterCount += 1
         return stubbedLocationAccessDetermined
     }
+    
+    
     var invokedGetLocation = false
     var invokedGetLocationCount = 0
     func getLocation() {
         invokedGetLocation = true
         invokedGetLocationCount += 1
     }
+    
+    
     var invokedGetWeather = false
     var invokedGetWeatherCount = 0
     var invokedGetWeatherParameters: (for: String, Void)?
@@ -56,6 +62,8 @@ class LocationInteractorSpy: LocationInteractorProtocol {
         invokedGetWeatherParameters = (`for`, ())
         invokedGetWeatherParametersList.append((`for`, ()))
     }
+    
+    
     var invokedSetCity = false
     var invokedSetCityCount = 0
     var invokedSetCityParameters: (city: String, Void)?
@@ -66,6 +74,8 @@ class LocationInteractorSpy: LocationInteractorProtocol {
         invokedSetCityParameters = (city, ())
         invokedSetCityParametersList.append((city, ()))
     }
+    
+    
     var invokedGetCity = false
     var invokedGetCityCount = 0
     var stubbedGetCityResult: String!

@@ -7,34 +7,19 @@
 //
 
 import XCTest
-import UIKit
 @testable import Weather
 
-class LocationViewControllerSegueMock: LocationViewController{
-    
-    var performSegueTriggered = false
-    
-    override func performSegue(withIdentifier identifier: String, sender: Any?) {
-        performSegueTriggered = true
-    }
-}
-
-class LocationRouterSegueMock: LocationRouter{
-    var receivedSegue: UIStoryboardSegue!
-    
-    override func nextModuleFrom(segue: UIStoryboardSegue, with data: Any?) {
-        receivedSegue = segue
-    }
-}
 
 class LocationRoutingTests: XCTestCase {
     
-    var configurator = LocationConfigurator()
+    var configurator: LocationConfigurator!
     
     override func setUp() {
+        configurator = LocationConfigurator()
     }
     
     override func tearDown() {
+        configurator = nil
     }
 
     func testPerformSegueTriggersWhenRoute() {

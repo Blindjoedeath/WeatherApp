@@ -117,7 +117,7 @@ class LocationViewController: UIViewController{
     }
     
     deinit {
-        print("deinit controller")
+        print("deinited view")
     }
 }
 
@@ -191,6 +191,7 @@ extension LocationViewController: LocationViewProtocol{
             defineLocationButton.isHidden = !newValue
         }
     }
+
 }
 
 extension LocationViewController: UIGestureRecognizerDelegate {

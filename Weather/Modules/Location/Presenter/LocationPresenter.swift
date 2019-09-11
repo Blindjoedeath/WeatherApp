@@ -78,10 +78,6 @@ class LocationPresenter: LocationPresenterProtocol{
         interactor.setCity(city)
         router.route(with: nil)
     }
-    
-    deinit {
-        print("deinit presenter")
-    }
 }
 
 extension LocationPresenter: LocationInteractorOutput{

@@ -120,8 +120,4 @@ class LocationInteractor: LocationInteractorProtocol{
     func getCity() -> String? {
         return cityRepository.city.value
     }
-    
-    deinit {
-        print("deinit location interactor")
-    }
 }

@@ -17,13 +17,9 @@ class GeolocationService: NSObject{
     private lazy var geocoder = CLGeocoder()
     private lazy var bag = DisposeBag()
     
-    lazy var error = {
-        locationManager.rx
-            .didError
-            .share()
-    }()
+    var timeLimit = 10
     
-    lazy var access = {
+    private(set) lazy var access = {
         locationManager.rx
             .didChangeAuthorization
             .map{ _, status in
@@ -50,7 +46,7 @@ class GeolocationService: NSObject{
             .map{ $1.last! }
             .filter{ 0 < $0.horizontalAccuracy && $0.horizontalAccuracy < 70 && $0.timestamp.timeIntervalSinceNow >= -5}
             .take(1)
-            .timeout(10, scheduler: MainScheduler.instance)
+            .timeout(RxTimeInterval.seconds(timeLimit), scheduler: MainScheduler.instance)
             .do(onNext: {_ in self.locationManager.stopUpdatingLocation()})
             .flatMap{ return self.reverse(location: $0)}
     }
@@ -92,9 +88,5 @@ class GeolocationService: NSObject{
                     self.locationManager.requestWhenInUseAuthorization()
                 }
             }).disposed(by: bag)
-    }
-    
-    deinit {
-        print("Deiniting geolocation service")
     }
 }
