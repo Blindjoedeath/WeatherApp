@@ -29,15 +29,18 @@ class LocationInteractorOutputSpy: LocationInteractorOutput{
     
     var invokedWeatherRequestTimeOut = false
     var invokedWeatherRequestTimeOutCount = 0
+    var weatherRequestTimeOutHandler: (() -> ())?
     func weatherRequestTimeOut() {
         invokedWeatherRequestTimeOut = true
         invokedWeatherRequestTimeOutCount += 1
+        weatherRequestTimeOutHandler?()
     }
     
     
     var invokedFoundWeather = false
     var invokedFoundWeatherCount = 0
     func foundWeather() {
+        print("found")
         invokedFoundWeather = true
         invokedFoundWeatherCount += 1
     }

@@ -33,7 +33,7 @@ class LocationRoutingTests: XCTestCase {
     }
     
     func testViewSendsSegueToRouter(){
-        let controller = TestView<LocationViewController>().instantiate(withIdentifier: "LocationViewController")
+        let controller = StoryboardView<LocationViewController>().instantiate(withIdentifier: "LocationViewController")
         var router = LocationRouterSegueMock()
         configurator.view = controller
         configurator.router = router

@@ -96,4 +96,14 @@ class Weather: Codable {
         } else {
         }
     }
+    
+    init() {
+        self.date = nil
+        self.description = ""
+        self.humidity = 0
+        self.iconCode = ""
+        self.temperature = 0
+        self.weatherId = 0
+        self.windSpeed = 0
+    }
 }

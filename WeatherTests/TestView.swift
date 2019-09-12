@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class TestView<T: UIViewController>{
+class StoryboardView<T: UIViewController>{
     func instantiate(withIdentifier: String) -> T{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: withIdentifier) as! T

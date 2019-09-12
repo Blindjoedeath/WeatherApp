@@ -10,12 +10,16 @@ import Foundation
 @testable import Weather
 import RxRelay
 
-class CityRepositoryFake: CityRepositoryProtocol{
-    static var instance: CityRepositoryProtocol = CityRepositoryFake()
+class CityRepositoryStub: CityRepositoryProtocol{
+    static var instance: CityRepositoryProtocol = CityRepositoryStub()
     
     private init(){
         
     }
     
-    var city = BehaviorRelay<String?>(value: nil)
+    var stubbedCity: String!
+    
+    var city: BehaviorRelay<String?> {
+        return BehaviorRelay<String?>(value: stubbedCity)
+    }
 }

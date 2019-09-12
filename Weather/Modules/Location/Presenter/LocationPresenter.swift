@@ -20,8 +20,6 @@ protocol LocationPresenterProtocol: class {
     func nextNavigationRequired()
     func geolocationRequired()
     func load()
-    
-    func close()
 }
 
 class LocationPresenter: LocationPresenterProtocol{
@@ -73,11 +71,6 @@ class LocationPresenter: LocationPresenterProtocol{
             }
         }
     }
-    
-    func close(){
-        interactor.setCity(city)
-        router.route(with: nil)
-    }
 }
 
 extension LocationPresenter: LocationInteractorOutput{
@@ -127,6 +120,6 @@ extension LocationPresenter: LocationInteractorOutput{
     
     func foundWeather() {
         view.isDataLoadingIndicatorEnabled = false
-        close()
+        router.route(with: nil)
     }
 }

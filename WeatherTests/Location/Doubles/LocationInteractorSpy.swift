@@ -65,18 +65,6 @@ class LocationInteractorSpy: LocationInteractorProtocol {
     }
     
     
-    var invokedSetCity = false
-    var invokedSetCityCount = 0
-    var invokedSetCityParameters: (city: String, Void)?
-    var invokedSetCityParametersList = [(city: String, Void)]()
-    func setCity(_ city: String) {
-        invokedSetCity = true
-        invokedSetCityCount += 1
-        invokedSetCityParameters = (city, ())
-        invokedSetCityParametersList.append((city, ()))
-    }
-    
-    
     var invokedGetCity = false
     var invokedGetCityCount = 0
     var stubbedGetCityResult: String!

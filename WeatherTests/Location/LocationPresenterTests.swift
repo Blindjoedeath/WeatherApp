@@ -16,26 +16,4 @@ class LocationPresenterTests: XCTestCase {
 
     override func tearDown() {
     }
-    
-    func build(with interactor: LocationInteractorProtocol) -> LocationRouterProtocol{
-        let configurator = LocationConfigurator()
-        configurator.interactor = interactor
-        return configurator.build()
-    }
-
-    func testPresenterShouldSetCityToInteractorWhenCloses(){
-        
-        let interactor = LocationInteractorSpy()
-        let presenter = build(with: interactor).presenter!
-        
-        let city = "Unexisting city"
-        presenter.cityNameChanged(on: city)
-        presenter.close()
-        
-        guard interactor.invokedSetCity else{
-            return XCTFail("Expected set city to be invoked")
-        }
-        XCTAssertEqual(interactor.invokedSetCityParameters?.city, city)
-    }
-
 }

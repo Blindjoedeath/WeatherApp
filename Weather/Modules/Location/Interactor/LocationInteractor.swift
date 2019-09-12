@@ -16,7 +16,6 @@ protocol LocationInteractorProtocol: class {
     func load()
     func getLocation()
     func getWeather(for: String)
-    func setCity(_ city: String)
     func getCity() -> String?
     var locationAccessDetermined: Bool {get}
 }
@@ -39,20 +38,16 @@ class LocationInteractor: LocationInteractorProtocol{
     var locationAccessDetermined: Bool = false
     
     weak var presenter: LocationInteractorOutput!
-    lazy var geolocationService = GeolocationService()
+    lazy var geolocationService: GeolocationServiceProtocol = GeolocationService()
     lazy var bag = DisposeBag()
     var weatherRepository = WeatherRepository.instance
     var cityRepository = CityRepository.instance
+    var requestTimeout = 10
     
     func createSubscriptions(){
         
-        print("loaded")
-        
         let _ = geolocationService.access
             .subscribe(onNext: { state in
-                
-                print("here")
-                
                 self.locationAccessDetermined = true
                 self.presenter?.geolocationAccessDetermined(state: state)
             }).disposed(by: bag)
@@ -92,12 +87,13 @@ class LocationInteractor: LocationInteractorProtocol{
     }
     
     func getWeather(for city: String){
-        
         let weather = weatherRepository.getWeather(for: city)
         weather
             .observeOn(MainScheduler.instance)
+            .timeout(RxTimeInterval.seconds(requestTimeout), scheduler: MainScheduler.instance)
             .subscribe(
                 onNext: {[weak self] weather in
+                    self?.setCity(city)
                     self?.presenter.foundWeather()
                 },
                 onError: {[weak self] error in
@@ -105,16 +101,17 @@ class LocationInteractor: LocationInteractorProtocol{
                         if let requestError = error as? ReactiveRequestError{
                             switch requestError{
                             case .badResponse:
-                                self.presenter?.noLocation()
+                                self.presenter.noLocation()
                                 break
                             case .noResponce:
-                                self.presenter?.noNetwork()
+                                self.presenter.noNetwork()
                                 break
                             }
                         } else if let rxError = error as? RxError{
                             switch rxError{
                             case .timeout:
-                                self.presenter?.geolocationTimeOut()
+                                self.presenter.weatherRequestTimeOut()
+                                break
                             default:
                                 break
                             }

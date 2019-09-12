@@ -11,7 +11,14 @@ import CoreLocation
 import RxSwift
 import RxCoreLocation
 
-class GeolocationService: NSObject{
+protocol GeolocationServiceProtocol{
+    func getLocality() -> Observable<String?>
+    var access: Observable<Bool> {get}
+    var accessDetermined: Observable<Bool> {get}
+    var timeLimit: Int {get set}
+}
+
+class GeolocationService: NSObject, GeolocationServiceProtocol{
     
     private lazy var locationManager = CLLocationManager()
     private lazy var geocoder = CLGeocoder()

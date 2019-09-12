@@ -9,9 +9,20 @@
 import Foundation
 import RxSwift
 
-class WeatherRepository{
+protocol WeatherRepositoryProtocol{
     
-    static let instance: WeatherRepository = WeatherRepository()
+    var lastWeather: Observable<Weather>? {get}
+    var lastForecast: Observable<Forecast>? {get}
+    
+    func getWeather(for city: String) -> Observable<Weather>
+    func getForecast(for city: String) -> Observable<Forecast>
+    
+    static var instance: WeatherRepositoryProtocol {get}
+}
+
+class WeatherRepository: WeatherRepositoryProtocol{
+    
+    static let instance: WeatherRepositoryProtocol = WeatherRepository()
     
     var lastWeather: Observable<Weather>?
     var lastForecast: Observable<Forecast>?
