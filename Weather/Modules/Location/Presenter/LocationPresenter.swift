@@ -19,7 +19,7 @@ protocol LocationPresenterProtocol: class {
     // or button clicked
     func nextNavigationRequired()
     func geolocationRequired()
-    func configureView()
+    func load()
     
     func close()
 }
@@ -53,7 +53,7 @@ class LocationPresenter: LocationPresenterProtocol{
         interactor.getLocation()
     }
     
-    func configureView() {
+    func load() {
         let date = Date()
         view.setDay(date.day)
         view.setDate(date.formatted(by: "d MMMM yyyy"))

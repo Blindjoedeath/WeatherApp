@@ -13,6 +13,7 @@ protocol LocationInteractorProtocol: class {
     
     var presenter: LocationInteractorOutput! {get set}
     
+    func load()
     func getLocation()
     func getWeather(for: String)
     func setCity(_ city: String)
@@ -43,9 +44,15 @@ class LocationInteractor: LocationInteractorProtocol{
     var weatherRepository = WeatherRepository.instance
     var cityRepository = CityRepository.instance
     
-    init() {
+    func createSubscriptions(){
+        
+        print("loaded")
+        
         let _ = geolocationService.access
             .subscribe(onNext: { state in
+                
+                print("here")
+                
                 self.locationAccessDetermined = true
                 self.presenter?.geolocationAccessDetermined(state: state)
             }).disposed(by: bag)
@@ -54,6 +61,10 @@ class LocationInteractor: LocationInteractorProtocol{
             .subscribe(onNext: {state in
                 self.locationAccessDetermined = state
             }).disposed(by: bag)
+    }
+    
+    func load(){
+        createSubscriptions()
     }
     
     func getLocation() {

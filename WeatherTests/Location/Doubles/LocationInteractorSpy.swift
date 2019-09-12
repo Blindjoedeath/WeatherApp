@@ -12,6 +12,7 @@ import Foundation
 
 class LocationInteractorSpy: LocationInteractorProtocol {
     
+    
     var invokedPresenterSetter = false
     var invokedPresenterSetterCount = 0
     var invokedPresenter: LocationInteractorOutput?
@@ -83,5 +84,12 @@ class LocationInteractorSpy: LocationInteractorProtocol {
         invokedGetCity = true
         invokedGetCityCount += 1
         return stubbedGetCityResult
+    }
+    
+    var invokedLoad = false
+    var invokedLoadCount = 0
+    func load() {
+        invokedLoad = true
+        invokedLoadCount += 1
     }
 }

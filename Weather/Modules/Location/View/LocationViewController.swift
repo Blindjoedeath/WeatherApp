@@ -51,7 +51,7 @@ class LocationViewController: UIViewController{
         super.viewDidLoad()
         cityTextField.borderStyle = .roundedRect
         addGestureRecognizer()
-        presenter.configureView()
+        presenter.load()
         initUpdatingLocationIndicator()
         configureCityTextField()
     }

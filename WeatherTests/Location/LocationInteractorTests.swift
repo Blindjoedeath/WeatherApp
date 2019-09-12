@@ -107,6 +107,7 @@ class LocationInteractorTests: XCTestCase {
         let interactor = configurator.build().presenter?.interactor as! LocationInteractor
         
         interactor.geolocationService = service
+        interactor.load()
         service.setAccess(true)
         
         guard interactorOutput.invokedGeolocationAccessDetermined else {
