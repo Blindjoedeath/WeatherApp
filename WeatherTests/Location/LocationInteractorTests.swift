@@ -117,6 +117,21 @@ class LocationInteractorTests: XCTestCase {
         XCTAssertTrue(interactorOutput.invokedGeolocationAccessDeterminedParameters!.state)
     }
     
+    func testInteractorShouldHaveIsAccessDeterminedFromGeolocationService(){
+        
+        let service = GeolocationServiceStub()
+        let interactorOutput = LocationInteractorOutputSpy()
+        configurator.interactorOutput = interactorOutput
+        let interactor = configurator.build().presenter?.interactor as! LocationInteractor
+        
+        interactor.geolocationService = service
+        service.stubbedAccessDetermined = Observable.just(true)
+        interactor.load()
+        
+        XCTAssertTrue(interactor.isLocationAccessDetermined)
+    }
+    
+    
     func testInteractorShouldSaveCityToRepositoryWhenWeatherFound(){
         
         let locality = "Бангладеш"

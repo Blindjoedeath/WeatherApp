@@ -17,7 +17,7 @@ protocol LocationInteractorProtocol: class {
     func getLocation()
     func getWeather(for: String)
     func getCity() -> String?
-    var locationAccessDetermined: Bool {get}
+    var isLocationAccessDetermined: Bool {get}
 }
 
 protocol LocationInteractorOutput: class {
@@ -35,7 +35,7 @@ protocol LocationInteractorOutput: class {
 
 class LocationInteractor: LocationInteractorProtocol{
     
-    var locationAccessDetermined: Bool = false
+    var isLocationAccessDetermined: Bool = false
     
     weak var presenter: LocationInteractorOutput!
     lazy var geolocationService: GeolocationServiceProtocol = GeolocationService()
@@ -48,13 +48,12 @@ class LocationInteractor: LocationInteractorProtocol{
         
         let _ = geolocationService.access
             .subscribe(onNext: { state in
-                self.locationAccessDetermined = true
                 self.presenter?.geolocationAccessDetermined(state: state)
             }).disposed(by: bag)
         
         let _ = geolocationService.accessDetermined
             .subscribe(onNext: {state in
-                self.locationAccessDetermined = state
+                self.isLocationAccessDetermined = state
             }).disposed(by: bag)
     }
     

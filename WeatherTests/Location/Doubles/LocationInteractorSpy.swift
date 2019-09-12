@@ -35,13 +35,13 @@ class LocationInteractorSpy: LocationInteractorProtocol {
     }
     
     
-    var invokedLocationAccessDeterminedGetter = false
-    var invokedLocationAccessDeterminedGetterCount = 0
-    var stubbedLocationAccessDetermined: Bool! = false
-    var locationAccessDetermined: Bool {
-        invokedLocationAccessDeterminedGetter = true
-        invokedLocationAccessDeterminedGetterCount += 1
-        return stubbedLocationAccessDetermined
+    var invokedIsLocationAccessDeterminedGetter = false
+    var invokedIsLocationAccessDeterminedGetterCount = 0
+    var stubbedIsLocationAccessDetermined: Bool! = false
+    var isLocationAccessDetermined: Bool {
+        invokedIsLocationAccessDeterminedGetter = true
+        invokedIsLocationAccessDeterminedGetterCount += 1
+        return stubbedIsLocationAccessDetermined
     }
     
     

@@ -57,7 +57,7 @@ class LocationPresenter: LocationPresenterProtocol{
         view.setDate(date.formatted(by: "d MMMM yyyy"))
         view.setCities(repository.cities)
         view.isNextNavigationEnabled = false
-        if !interactor.locationAccessDetermined{
+        if !interactor.isLocationAccessDetermined{
             view.isLocalityButtonEnabled = true
             view.isPermissionNotificationEnabled = true
         }
