@@ -29,7 +29,7 @@ class LocationPresenter: LocationPresenterProtocol{
     var interactor: LocationInteractorProtocol!
     var repository = CitiesBaseRepository.instance
     
-    var city: String!
+    var city = ""
 
     func cityNameChanged(on city: String) {
         self.city = city
@@ -84,12 +84,12 @@ extension LocationPresenter: LocationInteractorOutput{
     }
     
     func geolocationTimeOut() {
-        view.showAlert(title: "Опаньки..", message: "Время то не вечно..")
+        view.showAlert(title: "Exception", message: "Timeout")
         view.isDataLoadingIndicatorEnabled = false
     }
     
     func geolocationError(error: String) {
-        view.showAlert(title: "Опаньки..", message: error)
+        view.showAlert(title: "Exception", message: error)
         view.isDataLoadingIndicatorEnabled = false
     }
     
@@ -101,19 +101,19 @@ extension LocationPresenter: LocationInteractorOutput{
     }
     
     func weatherRequestTimeOut() {
-        view.showAlert(title: "Опаньки..", message: "Время то не вечно..")
+        view.showAlert(title: "Exception", message: "Timeout")
         view.isNextNavigationEnabled = false
         view.isDataLoadingIndicatorEnabled = false
     }
     
     func noNetwork() {
-        view.showAlert(title: "Опаньки..", message: "Проверьте соеднинение")
+        view.showAlert(title: "Exception", message: "No network")
         view.isNextNavigationEnabled = false
         view.isDataLoadingIndicatorEnabled = false
     }
     
     func noLocation() {
-        view.showAlert(title: "Опаньки..", message: "Город не найден")
+        view.showAlert(title: "Exception", message: "No location")
         view.isNextNavigationEnabled = false
         view.isDataLoadingIndicatorEnabled = false
     }

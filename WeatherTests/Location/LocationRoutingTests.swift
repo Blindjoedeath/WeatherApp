@@ -31,16 +31,4 @@ class LocationRoutingTests: XCTestCase {
         
         XCTAssertTrue(controller.performSegueTriggered)
     }
-    
-    func testViewSendsSegueToRouter(){
-        let controller = StoryboardView<LocationViewController>().instantiate(withIdentifier: "LocationViewController")
-        var router = LocationRouterSegueMock()
-        configurator.view = controller
-        configurator.router = router
-        router = configurator.build() as! LocationRouterSegueMock
-        
-        router.route(with: nil)
-        XCTAssertNotNil(router.receivedSegue)
-    }
-
 }

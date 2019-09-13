@@ -15,10 +15,10 @@ protocol LocationViewProtocol: class {
     var presenter: LocationPresenterProtocol! {get set}
     
     func showAlert(title: String, message: String)
-    func setDate(_: String)
-    func setDay(_: String)
-    func setCity(_: String)
-    func setCities(_: [String])
+    func setDate(_ date: String)
+    func setDay(_ day: String)
+    func setCity(_ city: String)
+    func setCities(_ cities: [String])
     
     var isNextNavigationEnabled: Bool {get set}
     var isPermissionNotificationEnabled: Bool {get set}
