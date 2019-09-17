@@ -9,7 +9,10 @@
 import Foundation
 import RxSwift
 
-protocol WeatherInteractorInput: class{
+protocol WeatherInteractorProtocol: class{
+    
+    var presenter: WeatherInteractorOutput! {get set}
+    
     func configure()
     func refreshData()
     func getCity() -> String
@@ -27,19 +30,20 @@ protocol WeatherInteractorOutput: class{
 
 class WeatherInteractor{
     
-    weak var output: WeatherInteractorOutput!
+    weak var presenter: WeatherInteractorOutput!
     var subscripion: Disposable!
     
     var weather: Observable<Weather>!
     var forecast: Observable<Forecast>!
     let bag = DisposeBag()
     
-    let weatherRepository = WeatherRepository.instance
-    let styleRepository = AppStyleRepository.instance
+    var cityRepository = CityRepository.instance
+    var weatherRepository = WeatherRepository.instance
+    var styleRepository = AppStyleRepository.instance
     
     var city: String {
         get{
-            return CityRepository.instance.city.value!
+            return cityRepository.city.value!
         }
     }
     
@@ -56,7 +60,7 @@ class WeatherInteractor{
     }
 }
 
-extension WeatherInteractor: WeatherInteractorInput{
+extension WeatherInteractor: WeatherInteractorProtocol{
     
     func createWeatherSubscription(){
         subscripion = Observable.combineLatest(weather, forecast)
@@ -64,12 +68,12 @@ extension WeatherInteractor: WeatherInteractorInput{
             .subscribe(
                 onNext: {[weak self] (weather, forecast) in
                     if let self = self{
-                        self.output.found(weather: weather)
+                        self.presenter.found(weather: weather)
                         
                         let weekModels = self.weekForecast(from: forecast)
                         let dayModels = forecast[0].map{$0}
-                        self.output.found(weekForecast: weekModels)
-                        self.output.found(dayForecast: dayModels)
+                        self.presenter.found(weekForecast: weekModels)
+                        self.presenter.found(dayForecast: dayModels)
                     }
                 },
                 onError: {[weak self] error in
@@ -77,16 +81,16 @@ extension WeatherInteractor: WeatherInteractorInput{
                         if let requestError = error as? ReactiveRequestError{
                             switch requestError{
                             case .badResponse:
-                                self.output.noLocation()
+                                self.presenter.noLocation()
                                 break
                             case .noResponce:
-                                self.output.noNetwork()
+                                self.presenter.noNetwork()
                                 break
                             }
                         } else if let rxError = error as? RxError{
                             switch rxError{
                             case .timeout:
-                                self.output.weatherRequestTimeOut()
+                                self.presenter.weatherRequestTimeOut()
                             default:
                                 break
                             }
@@ -104,7 +108,7 @@ extension WeatherInteractor: WeatherInteractorInput{
             .subscribe(
                 onNext: {[weak self] style in
                     if let self = self{
-                        self.output.setStyle(appStyle: style)
+                        self.presenter.setStyle(appStyle: style)
                     }
                 })
             .disposed(by: bag)

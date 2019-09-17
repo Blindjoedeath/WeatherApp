@@ -10,6 +10,12 @@ import Foundation
 import UIKit
 
 class StoryboardView<T: UIViewController>{
+    
+    
+    /// Instantiates view from its storyboard ID. You should check if it set.
+    ///
+    /// - Parameter withIdentifier: storyboard ID
+    /// - Returns: ViewController
     func instantiate(withIdentifier: String) -> T{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: withIdentifier) as! T

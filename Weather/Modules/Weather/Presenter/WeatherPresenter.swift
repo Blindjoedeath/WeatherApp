@@ -17,6 +17,11 @@ protocol WeatherPresenterDelegate: class {
 }
 
 protocol WeatherPresenterProtocol: class{
+    
+    var interactor: WeatherInteractorProtocol! {get set}
+    var view: WeatherViewProtocol! {get set}
+    var router: WeatherRouterProtocol! {get set}
+    
     func closeNavigationRequired()
     func shareNavigationRequired()
     func styleMenuNavigationRequired()
@@ -27,7 +32,7 @@ protocol WeatherPresenterProtocol: class{
 class WeatherPresenter: WeatherPresenterProtocol{
     
     weak var view: WeatherViewProtocol!
-    var interactor: WeatherInteractorInput!
+    var interactor: WeatherInteractorProtocol!
     var router: WeatherRouterProtocol!
     weak var delegate: WeatherPresenterDelegate?
     
@@ -51,7 +56,7 @@ class WeatherPresenter: WeatherPresenterProtocol{
     }
     
     func styleMenuNavigationRequired() {
-        router.routeToStyle()
+        router.route()
     }
     
     func updateDataRequired() {

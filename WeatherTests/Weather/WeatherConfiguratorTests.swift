@@ -24,16 +24,17 @@ class WeatherConfiguratorTests: XCTestCase {
     
     func testModuleConnectionsNotNilWhenViewIsProperty() {
         
+        let view = WeatherViewController()
+        configurator.view = view
         let router = configurator.build()
         
         let presenter = configurator?.presenter
-        let view = presenter?.view
         let interactor = presenter?.interactor
         
         XCTAssertNotNil(router.presenter)
         XCTAssertNotNil(presenter?.router)
         XCTAssertNotNil(presenter?.view)
-        XCTAssertNotNil(view?.presenter)
+        XCTAssertNotNil(view.presenter)
         XCTAssertNotNil(presenter?.interactor)
         XCTAssertNotNil(interactor?.presenter)
         

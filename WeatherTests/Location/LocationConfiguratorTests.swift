@@ -12,34 +12,45 @@ import UIKit
 
 class LocationConfiguratorTests: XCTestCase {
     
-    var router: LocationRouterProtocol!
-    var controller: LocationViewProtocol!
+    var configurator: LocationConfigurator!
     
     override func setUp() {
-        let configurator = LocationConfigurator()
-        
-        controller = LocationViewController()
-        configurator.view = controller
-        router = configurator.build()
+        configurator = LocationConfigurator()
     }
     
     override func tearDown() {
-        router = nil
-        controller = nil
+        configurator = nil
     }
     
-    func testModuleConnectionsNotNil() {
+    func testModuleConnectionsNotNilWhenViewIsProperty() {
         
-        let presenter = router?.presenter
-        let view = presenter?.view
+        let view = LocationViewController()
+        
+        let router = configurator.build(with: view)
+        let presenter = configurator?.presenter
         let interactor = presenter?.interactor
         
-        XCTAssertNotNil(router?.presenter)
+        XCTAssertNotNil(router.presenter)
         XCTAssertNotNil(presenter?.router)
-        
         XCTAssertNotNil(presenter?.view)
-        XCTAssertNotNil(view?.presenter)
+        XCTAssertNotNil(view.presenter)
+        XCTAssertNotNil(presenter?.interactor)
+        XCTAssertNotNil(interactor?.presenter)
         
+    }
+    
+    func testModuleConnectionsNotNilWhenViewIsParameter() {
+        
+        let view = LocationViewController()
+        
+        let router = configurator.build(with: view)
+        let presenter = configurator?.presenter
+        let interactor = presenter?.interactor
+        
+        XCTAssertNotNil(router.presenter)
+        XCTAssertNotNil(presenter?.router)
+        XCTAssertNotNil(presenter?.view)
+        XCTAssertNotNil(view.presenter)
         XCTAssertNotNil(presenter?.interactor)
         XCTAssertNotNil(interactor?.presenter)
         

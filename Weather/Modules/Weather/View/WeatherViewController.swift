@@ -12,6 +12,8 @@ import UIKit
 
 protocol WeatherViewProtocol: class{
     
+    var presenter: WeatherPresenterProtocol! {get set}
+    
     func showAlert(title: String, message: String)
     func setTitle(title: String)
     
@@ -175,7 +177,7 @@ extension WeatherViewController: WeatherViewProtocol{
                             blue: CGFloat(style.color.b), alpha: 0.7)
         colorElements(with: color)
         
-        navigationController!.navigationBar.barTintColor = seasonNavigationBarColor(for: style.name)
+        navigationController?.navigationBar.barTintColor = seasonNavigationBarColor(for: style.name)
         backgroundImage.image = UIImage(named: "background_" + style.name)
     }
     

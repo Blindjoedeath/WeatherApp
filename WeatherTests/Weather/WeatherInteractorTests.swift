@@ -21,5 +21,19 @@ class WeatherInteractorTests: XCTestCase {
     
     override func tearDown() {
         configurator = nil
-    }    
+    }
+    
+    // MARK: Interactor and CityRepository tests
+    
+    func testInteractorShouldReturnCityFromRepository(){
+        let testCity = "Unexisting city"
+        let repository = CityRepositoryStub.instance as! CityRepositoryStub
+        repository.stubbedCity = testCity
+        
+        let interactor = WeatherInteractor()
+        interactor.cityRepository = repository
+        
+        let city = interactor.getCity()
+        XCTAssertEqual(city, testCity)
+    }
 }

@@ -10,21 +10,31 @@ import Foundation
 
 class WeatherConfigurator{
     
-    static func build(from view: WeatherViewController) -> WeatherRouter {
-        let router = WeatherRouter()
-        let presenter = WeatherPresenter()
-        let interactor = WeatherInteractor()
+    var view: WeatherViewProtocol!
+    
+    lazy var router: WeatherRouterProtocol! = WeatherRouter()
+    lazy var presenter: WeatherPresenterProtocol! = WeatherPresenter()
+    lazy var interactor: WeatherInteractorProtocol! = WeatherInteractor()
+    lazy var interactorOutput: WeatherInteractorOutput! = {
+        return self.presenter as? WeatherInteractorOutput
+    }()
+    
+    func build() -> WeatherRouterProtocol {
+        presenter?.interactor = interactor
+        presenter?.router = router
+        presenter?.view = view
         
-        view.presenter = presenter
+        view?.presenter = presenter
         
-        presenter.view = view
-        presenter.interactor = interactor
-        presenter.router = router
+        interactor?.presenter = interactorOutput
         
-        interactor.output = presenter
+        router?.presenter = presenter
         
-        router.presenter = presenter
-        router.view = view
-        return router
+        return router!
+    }
+    
+    func build(with view: WeatherViewProtocol) -> WeatherRouterProtocol{
+        self.view = view
+        return build()
     }
 }

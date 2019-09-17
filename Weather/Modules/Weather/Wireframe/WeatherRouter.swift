@@ -10,20 +10,27 @@ import Foundation
 import UIKit
 
 protocol WeatherRouterProtocol {
+    
+    var presenter: WeatherPresenterProtocol! {get set}
+    
+    func route()
     func presentDayForecast()
-    func routeToStyle()
     func unload()
 }
 
 class WeatherRouter: NSObject, WeatherRouterProtocol{
     
     var locationRouter: LocationRouter!
-    weak var view: WeatherViewController!
-    weak var presenter: WeatherPresenter! 
+    var view: WeatherViewController{
+        get{
+            return presenter.view as! WeatherViewController
+        }
+    }
+    weak var presenter: WeatherPresenterProtocol!
     weak var dayForecastRouter: DayForecastRouter!
     var styleRouter: StyleRouter!
     
-    func routeToStyle() {
+    func route() {
         view.performSegue(withIdentifier: "StyleTableSegue", sender: {(segue: UIStoryboardSegue) in
             self.styleModuleFrom(segue: segue)
         })
@@ -36,7 +43,7 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
     
     func presentDayForecast(){
         dayForecastRouter = DayForecastConfigurator.build(from: view.dayForecastScrollView)
-        presenter.delegate = dayForecastRouter.presenter
+        (presenter as! WeatherPresenter).delegate = dayForecastRouter.presenter
     }
     
     func presentStyleMenu(){
@@ -47,7 +54,6 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
         view.dismiss(animated: true, completion: nil)
         
         presenter = nil
-        view = nil
     }
     
     deinit {

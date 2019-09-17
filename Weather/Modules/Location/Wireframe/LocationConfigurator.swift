@@ -32,4 +32,9 @@ class LocationConfigurator: NSObject {
         
         return router!
     }
+    
+    func build(with view: LocationViewProtocol) -> LocationRouterProtocol{
+        self.view = view
+        return build()
+    }
 }
