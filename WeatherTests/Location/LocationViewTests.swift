@@ -21,22 +21,21 @@ class LocationViewTests: XCTestCase {
         configurator = nil
     }
 
-    func testViewShouldSendSegueToRouter() {
+    func testViewShouldSendSegueWhenPrepare() {
         
-        let router = LocationRouterSegueMock()
-        configurator.router = router
-        configurator.view = StoryboardView<LocationViewController>().instantiate(withIdentifier: "LocationViewController")
+        let view = StoryboardView<LocationViewController>().instantiate(withIdentifier: "LocationViewController")
+        configurator.view = view
         configurator.presenter = LocationPresenterFake()
         let _ = configurator.build()
         
         let expect = expectation(description: "View should send segue")
         
-        router.segueHandler = {segue in
+        let segueHandler: (UIStoryboardSegue) -> () = {segue in
             XCTAssertNotNil(segue)
             expect.fulfill()
         }
         
-        router.route(with: nil)
+        view.performSegue(withIdentifier: "WeatherSegue", sender: segueHandler)
         
         waitForExpectations(timeout: 1){error in
             if let error = error{

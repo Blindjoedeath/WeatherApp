@@ -9,7 +9,9 @@
 import Foundation
 
 import XCTest
+import RxRelay
 import RxSwift
+import UIKit
 @testable import Weather
 
 class WeatherInteractorTests: XCTestCase {
@@ -156,5 +158,38 @@ class WeatherInteractorTests: XCTestCase {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
         }
+    }
+    
+    
+    // MARK: Interactor and AppStyleRepository
+    
+    func testInteractorShouldSetStyleWhenConfigure(){
+        let interactorOutput = WeatherInteractorOutputSpy()
+        configurator.interactorOutput = interactorOutput
+        let _ = configurator.build()
+        let interactor = configurator.interactor!
+        
+        interactor.configure()
+        
+        XCTAssertTrue(interactorOutput.invokedSetStyle)
+    }
+    
+    func testInteractorShouldGetStyleFromAppStyleRepository(){
+        let interactorOutput = WeatherInteractorOutputSpy()
+        configurator.interactorOutput = interactorOutput
+        let _ = configurator.build()
+        let interactor = configurator.interactor as! WeatherInteractor
+        let appStyleRepository = AppStyleRepositoryStub()
+        let style = AppStyle(name: "test", description: "test", color: .red)
+        
+        appStyleRepository.stubbedAppStyle = BehaviorRelay<AppStyle>(value: style)
+        interactor.styleRepository = appStyleRepository
+        interactor.configure()
+        
+        guard interactorOutput.invokedSetStyle else{
+            return XCTFail("Expected set style invoked")
+        }
+        
+        XCTAssertEqual(style, interactorOutput.invokedSetStyleParameters!.appStyle)
     }
 }

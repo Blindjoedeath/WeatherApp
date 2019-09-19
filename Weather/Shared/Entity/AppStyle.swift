@@ -7,16 +7,21 @@
 //
 
 import Foundation
-
-struct AppColor{
-    var r: Float
-    var g: Float
-    var b: Float
-}
+import UIKit
 
 struct AppStyle{
     var name: String
     var description: String
-    var color: AppColor
+    var color: UIColor
+}
+
+extension AppStyle: Equatable{
+    
+    static func ==(lhs: AppStyle, rhs: AppStyle) -> Bool {
+        return lhs.name == rhs.name &&
+               lhs.description == rhs.description &&
+               lhs.color == rhs.color
+    }
+    
 }
 

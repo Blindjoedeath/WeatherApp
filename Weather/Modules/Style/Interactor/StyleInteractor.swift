@@ -29,12 +29,12 @@ class StyleInteractor: StyleInteractorProtocol {
     }
     
     func setStyle(name: String) {
-        let style = styleRepository.appStyles[name]!
+        let style = appStyles[name]!
         styleRepository.appStyle.accept(style)
     }
     
     func getAllStyles() -> [AppStyle] {
-        return styleRepository.appStyles.map{styleToModel(style: $0.value)}
+        return appStyles.map{styleToModel(style: $0.value)}
     }
     
     deinit {

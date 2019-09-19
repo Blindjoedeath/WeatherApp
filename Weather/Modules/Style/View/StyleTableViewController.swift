@@ -59,11 +59,7 @@ extension StyleTableViewController: StyleViewProtocol{
     }
     
     func setStyle(style: AppStyle){
-        let color = UIColor(red: CGFloat(style.color.r),
-                            green: CGFloat(style.color.g),
-                            blue: CGFloat(style.color.b),
-                            alpha: 1)
-        tableView.backgroundColor = color
+        tableView.backgroundColor = style.color
         tableView.reloadData()
     }
 }

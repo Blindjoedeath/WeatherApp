@@ -172,9 +172,7 @@ extension WeatherViewController: WeatherViewProtocol{
     }
     
     func setAppStyle(style: AppStyle) {
-        let color = UIColor(red: CGFloat(style.color.r),
-                            green: CGFloat(style.color.g),
-                            blue: CGFloat(style.color.b), alpha: 0.7)
+        let color = style.color.withAlphaComponent(0.7)
         colorElements(with: color)
         
         navigationController?.navigationBar.barTintColor = seasonNavigationBarColor(for: style.name)
