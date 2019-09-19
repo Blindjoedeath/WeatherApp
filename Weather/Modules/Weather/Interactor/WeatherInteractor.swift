@@ -31,7 +31,8 @@ protocol WeatherInteractorOutput: class{
 class WeatherInteractor{
     
     weak var presenter: WeatherInteractorOutput!
-    var subscripion: Disposable!
+    var subscripion: Disposable?
+    var timeLimit = 10
     
     var weather: Observable<Weather>!
     var forecast: Observable<Forecast>!
@@ -47,14 +48,6 @@ class WeatherInteractor{
         }
     }
     
-    func weekForecast(from forecast: Forecast) -> [Weather]{
-        var result : [Weather] = []
-        for i in 0..<forecast.daysCount{
-            result.append(forecast[i, 2])
-        }
-        return result
-    }
-    
     deinit {
         print("Weather Interactor deinited")
     }
@@ -63,17 +56,24 @@ class WeatherInteractor{
 extension WeatherInteractor: WeatherInteractorProtocol{
     
     func createWeatherSubscription(){
-        subscripion = Observable.combineLatest(weather, forecast)
+        
+        let anyWeather = weather.asObservable().map{ $0 as AnyObject }
+        let anyForecast = forecast.asObservable().map{ $0 as AnyObject }
+        
+        subscripion = Observable.merge(anyWeather, anyForecast)
             .observeOn(MainScheduler.instance)
+            .timeout(RxTimeInterval.seconds(timeLimit), scheduler: MainScheduler.instance)
             .subscribe(
-                onNext: {[weak self] (weather, forecast) in
+                onNext: {[weak self] (anyObject) in
                     if let self = self{
-                        self.presenter.found(weather: weather)
-                        
-                        let weekModels = self.weekForecast(from: forecast)
-                        let dayModels = forecast[0].map{$0}
-                        self.presenter.found(weekForecast: weekModels)
-                        self.presenter.found(dayForecast: dayModels)
+                        if let weather = anyObject as? Weather{
+                            self.presenter.found(weather: weather)
+                        } else if let forecast = anyObject as? Forecast{
+                            let weekForecast = forecast.weekAverage()
+                            let dayForecast = forecast[0].map{$0}
+                            self.presenter.found(weekForecast: weekForecast)
+                            self.presenter.found(dayForecast: dayForecast)
+                        }
                     }
                 },
                 onError: {[weak self] error in
@@ -96,8 +96,8 @@ extension WeatherInteractor: WeatherInteractorProtocol{
                             }
                         }
                     }
-            })
-        subscripion.disposed(by: bag)
+                })
+        subscripion?.disposed(by: bag)
     }
     
     func configure() {
@@ -121,7 +121,7 @@ extension WeatherInteractor: WeatherInteractorProtocol{
     }
     
     func refreshData() {
-        subscripion.dispose()
+        subscripion?.dispose()
         
         weather = weatherRepository.getWeather(for: city)
         forecast = weatherRepository.getForecast(for: city)

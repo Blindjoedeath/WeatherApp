@@ -22,9 +22,11 @@ class LocationViewTests: XCTestCase {
     }
 
     func testViewShouldSendSegueToRouter() {
+        
         let router = LocationRouterSegueMock()
         configurator.router = router
         configurator.view = StoryboardView<LocationViewController>().instantiate(withIdentifier: "LocationViewController")
+        configurator.presenter = LocationPresenterFake()
         let _ = configurator.build()
         
         let expect = expectation(description: "View should send segue")

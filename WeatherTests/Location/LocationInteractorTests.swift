@@ -32,7 +32,7 @@ class LocationInteractorTests: XCTestCase {
     
     func testInteractorShouldReturnCityFromRepository(){
         let testCity = "Unexisting city"
-        let repository = CityRepositoryStub.instance as! CityRepositoryStub
+        let repository = CityRepositoryStub()
         repository.stubbedCity = testCity
         
         let interactor = LocationInteractor()
@@ -139,7 +139,7 @@ class LocationInteractorTests: XCTestCase {
     // MARK: Interactor and WeatherRepository Tests
     
     func buildInteractorWithStubbedWeatherRepository() -> (LocationInteractor, LocationInteractorOutputSpy){
-        let weatherRepository = WeatherRepositoryStub.instance as! WeatherRepositoryStub
+        let weatherRepository = WeatherRepositorySpy()
         let interactorOutput = LocationInteractorOutputSpy()
         configurator.interactorOutput = interactorOutput
         let interactor = configurator.build().presenter?.interactor as! LocationInteractor
@@ -152,8 +152,8 @@ class LocationInteractorTests: XCTestCase {
     func testInteractorShouldSaveCityToRepositoryWhenWeatherFound(){
         
         let (interactor, _) = buildInteractorWithStubbedWeatherRepository()
-        let cityRepository = CityRepositoryFake.instance
-        let weatherRepository = interactor.weatherRepository as! WeatherRepositoryStub
+        let cityRepository = CityRepositoryFake()
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         let locality = "Бангладеш"
         
         weatherRepository.stubbedGetWeatherResult = Observable.just(Weather())
@@ -168,7 +168,7 @@ class LocationInteractorTests: XCTestCase {
     }
     func testInteractorShouldCallPresenterWhenFoundWeather(){
         let (interactor, interactorOutput) = buildInteractorWithStubbedWeatherRepository()
-        let weatherRepository = interactor.weatherRepository as! WeatherRepositoryStub
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         weatherRepository.stubbedGetWeatherResult = Observable.just(Weather())
         interactor.getWeather(for: "dummy")
@@ -178,7 +178,7 @@ class LocationInteractorTests: XCTestCase {
     
     func testInteractorShouldCallPresenterWhenWeatherObservableSendsNoLocation(){
         let (interactor, interactorOutput) = buildInteractorWithStubbedWeatherRepository()
-        let weatherRepository = interactor.weatherRepository as! WeatherRepositoryStub
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let error = ReactiveRequestError.badResponse(code: 666)
         weatherRepository.stubbedGetWeatherResult = Observable.error(error)
@@ -189,7 +189,7 @@ class LocationInteractorTests: XCTestCase {
     
     func testInteractorShouldCallPresenterWhenWeatherObservableSendsNoNetwork(){
         let (interactor, interactorOutput) = buildInteractorWithStubbedWeatherRepository()
-        let weatherRepository = interactor.weatherRepository as! WeatherRepositoryStub
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let error = ReactiveRequestError.noResponce
         weatherRepository.stubbedGetWeatherResult = Observable.error(error)
@@ -200,7 +200,7 @@ class LocationInteractorTests: XCTestCase {
     
     func testInteractorShouldCallPresenterAsyncWhenWeatherObservableSendsTimeout(){
         let (interactor, interactorOutput) = buildInteractorWithStubbedWeatherRepository()
-        let weatherRepository = interactor.weatherRepository as! WeatherRepositoryStub
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let result = Observable.just(Weather())
                                .delay(RxTimeInterval.seconds(5), scheduler: MainScheduler.instance)

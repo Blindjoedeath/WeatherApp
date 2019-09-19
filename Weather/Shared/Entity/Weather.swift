@@ -98,7 +98,7 @@ class Weather: Codable {
     }
     
     init() {
-        self.date = nil
+        self.date = Date()
         self.description = ""
         self.humidity = 0
         self.iconCode = ""

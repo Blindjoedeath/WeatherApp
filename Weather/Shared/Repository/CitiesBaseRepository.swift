@@ -9,7 +9,6 @@
 import Foundation
 
 protocol CitiesBaseRepositoryProtocol{
-    static var instance: CitiesBaseRepositoryProtocol {get}
     var cities: [String] {get}
 }
 

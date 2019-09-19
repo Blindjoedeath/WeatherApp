@@ -110,7 +110,7 @@ class LocationPresenterTests: XCTestCase {
     func testPresenterShouldChangeViewWhenLoad(){
         let (presenter, view) = buildPresenterToView()
         let interactor = presenter.interactor as! LocationInteractorSpy
-        let repository = CitiesBaseRespositoryStub.instance as! CitiesBaseRespositoryStub
+        let repository = CitiesBaseRespositoryStub()
         let stubbedCities = ["Chabib", "Nurmagomedov"]
         
         repository.stubbedCities = stubbedCities

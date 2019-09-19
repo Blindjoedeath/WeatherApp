@@ -10,12 +10,6 @@ import Foundation
 @testable import Weather
 
 class CitiesBaseRespositoryStub: CitiesBaseRepositoryProtocol{
-    static var instance: CitiesBaseRepositoryProtocol = CitiesBaseRespositoryStub()
-    
-    private init(){
-        
-    }
-    
     var stubbedCities: [String]! = []
     var cities: [String] {
         return stubbedCities

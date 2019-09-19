@@ -16,8 +16,6 @@ protocol WeatherRepositoryProtocol{
     
     func getWeather(for city: String) -> Observable<Weather>
     func getForecast(for city: String) -> Observable<Forecast>
-    
-    static var instance: WeatherRepositoryProtocol {get}
 }
 
 class WeatherRepository: WeatherRepositoryProtocol{

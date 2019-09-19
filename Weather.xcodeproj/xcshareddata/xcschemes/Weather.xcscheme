@@ -37,6 +37,29 @@
                BlueprintName = "WeatherTests"
                ReferencedContainer = "container:Weather.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "LocationConfiguratorTests">
+               </Test>
+               <Test
+                  Identifier = "LocationInteractorTests">
+               </Test>
+               <Test
+                  Identifier = "LocationPresenterTests">
+               </Test>
+               <Test
+                  Identifier = "LocationRoutingTests">
+               </Test>
+               <Test
+                  Identifier = "WeatherConfiguratorTests">
+               </Test>
+               <Test
+                  Identifier = "WeatherRoutingTests">
+               </Test>
+               <Test
+                  Identifier = "WeatherViewTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

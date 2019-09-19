@@ -11,12 +11,6 @@ import Foundation
 import RxRelay
 
 class CityRepositoryStub: CityRepositoryProtocol{
-    static var instance: CityRepositoryProtocol = CityRepositoryStub()
-    
-    private init(){
-        
-    }
-    
     var stubbedCity: String!
     
     var city: BehaviorRelay<String?> {

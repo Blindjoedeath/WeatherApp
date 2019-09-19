@@ -11,7 +11,6 @@ import RxRelay
 
 protocol CityRepositoryProtocol{
     var city: BehaviorRelay<String?> {get}
-    static var instance: CityRepositoryProtocol {get}
 }
 
 class CityRepository: CityRepositoryProtocol{

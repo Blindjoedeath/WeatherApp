@@ -11,11 +11,5 @@ import Foundation
 import RxRelay
 
 class CityRepositoryFake: CityRepositoryProtocol{
-    static var instance: CityRepositoryProtocol = CityRepositoryFake()
-    
-    private init(){
-        
-    }
-    
     var city = BehaviorRelay<String?>(value: nil)
 }
