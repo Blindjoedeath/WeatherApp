@@ -17,7 +17,7 @@ protocol DayForecastInteractorProtocol: class{
 
 protocol DayForecastInteractorOutput: class{
     func load(dayForecast: [Weather])
-    func dataWillReload()
+    func dataWillLoad()
 }
 
 class DayForecastInteractor: DayForecastInteractorProtocol{
@@ -34,7 +34,7 @@ class DayForecastInteractor: DayForecastInteractorProtocol{
                     self?.presenter.load(dayForecast: forecast[0])
                     break
                 case .loading:
-                    self?.presenter.dataWillReload()
+                    self?.presenter.dataWillLoad()
                 default:
                     break
                 }

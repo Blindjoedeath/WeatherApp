@@ -107,3 +107,15 @@ class Weather: Codable {
         self.windSpeed = 0
     }
 }
+
+extension Weather: Equatable{
+    static func == (lhs: Weather, rhs: Weather) -> Bool {
+        return  lhs.date == rhs.date &&
+                lhs.description == rhs.description &&
+                lhs.humidity == rhs.humidity &&
+                lhs.iconCode == rhs.iconCode &&
+                lhs.temperature == rhs.temperature &&
+                lhs.weatherId == rhs.weatherId &&
+                lhs.windSpeed == rhs.windSpeed
+    }
+}

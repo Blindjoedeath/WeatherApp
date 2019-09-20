@@ -41,7 +41,7 @@ extension DayForecastPresenter: DayForecastInteractorOutput{
         view.load(dayForecast: items)
     }
     
-    func dataWillReload() {
+    func dataWillLoad() {
         view.isUpdatingIndicatorEnabled = true
     }
 }

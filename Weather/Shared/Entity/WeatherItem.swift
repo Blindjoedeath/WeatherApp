@@ -25,3 +25,15 @@ struct WeatherItem{
                                perceivedTemperature: String(weather.perceivedTemperature))
     }
 }
+
+extension WeatherItem: Equatable{
+    static func == (lhs: WeatherItem, rhs: WeatherItem) -> Bool {
+        return  lhs.temperature == rhs.temperature &&
+                lhs.humidity == rhs.humidity &&
+                lhs.description == rhs.description &&
+                lhs.date == rhs.date &&
+                lhs.iconCode == rhs.iconCode &&
+                lhs.perceivedTemperature == rhs.perceivedTemperature
+    }
+}
+
