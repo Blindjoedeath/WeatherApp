@@ -34,7 +34,7 @@ class StylePresenterFake: StylePresenterProtocol{
     }
     func styleChanged(name: String) {
     }
-    func configureView() {
+    func load() {
     }
     func close() {
     }

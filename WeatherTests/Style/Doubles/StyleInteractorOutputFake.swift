@@ -10,5 +10,6 @@ import Foundation
 @testable import Weather
 
 class StyleInteractorOutputFake: StyleInteractorOutput{
-    
+    func styleChanged(appStyle: AppStyle) {
+    }
 }

@@ -32,6 +32,11 @@
 		3D8E87512329821200B96826 /* GeolocationServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8E87502329821200B96826 /* GeolocationServiceStub.swift */; };
 		3D94F5E32327ED76003C906B /* LocationConfiguratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D94F5E22327ED76003C906B /* LocationConfiguratorTests.swift */; };
 		3D94F5EC2327FD8F003C906B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D29E157218B2DE70090E9E1 /* Main.storyboard */; };
+		3D9511A6233582C800E9417B /* StylePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9511A5233582C800E9417B /* StylePresenterTests.swift */; };
+		3D9511A8233582FB00E9417B /* StyleInteractorSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9511A7233582FB00E9417B /* StyleInteractorSpy.swift */; };
+		3D9511AA2335843000E9417B /* StyleViewControllerFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9511A92335843000E9417B /* StyleViewControllerFake.swift */; };
+		3D9511AC2335877D00E9417B /* StyleInteractorOutputSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9511AB2335877D00E9417B /* StyleInteractorOutputSpy.swift */; };
+		3D9511B023358B0600E9417B /* StyleViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9511AF23358B0600E9417B /* StyleViewControllerSpy.swift */; };
 		3D959135223DAA5600F5E61F /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D959134223DAA5600F5E61F /* ImageExtension.swift */; };
 		3DA907B423327E61003A0C7F /* WeatherInteractorOutputFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA907B323327E61003A0C7F /* WeatherInteractorOutputFake.swift */; };
 		3DA907B62332A7CD003A0C7F /* WeatherInteractorOutputSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA907B52332A7CD003A0C7F /* WeatherInteractorOutputSpy.swift */; };
@@ -89,7 +94,7 @@
 		7571879A23351ADE00C0E7AD /* DayForecastRouterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571879923351ADE00C0E7AD /* DayForecastRouterSpy.swift */; };
 		7571879D233524DC00C0E7AD /* StyleConfiguratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571879C233524DC00C0E7AD /* StyleConfiguratorTests.swift */; };
 		7571879F233525D300C0E7AD /* StyleRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571879E233525D300C0E7AD /* StyleRouterTests.swift */; };
-		757187A22335265800C0E7AD /* StyleViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757187A12335265800C0E7AD /* StyleViewControllerSpy.swift */; };
+		757187A22335265800C0E7AD /* StyleViewControllerDissmissMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757187A12335265800C0E7AD /* StyleViewControllerDissmissMock.swift */; };
 		757187A4233526C200C0E7AD /* StylePresenterFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757187A3233526C200C0E7AD /* StylePresenterFake.swift */; };
 		757187A6233529A500C0E7AD /* StyleInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757187A5233529A500C0E7AD /* StyleInteractorTests.swift */; };
 		757187A823352A1C00C0E7AD /* AppStyleRepositorySpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757187A723352A1C00C0E7AD /* AppStyleRepositorySpy.swift */; };
@@ -150,6 +155,11 @@
 		3D94F5E02327ED76003C906B /* WeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D94F5E22327ED76003C906B /* LocationConfiguratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationConfiguratorTests.swift; sourceTree = "<group>"; };
 		3D94F5E42327ED76003C906B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3D9511A5233582C800E9417B /* StylePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StylePresenterTests.swift; path = WeatherTests/Style/StylePresenterTests.swift; sourceTree = SOURCE_ROOT; };
+		3D9511A7233582FB00E9417B /* StyleInteractorSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleInteractorSpy.swift; sourceTree = "<group>"; };
+		3D9511A92335843000E9417B /* StyleViewControllerFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleViewControllerFake.swift; sourceTree = "<group>"; };
+		3D9511AB2335877D00E9417B /* StyleInteractorOutputSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleInteractorOutputSpy.swift; sourceTree = "<group>"; };
+		3D9511AF23358B0600E9417B /* StyleViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleViewControllerSpy.swift; sourceTree = "<group>"; };
 		3D959134223DAA5600F5E61F /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		3DA907B323327E61003A0C7F /* WeatherInteractorOutputFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInteractorOutputFake.swift; sourceTree = "<group>"; };
 		3DA907B52332A7CD003A0C7F /* WeatherInteractorOutputSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInteractorOutputSpy.swift; sourceTree = "<group>"; };
@@ -208,7 +218,7 @@
 		7571879923351ADE00C0E7AD /* DayForecastRouterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayForecastRouterSpy.swift; sourceTree = "<group>"; };
 		7571879C233524DC00C0E7AD /* StyleConfiguratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleConfiguratorTests.swift; sourceTree = "<group>"; };
 		7571879E233525D300C0E7AD /* StyleRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleRouterTests.swift; sourceTree = "<group>"; };
-		757187A12335265800C0E7AD /* StyleViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleViewControllerSpy.swift; sourceTree = "<group>"; };
+		757187A12335265800C0E7AD /* StyleViewControllerDissmissMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleViewControllerDissmissMock.swift; sourceTree = "<group>"; };
 		757187A3233526C200C0E7AD /* StylePresenterFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylePresenterFake.swift; sourceTree = "<group>"; };
 		757187A5233529A500C0E7AD /* StyleInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleInteractorTests.swift; sourceTree = "<group>"; };
 		757187A723352A1C00C0E7AD /* AppStyleRepositorySpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyleRepositorySpy.swift; sourceTree = "<group>"; };
@@ -648,6 +658,7 @@
 				7571879C233524DC00C0E7AD /* StyleConfiguratorTests.swift */,
 				7571879E233525D300C0E7AD /* StyleRouterTests.swift */,
 				757187A5233529A500C0E7AD /* StyleInteractorTests.swift */,
+				3D9511A5233582C800E9417B /* StylePresenterTests.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -655,9 +666,13 @@
 		757187A02335263300C0E7AD /* Doubles */ = {
 			isa = PBXGroup;
 			children = (
-				757187A12335265800C0E7AD /* StyleViewControllerSpy.swift */,
+				757187A12335265800C0E7AD /* StyleViewControllerDissmissMock.swift */,
 				757187A3233526C200C0E7AD /* StylePresenterFake.swift */,
 				757187A923352AA100C0E7AD /* StyleInteractorOutputFake.swift */,
+				3D9511A7233582FB00E9417B /* StyleInteractorSpy.swift */,
+				3D9511A92335843000E9417B /* StyleViewControllerFake.swift */,
+				3D9511AB2335877D00E9417B /* StyleInteractorOutputSpy.swift */,
+				3D9511AF23358B0600E9417B /* StyleViewControllerSpy.swift */,
 			);
 			path = Doubles;
 			sourceTree = "<group>";
@@ -978,6 +993,7 @@
 				75A605DC232913250007C5B7 /* CityRepositoryStub.swift in Sources */,
 				758EB966232BAB080063DC17 /* CityRepositoryFake.swift in Sources */,
 				7571878C2335119800C0E7AD /* DayForecastPresenterTests.swift in Sources */,
+				3D9511AA2335843000E9417B /* StyleViewControllerFake.swift in Sources */,
 				3D8E874923297F4A00B96826 /* LocationViewControllerSegueMock.swift in Sources */,
 				7571878E233511EB00C0E7AD /* DayForecastInteractorySpy.swift in Sources */,
 				75718790233512C200C0E7AD /* DayForecastViewFake.swift in Sources */,
@@ -988,7 +1004,7 @@
 				3D8E87512329821200B96826 /* GeolocationServiceStub.swift in Sources */,
 				757187AA23352AA100C0E7AD /* StyleInteractorOutputFake.swift in Sources */,
 				755A0F32232A37DC00C7C1DF /* WeatherRepositorySpy.swift in Sources */,
-				757187A22335265800C0E7AD /* StyleViewControllerSpy.swift in Sources */,
+				757187A22335265800C0E7AD /* StyleViewControllerDissmissMock.swift in Sources */,
 				7571879D233524DC00C0E7AD /* StyleConfiguratorTests.swift in Sources */,
 				758EB968232BB3820063DC17 /* CitiesBaseRepositoryStub.swift in Sources */,
 				755A0F30232A35F100C7C1DF /* LocationViewFake.swift in Sources */,
@@ -996,10 +1012,14 @@
 				3DDC667023318CF400D99A81 /* WeatherViewTests.swift in Sources */,
 				3DDC6666232FF9EF00D99A81 /* WeatherInteractorTests.swift in Sources */,
 				757187852334F40E00C0E7AD /* DayForecastConfiguratorTests.swift in Sources */,
+				3D9511B023358B0600E9417B /* StyleViewControllerSpy.swift in Sources */,
 				75A605D823290A900007C5B7 /* LocationInteractorTests.swift in Sources */,
 				7571879F233525D300C0E7AD /* StyleRouterTests.swift in Sources */,
 				758EB964232B9BCE0063DC17 /* LocationInteractorFake.swift in Sources */,
+				3D9511AC2335877D00E9417B /* StyleInteractorOutputSpy.swift in Sources */,
 				3DDC666A2331820E00D99A81 /* LocationViewTests.swift in Sources */,
+				3D9511A6233582C800E9417B /* StylePresenterTests.swift in Sources */,
+				3D9511A8233582FB00E9417B /* StyleInteractorSpy.swift in Sources */,
 				75A605DA23290B200007C5B7 /* LocationInteractorSpy.swift in Sources */,
 				75718798233519FB00C0E7AD /* DayForecastPresenterSpy.swift in Sources */,
 				757187922335142A00C0E7AD /* DayForecastInteractorFake.swift in Sources */,

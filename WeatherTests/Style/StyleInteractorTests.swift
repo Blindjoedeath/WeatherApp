@@ -22,19 +22,6 @@ class StyleInteractorTests: XCTestCase {
     override func tearDown() {
         configurator = nil
     }
-
-    func testInteractorShouldReturnStyleFromStyleRepository(){
-        let styleRepository = AppStyleRepositorySpy()
-        configurator.interactorOutput = StyleInteractorOutputFake()
-        let interactor = configurator.build().presenter!.interactor as! StyleInteractor
-        
-        let stubbedStyle = AppStyle(name: "test", description: "test1", color: .red)
-        styleRepository.stubbedAppStyle = BehaviorRelay(value: stubbedStyle)
-        interactor.styleRepository = styleRepository
-        
-        let style = interactor.getStyle()
-        XCTAssertEqual(style, stubbedStyle)
-    }
     
     func testInteractorShouldReturnAppStylesFromRepository(){
         let styleRepository = AppStyleRepositorySpy()
@@ -67,5 +54,26 @@ class StyleInteractorTests: XCTestCase {
         
         let savedStyle = styleRepository.appStyle.value
         XCTAssertEqual(savedStyle, newStyle)
+    }
+    
+    func testInteractorShouldCallToPresenterWhenStyleChange(){
+        let styleRepository = AppStyleRepositorySpy()
+        let interactorOutput = StyleInteractorOutputSpy()
+        configurator.interactorOutput = interactorOutput
+        let interactor = configurator.build().presenter!.interactor as! StyleInteractor
+        
+        let style = AppStyle(name: "test", description: "test1", color: .red)
+        let newStyle = AppStyle(name: "test1", description: "test2", color: .blue)
+        styleRepository.stubbedAppStyle = BehaviorRelay(value: style)
+        
+        interactor.styleRepository = styleRepository
+        interactor.configure()
+        styleRepository.appStyle.accept(newStyle)
+        
+        guard interactorOutput.invokedStyleChanged else {
+            return XCTFail("Expected style changed to be invoked")
+        }
+        
+        XCTAssertEqual(newStyle, interactorOutput.invokedStyleChangedParameters?.appStyle)
     }
 }

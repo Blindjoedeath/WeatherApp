@@ -22,7 +22,7 @@ class StyleRouterTests: XCTestCase {
     }
 
     func testRouterShouldDismissViewWhenClose(){
-        let view = StyleViewControllerSpy()
+        let view = StyleViewControllerDissmissMock()
         configurator.presenter = StylePresenterFake()
         let router = configurator.build() as! StyleRouter
         

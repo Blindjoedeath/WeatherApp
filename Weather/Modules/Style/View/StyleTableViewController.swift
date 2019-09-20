@@ -24,7 +24,7 @@ class StyleTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter.configureView()
+        presenter.load()
     }
     
     @IBAction func closeButtonAction(){
