@@ -30,6 +30,28 @@ class WeatherRoutingTests: XCTestCase {
         
         XCTAssertTrue(controller.performSegueTriggered)
     }
+    
+    func testRouterShouldLoadDayForecastRouterWhenPresent(){
+        let dayForecastRouter = DayForecastRouterSpy()
+        let router = configurator.build() as! WeatherRouter
+        
+        router.dayForecastRouter = dayForecastRouter
+        router.presentDayForecast()
+        
+        XCTAssertTrue(dayForecastRouter.invokedLoad)
+    }
+    
+    func testRouterShouldUnloadDayForecastRouterWhenUnload(){
+        let dayForecastRouter = DayForecastRouterSpy()
+        let view = WeatherViewController()
+        configurator.view = view
+        let router = configurator.build() as! WeatherRouter
+        
+        router.dayForecastRouter = dayForecastRouter
+        router.unload()
+        
+        XCTAssertTrue(dayForecastRouter.invokedUnload)
+    }
 }
 
 

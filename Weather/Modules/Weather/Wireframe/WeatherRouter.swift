@@ -27,7 +27,9 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
         }
     }
     weak var presenter: WeatherPresenterProtocol!
-    weak var dayForecastRouter: DayForecastRouterProtocol!
+    lazy var dayForecastRouter: DayForecastRouterProtocol! = {
+        DayForecastConfigurator().build(with: view.dayForecastScrollView)
+    }()
     var styleRouter: StyleRouter!
     
     func route() {
@@ -42,7 +44,6 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
     }
     
     func presentDayForecast(){
-        dayForecastRouter = DayForecastConfigurator().build(with: view.dayForecastScrollView)
         dayForecastRouter.load()
     }
     

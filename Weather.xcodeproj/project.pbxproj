@@ -85,6 +85,9 @@
 		75718790233512C200C0E7AD /* DayForecastViewFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571878F233512C200C0E7AD /* DayForecastViewFake.swift */; };
 		757187922335142A00C0E7AD /* DayForecastInteractorFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757187912335142A00C0E7AD /* DayForecastInteractorFake.swift */; };
 		757187942335146E00C0E7AD /* DayForecastViewSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757187932335146E00C0E7AD /* DayForecastViewSpy.swift */; };
+		757187962335198800C0E7AD /* DayForecastRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757187952335198800C0E7AD /* DayForecastRouterTests.swift */; };
+		75718798233519FB00C0E7AD /* DayForecastPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75718797233519FB00C0E7AD /* DayForecastPresenterSpy.swift */; };
+		7571879A23351ADE00C0E7AD /* DayForecastRouterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571879923351ADE00C0E7AD /* DayForecastRouterSpy.swift */; };
 		758EB962232B9B410063DC17 /* LocationViewSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758EB961232B9B410063DC17 /* LocationViewSpy.swift */; };
 		758EB964232B9BCE0063DC17 /* LocationInteractorFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758EB963232B9BCE0063DC17 /* LocationInteractorFake.swift */; };
 		758EB966232BAB080063DC17 /* CityRepositoryFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758EB965232BAB080063DC17 /* CityRepositoryFake.swift */; };
@@ -195,6 +198,9 @@
 		7571878F233512C200C0E7AD /* DayForecastViewFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayForecastViewFake.swift; sourceTree = "<group>"; };
 		757187912335142A00C0E7AD /* DayForecastInteractorFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayForecastInteractorFake.swift; sourceTree = "<group>"; };
 		757187932335146E00C0E7AD /* DayForecastViewSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayForecastViewSpy.swift; sourceTree = "<group>"; };
+		757187952335198800C0E7AD /* DayForecastRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayForecastRouterTests.swift; sourceTree = "<group>"; };
+		75718797233519FB00C0E7AD /* DayForecastPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayForecastPresenterSpy.swift; sourceTree = "<group>"; };
+		7571879923351ADE00C0E7AD /* DayForecastRouterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayForecastRouterSpy.swift; sourceTree = "<group>"; };
 		758EB961232B9B410063DC17 /* LocationViewSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewSpy.swift; sourceTree = "<group>"; };
 		758EB963232B9BCE0063DC17 /* LocationInteractorFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInteractorFake.swift; sourceTree = "<group>"; };
 		758EB965232BAB080063DC17 /* CityRepositoryFake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityRepositoryFake.swift; sourceTree = "<group>"; };
@@ -601,6 +607,7 @@
 			children = (
 				757187882335080A00C0E7AD /* Doubles */,
 				757187842334F40E00C0E7AD /* DayForecastConfiguratorTests.swift */,
+				757187952335198800C0E7AD /* DayForecastRouterTests.swift */,
 				7571878B2335119800C0E7AD /* DayForecastPresenterTests.swift */,
 				757187862335074700C0E7AD /* DayForecastInteractorTests.swift */,
 			);
@@ -614,7 +621,9 @@
 				7571878D233511EB00C0E7AD /* DayForecastInteractorySpy.swift */,
 				7571878F233512C200C0E7AD /* DayForecastViewFake.swift */,
 				757187912335142A00C0E7AD /* DayForecastInteractorFake.swift */,
+				7571879923351ADE00C0E7AD /* DayForecastRouterSpy.swift */,
 				757187932335146E00C0E7AD /* DayForecastViewSpy.swift */,
+				75718797233519FB00C0E7AD /* DayForecastPresenterSpy.swift */,
 			);
 			path = Doubles;
 			sourceTree = "<group>";
@@ -923,10 +932,12 @@
 			files = (
 				3D4304BC2333AFB700B9E4EC /* LocationPresenterFake.swift in Sources */,
 				757187872335074700C0E7AD /* DayForecastInteractorTests.swift in Sources */,
+				757187962335198800C0E7AD /* DayForecastRouterTests.swift in Sources */,
 				758EB962232B9B410063DC17 /* LocationViewSpy.swift in Sources */,
 				3DDC6660232FF9DE00D99A81 /* WeatherViewControllerMock.swift in Sources */,
 				3D8E874D23297FBB00B96826 /* LocationInteractorOutputSpy.swift in Sources */,
 				3DDC6664232FF9EF00D99A81 /* WeatherRouterTests.swift in Sources */,
+				7571879A23351ADE00C0E7AD /* DayForecastRouterSpy.swift in Sources */,
 				3DA907B423327E61003A0C7F /* WeatherInteractorOutputFake.swift in Sources */,
 				757187942335146E00C0E7AD /* DayForecastViewSpy.swift in Sources */,
 				75A605DC232913250007C5B7 /* CityRepositoryStub.swift in Sources */,
@@ -951,6 +962,7 @@
 				758EB964232B9BCE0063DC17 /* LocationInteractorFake.swift in Sources */,
 				3DDC666A2331820E00D99A81 /* LocationViewTests.swift in Sources */,
 				75A605DA23290B200007C5B7 /* LocationInteractorSpy.swift in Sources */,
+				75718798233519FB00C0E7AD /* DayForecastPresenterSpy.swift in Sources */,
 				757187922335142A00C0E7AD /* DayForecastInteractorFake.swift in Sources */,
 				3DA907B62332A7CD003A0C7F /* WeatherInteractorOutputSpy.swift in Sources */,
 				758EB96A232BB5E30063DC17 /* LocationRouterFake.swift in Sources */,
