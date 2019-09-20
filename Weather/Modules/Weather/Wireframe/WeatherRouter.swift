@@ -43,7 +43,6 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
     
     func presentDayForecast(){
         dayForecastRouter = DayForecastConfigurator.build(from: view.dayForecastScrollView)
-        (presenter as! WeatherPresenter).delegate = dayForecastRouter.presenter
     }
     
     func presentStyleMenu(){

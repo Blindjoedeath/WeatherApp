@@ -24,18 +24,13 @@ protocol WeatherInteractorOutput: class{
     func weatherRequestTimeOut()
     func found(weather: Weather)
     func found(weekForecast: [Weather])
-    func found(dayForecast: [Weather])
     func setStyle(appStyle: AppStyle)
 }
 
 class WeatherInteractor{
     
     weak var presenter: WeatherInteractorOutput!
-    var subscripion: Disposable?
-    var timeLimit = 10
     
-    var weather: Observable<Weather>!
-    var forecast: Observable<Forecast>!
     let bag = DisposeBag()
     
     var cityRepository = CityRepository.instance
@@ -55,55 +50,41 @@ class WeatherInteractor{
 
 extension WeatherInteractor: WeatherInteractorProtocol{
     
-    func createWeatherSubscription(){
+    func createSubscriptions(){
+        weatherRepository.weatherResult
+            .subscribe(onNext: {[weak self] result in
+                switch result{
+                case .success(let weather):
+                    self?.presenter.found(weather: weather)
+                    break
+                case .locationNotFound:
+                    self?.presenter.noLocation()
+                    break
+                case .networkError:
+                    self?.presenter.noNetwork()
+                case .timeout:
+                    self?.presenter.weatherRequestTimeOut()
+                }
+        }).disposed(by: bag)
         
-        let anyWeather = weather.asObservable().map{ $0 as AnyObject }
-        let anyForecast = forecast.asObservable().map{ $0 as AnyObject }
-        
-        subscripion = Observable.merge(anyWeather, anyForecast)
-            .observeOn(MainScheduler.instance)
-            .timeout(RxTimeInterval.seconds(timeLimit), scheduler: MainScheduler.instance)
-            .subscribe(
-                onNext: {[weak self] (anyObject) in
-                    if let self = self{
-                        if let weather = anyObject as? Weather{
-                            self.presenter.found(weather: weather)
-                        } else if let forecast = anyObject as? Forecast{
-                            let weekForecast = forecast.weekAverage()
-                            let dayForecast = forecast[0].map{$0}
-                            self.presenter.found(weekForecast: weekForecast)
-                            self.presenter.found(dayForecast: dayForecast)
-                        }
-                    }
-                },
-                onError: {[weak self] error in
-                    if let self = self{
-                        if let requestError = error as? ReactiveRequestError{
-                            switch requestError{
-                            case .badResponse:
-                                self.presenter.noLocation()
-                                break
-                            case .noResponce:
-                                self.presenter.noNetwork()
-                                break
-                            }
-                        } else if let rxError = error as? RxError{
-                            switch rxError{
-                            case .timeout:
-                                self.presenter.weatherRequestTimeOut()
-                            default:
-                                break
-                            }
-                        }
-                    }
-                })
-        subscripion?.disposed(by: bag)
+        weatherRepository.forecastResult
+            .subscribe(onNext: {[weak self] result in
+                switch result{
+                case .success(let forecast):
+                    self?.presenter.found(weekForecast: forecast.weekAverage())
+                    break
+                case .locationNotFound:
+                    self?.presenter.noLocation()
+                    break
+                case .networkError:
+                    self?.presenter.noNetwork()
+                case .timeout:
+                    self?.presenter.weatherRequestTimeOut()
+                }
+        }).disposed(by: bag)
     }
     
     func configure() {
-        weather = weatherRepository.lastWeather ?? weatherRepository.getWeather(for: city)
-        forecast = weatherRepository.lastForecast ?? weatherRepository.getForecast(for: city)
-        
         styleRepository.appStyle
             .subscribe(
                 onNext: {[weak self] style in
@@ -112,8 +93,8 @@ extension WeatherInteractor: WeatherInteractorProtocol{
                     }
                 })
             .disposed(by: bag)
-        
-        createWeatherSubscription()
+        createSubscriptions()
+        refreshData()
     }
     
     func getCity() -> String {
@@ -121,11 +102,7 @@ extension WeatherInteractor: WeatherInteractorProtocol{
     }
     
     func refreshData() {
-        subscripion?.dispose()
-        
-        weather = weatherRepository.getWeather(for: city)
-        forecast = weatherRepository.getForecast(for: city)
-        
-        createWeatherSubscription()
+        weatherRepository.refreshWeather(for: city)
+        weatherRepository.refreshForecast(for: city)
     }
 }

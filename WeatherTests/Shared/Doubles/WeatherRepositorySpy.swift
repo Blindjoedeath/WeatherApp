@@ -11,45 +11,60 @@ import Foundation
 import RxSwift
 
 class WeatherRepositorySpy: WeatherRepositoryProtocol{
-    
-    var invokedLastWeatherGetter = false
-    var invokedLastWeatherGetterCount = 0
-    var stubbedLastWeather: Observable<Weather>!
-    var lastWeather: Observable<Weather>? {
-        invokedLastWeatherGetter = true
-        invokedLastWeatherGetterCount += 1
-        return stubbedLastWeather
+    var invokedWeatherResultGetter = false
+    var invokedWeatherResultGetterCount = 0
+    var stubbedWeatherResult: Observable<WeatherResult<Weather>>!
+    var weatherResult: Observable<WeatherResult<Weather>> {
+        invokedWeatherResultGetter = true
+        invokedWeatherResultGetterCount += 1
+        return stubbedWeatherResult
     }
-    var invokedLastForecastGetter = false
-    var invokedLastForecastGetterCount = 0
-    var stubbedLastForecast: Observable<Forecast>!
-    var lastForecast: Observable<Forecast>? {
-        invokedLastForecastGetter = true
-        invokedLastForecastGetterCount += 1
-        return stubbedLastForecast
+    var invokedForecastResultGetter = false
+    var invokedForecastResultGetterCount = 0
+    var stubbedForecastResult: Observable<WeatherResult<Forecast>>!
+    var forecastResult: Observable<WeatherResult<Forecast>> {
+        invokedForecastResultGetter = true
+        invokedForecastResultGetterCount += 1
+        return stubbedForecastResult
     }
-    var invokedGetWeather = false
-    var invokedGetWeatherCount = 0
-    var invokedGetWeatherParameters: (city: String, Void)?
-    var invokedGetWeatherParametersList = [(city: String, Void)]()
-    var stubbedGetWeatherResult: Observable<Weather>!
-    func getWeather(for city: String) -> Observable<Weather> {
-        invokedGetWeather = true
-        invokedGetWeatherCount += 1
-        invokedGetWeatherParameters = (city, ())
-        invokedGetWeatherParametersList.append((city, ()))
-        return stubbedGetWeatherResult
+    var invokedRequestTimeoutSetter = false
+    var invokedRequestTimeoutSetterCount = 0
+    var invokedRequestTimeout: Int?
+    var invokedRequestTimeoutList = [Int]()
+    var invokedRequestTimeoutGetter = false
+    var invokedRequestTimeoutGetterCount = 0
+    var stubbedRequestTimeout: Int! = 0
+    var requestTimeout: Int {
+        set {
+            invokedRequestTimeoutSetter = true
+            invokedRequestTimeoutSetterCount += 1
+            invokedRequestTimeout = newValue
+            invokedRequestTimeoutList.append(newValue)
+        }
+        get {
+            invokedRequestTimeoutGetter = true
+            invokedRequestTimeoutGetterCount += 1
+            return stubbedRequestTimeout
+        }
     }
-    var invokedGetForecast = false
-    var invokedGetForecastCount = 0
-    var invokedGetForecastParameters: (city: String, Void)?
-    var invokedGetForecastParametersList = [(city: String, Void)]()
-    var stubbedGetForecastResult: Observable<Forecast>!
-    func getForecast(for city: String) -> Observable<Forecast> {
-        invokedGetForecast = true
-        invokedGetForecastCount += 1
-        invokedGetForecastParameters = (city, ())
-        invokedGetForecastParametersList.append((city, ()))
-        return stubbedGetForecastResult
+    var invokedRefreshWeather = false
+    var invokedRefreshWeatherCount = 0
+    var invokedRefreshWeatherParameters: (city: String, Void)?
+    var invokedRefreshWeatherParametersList = [(city: String, Void)]()
+    func refreshWeather(for city: String) {
+        invokedRefreshWeather = true
+        invokedRefreshWeatherCount += 1
+        invokedRefreshWeatherParameters = (city, ())
+        invokedRefreshWeatherParametersList.append((city, ()))
+    }
+    var invokedRefreshForecast = false
+    var invokedRefreshForecastCount = 0
+    var invokedRefreshForecastParameters: (city: String, Void)?
+    var invokedRefreshForecastParametersList = [(city: String, Void)]()
+    func refreshForecast(for city: String) {
+        invokedRefreshForecast = true
+        invokedRefreshForecastCount += 1
+        invokedRefreshForecastParameters = (city, ())
+        invokedRefreshForecastParametersList.append((city, ()))
     }
 }

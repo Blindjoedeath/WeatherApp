@@ -86,38 +86,25 @@ class LocationInteractor: LocationInteractorProtocol{
     }
     
     func getWeather(for city: String){
-        let weather = weatherRepository.getWeather(for: city)
-        weather
-            .observeOn(MainScheduler.instance)
-            .timeout(RxTimeInterval.seconds(requestTimeout), scheduler: MainScheduler.instance)
-            .subscribe(
-                onNext: {[weak self] weather in
-                    self?.setCity(city)
+        
+        weatherRepository.weatherResult
+            .subscribe(onNext: {[weak self]result in
+                switch result{
+                case .success:
+                    self?.cityRepository.city.accept(city)
                     self?.presenter.foundWeather()
-                },
-                onError: {[weak self] error in
-                    if let self = self{
-                        if let requestError = error as? ReactiveRequestError{
-                            switch requestError{
-                            case .badResponse:
-                                self.presenter.noLocation()
-                                break
-                            case .noResponce:
-                                self.presenter.noNetwork()
-                                break
-                            }
-                        } else if let rxError = error as? RxError{
-                            switch rxError{
-                            case .timeout:
-                                self.presenter.weatherRequestTimeOut()
-                                break
-                            default:
-                                break
-                            }
-                        }
-                    }
+                    break
+                case .locationNotFound:
+                    self?.presenter.noLocation()
+                    break
+                case .networkError:
+                    self?.presenter.noNetwork()
+                case .timeout:
+                    self?.presenter.weatherRequestTimeOut()
                 }
-            ).disposed(by: bag)
+            }).disposed(by: bag)
+        
+        weatherRepository.refreshWeather(for: city)
     }
     
     func setCity(_ city: String) {

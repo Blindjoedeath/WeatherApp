@@ -59,13 +59,14 @@ class WeatherInteractorTests: XCTestCase {
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let weather = Weather()
-        weatherRepository.stubbedGetWeatherResult = Observable.just(weather)
-        weatherRepository.stubbedGetForecastResult = Observable.just(Forecast(from: [weather]))
+        let forecast = Forecast(from: [weather])
+        weatherRepository.stubbedWeatherResult = Observable.just(WeatherResult.success(weather))
+        weatherRepository.stubbedForecastResult = Observable.just(WeatherResult.success(forecast))
         
         interactor.refreshData()
         
-        XCTAssertTrue(weatherRepository.invokedGetWeather)
-        XCTAssertTrue(weatherRepository.invokedGetForecast)
+        XCTAssertTrue(weatherRepository.invokedRefreshWeather)
+        XCTAssertTrue(weatherRepository.invokedRefreshForecast)
     }
     
     func testInteractorShouldSendWeatherToPresenterWhenWeatherFound(){
@@ -73,11 +74,12 @@ class WeatherInteractorTests: XCTestCase {
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let weather = Weather()
-        weatherRepository.stubbedGetWeatherResult = Observable.just(weather)
-        weatherRepository.stubbedGetForecastResult = Observable.just(Forecast(from: [weather]))
+        let forecast = Forecast(from: [weather])
+        weatherRepository.stubbedWeatherResult = Observable.just(WeatherResult.success(weather))
+        weatherRepository.stubbedForecastResult = Observable.just(WeatherResult.success(forecast))
                                                                .delay(RxTimeInterval.seconds(10),
                                                                       scheduler: MainScheduler.instance)
-        
+        interactor.configure()
         interactor.refreshData()
         
         XCTAssertTrue(interactorOutput.invokedFoundWeather)
@@ -88,25 +90,26 @@ class WeatherInteractorTests: XCTestCase {
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let weather = Weather()
-        weatherRepository.stubbedGetWeatherResult = Observable.just(weather)
-                                                              .delay(RxTimeInterval.seconds(10),
+        let forecast = Forecast(from: [weather])
+        weatherRepository.stubbedWeatherResult = Observable.just(WeatherResult.success(weather))
+                                                           .delay(RxTimeInterval.seconds(10),
                                                                      scheduler: MainScheduler.instance)
-        weatherRepository.stubbedGetForecastResult = Observable.just(Forecast(from: [weather]))
+        weatherRepository.stubbedForecastResult = Observable.just(WeatherResult.success(forecast))
         
+        interactor.configure()
         interactor.refreshData()
         
-        XCTAssertTrue(interactorOutput.invokedFoundDayForecast)
         XCTAssertTrue(interactorOutput.invokedFoundWeekForecast)
     }
     
-    func testInteractorShouldCallNoLocationWhenBadResponce(){
+    func testInteractorShouldCallNoLocationWhenLocationNotFound(){
         let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
-        let error = ReactiveRequestError.badResponse(code: 666)
-        weatherRepository.stubbedGetWeatherResult = Observable.error(error)
-        weatherRepository.stubbedGetForecastResult = Observable.error(error)
+        weatherRepository.stubbedWeatherResult = Observable.just(WeatherResult<Weather>.locationNotFound)
+        weatherRepository.stubbedForecastResult = Observable.just(WeatherResult<Forecast>.locationNotFound)
         
+        interactor.configure()
         interactor.refreshData()
         
         XCTAssertTrue(interactorOutput.invokedNoLocation)
@@ -116,10 +119,10 @@ class WeatherInteractorTests: XCTestCase {
         let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
-        let error = ReactiveRequestError.noResponce
-        weatherRepository.stubbedGetWeatherResult = Observable.error(error)
-        weatherRepository.stubbedGetForecastResult = Observable.error(error)
+        weatherRepository.stubbedWeatherResult = Observable.just(WeatherResult<Weather>.networkError)
+        weatherRepository.stubbedForecastResult = Observable.just(WeatherResult<Forecast>.networkError)
         
+        interactor.configure()
         interactor.refreshData()
         
         XCTAssertTrue(interactorOutput.invokedNoNetwork)
@@ -129,29 +132,13 @@ class WeatherInteractorTests: XCTestCase {
         let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
-        let weather = Observable.just(Weather())
-                                .delay(RxTimeInterval.seconds(5), scheduler: MainScheduler.instance)
-        let forecast = Observable.just(Forecast(from: [Weather()]))
-                                 .delay(RxTimeInterval.seconds(5), scheduler: MainScheduler.instance)
+        weatherRepository.stubbedWeatherResult = Observable.just(WeatherResult<Weather>.timeout)
+        weatherRepository.stubbedForecastResult = Observable.just(WeatherResult<Forecast>.timeout)
         
-        weatherRepository.stubbedGetWeatherResult = weather
-        weatherRepository.stubbedGetForecastResult = forecast
-        interactor.timeLimit = 0
-        
+        interactor.configure()
         interactor.refreshData()
-
-        let expect = expectation(description: "Expect weather request time out")
         
-        interactorOutput.weatherRequestTimeOutHandler = {
-            XCTAssertTrue(interactorOutput.invokedWeatherRequestTimeOut)
-            expect.fulfill()
-        }
-        
-        waitForExpectations(timeout: 1) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
+        XCTAssertTrue(interactorOutput.invokedWeatherRequestTimeOut)
     }
     
     

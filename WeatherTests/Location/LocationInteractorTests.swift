@@ -156,7 +156,8 @@ class LocationInteractorTests: XCTestCase {
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         let locality = "Бангладеш"
         
-        weatherRepository.stubbedGetWeatherResult = Observable.just(Weather())
+        let weather = WeatherResult.success(Weather())
+        weatherRepository.stubbedWeatherResult = Observable.just(weather)
         interactor.cityRepository = cityRepository
         interactor.getWeather(for: locality)
         
@@ -170,57 +171,44 @@ class LocationInteractorTests: XCTestCase {
         let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
-        weatherRepository.stubbedGetWeatherResult = Observable.just(Weather())
+        let weather = WeatherResult<Weather>.success(Weather())
+        weatherRepository.stubbedWeatherResult = Observable.just(weather)
         interactor.getWeather(for: "dummy")
         
         XCTAssertTrue(interactorOutput.invokedFoundWeather)
     }
     
-    func testInteractorShouldCallPresenterWhenWeatherObservableSendsNoLocation(){
+    func testInteractorShouldCallPresenterWhenNoFoundLocation(){
         let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
-        let error = ReactiveRequestError.badResponse(code: 666)
-        weatherRepository.stubbedGetWeatherResult = Observable.error(error)
+        let result = WeatherResult<Weather>.locationNotFound
+        weatherRepository.stubbedWeatherResult = Observable.just(result)
         interactor.getWeather(for: "dummy")
         
         XCTAssertTrue(interactorOutput.invokedNoLocation)
     }
     
-    func testInteractorShouldCallPresenterWhenWeatherObservableSendsNoNetwork(){
+    func testInteractorShouldCallPresenterWhenNoNetwork(){
         let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
-        let error = ReactiveRequestError.noResponce
-        weatherRepository.stubbedGetWeatherResult = Observable.error(error)
+        let result = WeatherResult<Weather>.networkError
+        weatherRepository.stubbedWeatherResult = Observable.just(result)
         interactor.getWeather(for: "dummy")
         
         XCTAssertTrue(interactorOutput.invokedNoNetwork)
     }
     
-    func testInteractorShouldCallPresenterAsyncWhenWeatherObservableSendsTimeout(){
+    func testInteractorShouldCallPresenterWhenTimeout(){
         let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
         let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
-        let result = Observable.just(Weather())
-                               .delay(RxTimeInterval.seconds(5), scheduler: MainScheduler.instance)
-        weatherRepository.stubbedGetWeatherResult = result
-        interactor.requestTimeout = 0
+        weatherRepository.stubbedWeatherResult = Observable.just(WeatherResult<Weather>.timeout)
+        
         interactor.getWeather(for: "dummy")
-        
-        let expect = expectation(description: "Expect weather request time out")
-        
-        interactorOutput.weatherRequestTimeOutHandler = {
-            XCTAssertTrue(interactorOutput.invokedWeatherRequestTimeOut)
-            expect.fulfill()
-        }
-        
-        waitForExpectations(timeout: 1) { error in
-            
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-        }
+
+        XCTAssertTrue(interactorOutput.invokedWeatherRequestTimeOut)
     }
     
 }

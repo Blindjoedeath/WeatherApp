@@ -50,16 +50,6 @@ class WeatherInteractorOutputSpy: WeatherInteractorOutput{
         invokedFoundWeekForecastParameters = (weekForecast, ())
         invokedFoundWeekForecastParametersList.append((weekForecast, ()))
     }
-    var invokedFoundDayForecast = false
-    var invokedFoundDayForecastCount = 0
-    var invokedFoundDayForecastParameters: (dayForecast: [Weather], Void)?
-    var invokedFoundDayForecastParametersList = [(dayForecast: [Weather], Void)]()
-    func found(dayForecast: [Weather]) {
-        invokedFoundDayForecast = true
-        invokedFoundDayForecastCount += 1
-        invokedFoundDayForecastParameters = (dayForecast, ())
-        invokedFoundDayForecastParametersList.append((dayForecast, ()))
-    }
     var invokedSetStyle = false
     var invokedSetStyleCount = 0
     var invokedSetStyleParameters: (appStyle: AppStyle, Void)?

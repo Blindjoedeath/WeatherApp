@@ -12,7 +12,7 @@ protocol DayForecastPresenterProtocol: class {
     
 }
 
-class DayForecastPresenter: WeatherPresenterDelegate, DayForecastPresenterProtocol{
+class DayForecastPresenter:  DayForecastPresenterProtocol{
     
     weak var view: DayForecastViewProtocol!
     var router: DayForecastRouter!
