@@ -43,15 +43,24 @@ class WeatherInteractorTests: XCTestCase {
     
     // MARK: Interactor and WeatherRepository tests
     
-    func testInteractorShouldRequestDataFromWeatherRepositoryWhenRefresh(){
+    func buildInteractorWithWeatherRepositorySpy() -> (WeatherInteractor, WeatherInteractorOutputSpy){
         let weatherRepository = WeatherRepositorySpy()
-        configurator.interactorOutput = WeatherInteractorOutputFake()
-        let interactor = configurator.build().presenter!.interactor as! WeatherInteractor
+        let interactorOutput = WeatherInteractorOutputSpy()
+        configurator.interactorOutput = interactorOutput
+        let interactor = configurator.build().presenter?.interactor as! WeatherInteractor
+        
+        interactor.weatherRepository = weatherRepository
+        
+        return (interactor, interactorOutput)
+    }
+    
+    func testInteractorShouldRequestDataFromWeatherRepositoryWhenRefresh(){
+        let (interactor, _) = buildInteractorWithWeatherRepositorySpy()
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let weather = Weather()
         weatherRepository.stubbedGetWeatherResult = Observable.just(weather)
         weatherRepository.stubbedGetForecastResult = Observable.just(Forecast(from: [weather]))
-        interactor.weatherRepository = weatherRepository
         
         interactor.refreshData()
         
@@ -60,17 +69,14 @@ class WeatherInteractorTests: XCTestCase {
     }
     
     func testInteractorShouldSendWeatherToPresenterWhenWeatherFound(){
-        let weatherRepository = WeatherRepositorySpy()
-        let interactorOutput = WeatherInteractorOutputSpy()
-        configurator.interactorOutput = interactorOutput
-        let interactor = configurator.build().presenter!.interactor as! WeatherInteractor
+        let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let weather = Weather()
         weatherRepository.stubbedGetWeatherResult = Observable.just(weather)
         weatherRepository.stubbedGetForecastResult = Observable.just(Forecast(from: [weather]))
                                                                .delay(RxTimeInterval.seconds(10),
                                                                       scheduler: MainScheduler.instance)
-        interactor.weatherRepository = weatherRepository
         
         interactor.refreshData()
         
@@ -78,17 +84,14 @@ class WeatherInteractorTests: XCTestCase {
     }
     
     func testInteractorShouldSendForecastToPresenterWhenForecastFound(){
-        let weatherRepository = WeatherRepositorySpy()
-        let interactorOutput = WeatherInteractorOutputSpy()
-        configurator.interactorOutput = interactorOutput
-        let interactor = configurator.build().presenter!.interactor as! WeatherInteractor
+        let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let weather = Weather()
         weatherRepository.stubbedGetWeatherResult = Observable.just(weather)
                                                               .delay(RxTimeInterval.seconds(10),
                                                                      scheduler: MainScheduler.instance)
         weatherRepository.stubbedGetForecastResult = Observable.just(Forecast(from: [weather]))
-        interactor.weatherRepository = weatherRepository
         
         interactor.refreshData()
         
@@ -97,15 +100,12 @@ class WeatherInteractorTests: XCTestCase {
     }
     
     func testInteractorShouldCallNoLocationWhenBadResponce(){
-        let weatherRepository = WeatherRepositorySpy()
-        let interactorOutput = WeatherInteractorOutputSpy()
-        configurator.interactorOutput = interactorOutput
-        let interactor = configurator.build().presenter!.interactor as! WeatherInteractor
+        let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let error = ReactiveRequestError.badResponse(code: 666)
         weatherRepository.stubbedGetWeatherResult = Observable.error(error)
         weatherRepository.stubbedGetForecastResult = Observable.error(error)
-        interactor.weatherRepository = weatherRepository
         
         interactor.refreshData()
         
@@ -113,15 +113,12 @@ class WeatherInteractorTests: XCTestCase {
     }
     
     func testInteractorShouldCallNoNetworkWhenNoReponce(){
-        let weatherRepository = WeatherRepositorySpy()
-        let interactorOutput = WeatherInteractorOutputSpy()
-        configurator.interactorOutput = interactorOutput
-        let interactor = configurator.build().presenter!.interactor as! WeatherInteractor
+        let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let error = ReactiveRequestError.noResponce
         weatherRepository.stubbedGetWeatherResult = Observable.error(error)
         weatherRepository.stubbedGetForecastResult = Observable.error(error)
-        interactor.weatherRepository = weatherRepository
         
         interactor.refreshData()
         
@@ -129,10 +126,8 @@ class WeatherInteractorTests: XCTestCase {
     }
     
     func testInteractorShouldCallTimeoutWhenTimeoutError(){
-        let weatherRepository = WeatherRepositorySpy()
-        let interactorOutput = WeatherInteractorOutputSpy()
-        configurator.interactorOutput = interactorOutput
-        let interactor = configurator.build().presenter!.interactor as! WeatherInteractor
+        let (interactor, interactorOutput) = buildInteractorWithWeatherRepositorySpy()
+        let weatherRepository = interactor.weatherRepository as! WeatherRepositorySpy
         
         let weather = Observable.just(Weather())
                                 .delay(RxTimeInterval.seconds(5), scheduler: MainScheduler.instance)
@@ -141,7 +136,6 @@ class WeatherInteractorTests: XCTestCase {
         
         weatherRepository.stubbedGetWeatherResult = weather
         weatherRepository.stubbedGetForecastResult = forecast
-        interactor.weatherRepository = weatherRepository
         interactor.timeLimit = 0
         
         interactor.refreshData()
