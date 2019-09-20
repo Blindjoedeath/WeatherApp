@@ -9,15 +9,12 @@
 import UIKit
 
 protocol DayForecastViewProtocol: class {
-    func cancelAnimation()
-    func animateAppearance()
-    func configure(with: [WeatherItem])
-    func resizeViewToinitialSize()
-    func resizeViewToData()
     
-    var isAnimating: Bool {get }
+    var presenter: DayForecastPresenterProtocol! {get set}
+    func cancelAnimation()
+    func load(dayForecast: [WeatherItem])
+    
     var isUpdatingIndicatorEnabled: Bool {get set}
-    var isItemsEnabled: Bool {get set}
 }
 
 class DayForecastViewController: UIScrollView, DayForecastViewProtocol {
@@ -51,6 +48,8 @@ class DayForecastViewController: UIScrollView, DayForecastViewProtocol {
         set {
             UIApplication.shared.isNetworkActivityIndicatorVisible = newValue
             if newValue{
+                resizeViewToinitialSize()
+                isItemsEnabled = false
                 updatingIndicator.startAnimating()
             } else{
                 updatingIndicator.stopAnimating()
@@ -118,6 +117,7 @@ class DayForecastViewController: UIScrollView, DayForecastViewProtocol {
     func animateAppearance(){
         configureHourBins()
         isAnimating = true
+        isItemsEnabled = true
         animateСonsistently(for: hourBinViews)
     }
     
@@ -144,8 +144,10 @@ class DayForecastViewController: UIScrollView, DayForecastViewProtocol {
         }
     }
     
-    func configure(with dayForecast: [WeatherItem]) {
+    func load(dayForecast: [WeatherItem]) {
         self.dayForecast = dayForecast
+        resizeViewToData()
+        animateAppearance()
     }
 
     func calculateIndicatorScales() -> [Float]{
@@ -163,9 +165,5 @@ class DayForecastViewController: UIScrollView, DayForecastViewProtocol {
             result.append(value)
         }
         return result
-    }
-    
-    deinit{
-        //print("day forecast view deinit")
     }
 }

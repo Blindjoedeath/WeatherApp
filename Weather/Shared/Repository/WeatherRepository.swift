@@ -14,6 +14,7 @@ public enum WeatherResult<T>{
     case networkError
     case locationNotFound
     case timeout
+    case loading
     case success(T)
 }
 
@@ -51,6 +52,7 @@ class WeatherRepository: WeatherRepositoryProtocol{
     }
     
     private func emit<T>(observable: Observable<T>, in subject: PublishSubject<WeatherResult<T>>){
+        subject.onNext(.loading)
         observable
             .observeOn(MainScheduler.instance)
             .timeout(RxTimeInterval.seconds(requestTimeout), scheduler: MainScheduler.instance)

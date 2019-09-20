@@ -9,45 +9,39 @@
 import Foundation
 
 protocol DayForecastPresenterProtocol: class {
+    var view: DayForecastViewProtocol! {get set}
+    var router: DayForecastRouterProtocol! {get set}
+    var interactor: DayForecastInteractorProtocol! {get set}
     
+    func load()
+    func unload()
 }
 
-class DayForecastPresenter:  DayForecastPresenterProtocol{
+class DayForecastPresenter: DayForecastPresenterProtocol{
     
     weak var view: DayForecastViewProtocol!
-    var router: DayForecastRouter!
+    var interactor: DayForecastInteractorProtocol!
+    var router: DayForecastRouterProtocol!
     
-    func updateWith(data items: [WeatherItem]) {
-        view.configure(with: items)
+    func load() {
+        interactor.configure()
+        view.isUpdatingIndicatorEnabled = true
     }
     
-    func animateDataAppearance() {
-        if view.isAnimating{
-            view.cancelAnimation()
-        }
-        view.resizeViewToData()
-        view.isItemsEnabled = true
-        view.animateAppearance()
-    }
-    
-    func cancelAppearanceAnimation() {
+    func unload() {
         view.cancelAnimation()
     }
-    
-    var isUpdatingIndicatorEnabled: Bool{
-        get{
-            return view.isUpdatingIndicatorEnabled
-        }
-        set{
-            if newValue{
-                view.isItemsEnabled = false
-                view.resizeViewToinitialSize()
-            }
-            view.isUpdatingIndicatorEnabled = newValue
-        }
+}
+
+
+extension DayForecastPresenter: DayForecastInteractorOutput{
+    func load(dayForecast: [Weather]) {
+        let items = dayForecast.map{ WeatherItem.from(weather: $0, date: $0.date!.hour)}
+        view.isUpdatingIndicatorEnabled = false
+        view.load(dayForecast: items)
     }
     
-    deinit {
-        //print("day forecast presenter deinit")
+    func dataWillReload() {
+        view.isUpdatingIndicatorEnabled = true
     }
 }

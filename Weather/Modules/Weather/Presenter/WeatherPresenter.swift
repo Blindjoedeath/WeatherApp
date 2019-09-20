@@ -100,16 +100,6 @@ extension WeatherPresenter: WeatherInteractorOutput{
         setForecast = true
         view.isUpdateIndicatorEnabled = !(setWeather && setForecast)
     }
-    /*
-    func found(dayForecast: [Weather]) {
-        let items = dayForecast.map{
-            return WeatherItem.from(weather: $0, date: $0.date!.hour)
-        }
-        delegate?.updateWith(data: items)
-        delegate?.animateDataAppearance()
-        delegate?.isUpdatingIndicatorEnabled = false
-    }
- */
     
     func setStyle(appStyle: AppStyle) {
         view.setAppStyle(style: appStyle)

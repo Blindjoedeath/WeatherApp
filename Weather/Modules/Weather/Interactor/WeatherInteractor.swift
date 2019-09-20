@@ -64,6 +64,8 @@ extension WeatherInteractor: WeatherInteractorProtocol{
                     self?.presenter.noNetwork()
                 case .timeout:
                     self?.presenter.weatherRequestTimeOut()
+                default:
+                    break
                 }
         }).disposed(by: bag)
         
@@ -80,6 +82,8 @@ extension WeatherInteractor: WeatherInteractorProtocol{
                     self?.presenter.noNetwork()
                 case .timeout:
                     self?.presenter.weatherRequestTimeOut()
+                default:
+                    break
                 }
         }).disposed(by: bag)
     }

@@ -8,16 +8,22 @@
 
 import Foundation
 
-protocol DayForecastRouterProtocol{
+protocol DayForecastRouterProtocol: class{
+    var presenter: DayForecastPresenterProtocol! {get set}
     
+    func load()
+    func unload()
 }
 
 class DayForecastRouter: NSObject, DayForecastRouterProtocol{
     
-    weak var view: DayForecastViewController!
-    weak var presenter: DayForecastPresenter!
+    weak var presenter: DayForecastPresenterProtocol!
     
-    deinit {
-       // print("day forecast router deinited")
+    func load(){
+        presenter.load()
+    }
+    
+    func unload() {
+        presenter.unload()
     }
 }

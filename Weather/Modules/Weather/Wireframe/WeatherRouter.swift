@@ -27,7 +27,7 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
         }
     }
     weak var presenter: WeatherPresenterProtocol!
-    weak var dayForecastRouter: DayForecastRouter!
+    weak var dayForecastRouter: DayForecastRouterProtocol!
     var styleRouter: StyleRouter!
     
     func route() {
@@ -42,7 +42,8 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
     }
     
     func presentDayForecast(){
-        dayForecastRouter = DayForecastConfigurator.build(from: view.dayForecastScrollView)
+        dayForecastRouter = DayForecastConfigurator().build(with: view.dayForecastScrollView)
+        dayForecastRouter.load()
     }
     
     func presentStyleMenu(){
@@ -50,8 +51,8 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
     }
 
     func unload(){
+        dayForecastRouter.unload()
         view.dismiss(animated: true, completion: nil)
-        
         presenter = nil
     }
     

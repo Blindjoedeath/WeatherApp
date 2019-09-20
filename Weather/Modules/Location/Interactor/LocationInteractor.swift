@@ -101,6 +101,8 @@ class LocationInteractor: LocationInteractorProtocol{
                     self?.presenter.noNetwork()
                 case .timeout:
                     self?.presenter.weatherRequestTimeOut()
+                default:
+                    break
                 }
             }).disposed(by: bag)
         

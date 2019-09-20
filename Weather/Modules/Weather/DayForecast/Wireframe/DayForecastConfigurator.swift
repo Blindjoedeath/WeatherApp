@@ -8,17 +8,33 @@
 
 import Foundation
 
-class DayForecastConfigurator{
+class DayForecastConfigurator: NSObject {
     
-    static func build(from view: DayForecastViewController) -> DayForecastRouter{
-        let router = DayForecastRouter()
-        let presenter = DayForecastPresenter()
+    var view: DayForecastViewProtocol!
+    
+    lazy var router: DayForecastRouterProtocol! = DayForecastRouter()
+    lazy var presenter: DayForecastPresenterProtocol! = DayForecastPresenter()
+    lazy var interactor: DayForecastInteractorProtocol! = DayForecastInteractor()
+    lazy var interactorOutput: DayForecastInteractorOutput! = {
+        return self.presenter as? DayForecastInteractorOutput
+    }()
+    
+    func build() -> DayForecastRouterProtocol {
+        presenter?.interactor = interactor
+        presenter?.router = router
+        presenter?.view = view
         
-        presenter.router = router
-        view.presenter = presenter
-        presenter.view = view
-        router.view = view
-        router.presenter = presenter
-        return router
+        view?.presenter = presenter
+        
+        interactor?.presenter = interactorOutput
+        
+        router?.presenter = presenter
+        
+        return router!
+    }
+    
+    func build(with view: DayForecastViewProtocol) -> DayForecastRouterProtocol{
+        self.view = view
+        return build()
     }
 }
