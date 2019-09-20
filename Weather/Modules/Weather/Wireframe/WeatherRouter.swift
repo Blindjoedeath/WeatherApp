@@ -21,15 +21,31 @@ protocol WeatherRouterProtocol: class {
 class WeatherRouter: NSObject, WeatherRouterProtocol{
     
     var locationRouter: LocationRouter!
-    weak var view: WeatherViewController! {
+    
+    weak var weatherViewControllerCached: WeatherViewController!
+    var view: WeatherViewController! {
         get{
-            return presenter.view as! WeatherViewController
+            if weatherViewControllerCached == nil{
+                weatherViewControllerCached = presenter.view as! WeatherViewController
+            }
+            return weatherViewControllerCached
+        }
+        set{
+            weatherViewControllerCached = newValue
         }
     }
     weak var presenter: WeatherPresenterProtocol!
-    weak var dayForecastRouter: DayForecastRouterProtocol!{
+    
+    weak var dayForecastRouterCached: DayForecastRouterProtocol!
+    var dayForecastRouter: DayForecastRouterProtocol!{
         get{
-            return DayForecastConfigurator().build(with: view!.dayForecastScrollView)
+            if dayForecastRouterCached == nil{
+                dayForecastRouterCached = DayForecastConfigurator().build(with: view!.dayForecastScrollView)
+            }
+            return dayForecastRouterCached
+        }
+        set{
+            dayForecastRouterCached = newValue
         }
     }
     weak var styleRouter: StyleRouterProtocol!

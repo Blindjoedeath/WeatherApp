@@ -17,9 +17,16 @@ protocol StyleRouterProtocol: class{
 
 class StyleRouter: NSObject, StyleRouterProtocol{
     
+    weak var styleTableViewControllerCached: StyleTableViewController!
     weak var view: StyleTableViewController! {
         get{
-            return presenter.view as! StyleTableViewController
+            if styleTableViewControllerCached == nil{
+                styleTableViewControllerCached = presenter.view as! StyleTableViewController
+            }
+            return styleTableViewControllerCached
+        }
+        set{
+            styleTableViewControllerCached = newValue
         }
     }
     weak var presenter: StylePresenterProtocol!
