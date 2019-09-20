@@ -31,8 +31,8 @@ class StyleInteractor: StyleInteractorProtocol {
     
     func configure(){
         styleRepository.appStyle
-            .subscribe(onNext: {style in
-                self.presenter.styleChanged(appStyle: style)
+            .subscribe(onNext: {[weak self] style in
+                self?.presenter.styleChanged(appStyle: style)
             }).disposed(by: bag)
     }
     
