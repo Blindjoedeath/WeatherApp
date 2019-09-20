@@ -9,12 +9,18 @@
 import Foundation
 
 protocol StyleRouterProtocol{
+    
+    var presenter: StylePresenterProtocol! {get set}
+    
     func close()
 }
 
 class StyleRouter: NSObject, StyleRouterProtocol{
-    weak var view: StyleTableViewController!
-    weak var presenter: StylePresenter!
+    
+    lazy var view: StyleTableViewController! = {
+        return presenter.view as! StyleTableViewController
+    }()
+    weak var presenter: StylePresenterProtocol!
     
     func close(){
         view.dismiss(animated: true, completion: nil)

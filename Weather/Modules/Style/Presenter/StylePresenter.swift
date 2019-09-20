@@ -9,6 +9,11 @@
 import Foundation
 
 protocol StylePresenterProtocol: class{
+    
+    var interactor: StyleInteractorProtocol! {get set}
+    var router: StyleRouterProtocol! {get set}
+    var view: StyleViewProtocol! {get set}
+    
     func styleChanged(name: String)
     func configureView()
     func close()
@@ -18,9 +23,7 @@ class StylePresenter: StylePresenterProtocol{
     
     weak var view: StyleViewProtocol!
     var interactor: StyleInteractorProtocol!
-    var router: StyleRouter!
-    
-    var seasons = ["winter", "spring", "summer", "autumn"]
+    var router: StyleRouterProtocol!
     
     func styleChanged(name: String) {
         interactor.setStyle(name: name)
@@ -39,4 +42,8 @@ class StylePresenter: StylePresenterProtocol{
     deinit {
         //print("Deinited style presenter")
     }
+}
+
+extension StylePresenter: StyleInteractorOutput{
+    
 }

@@ -9,13 +9,16 @@
 import UIKit
 
 protocol StyleViewProtocol: class {
+    
+    var presenter: StylePresenterProtocol! {get set}
+    
     func setStyle(style: AppStyle)
     func setItems(items: [AppStyle])
 }
 
 class StyleTableViewController: UITableViewController {
     
-    var items: [AppStyle]!
+    var items: [AppStyle] = []
     var presenter: StylePresenterProtocol!
     
     override func viewDidLoad() {
@@ -29,10 +32,7 @@ class StyleTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let items = items{
-            return items.count
-        }
-        return 0
+        return items.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{

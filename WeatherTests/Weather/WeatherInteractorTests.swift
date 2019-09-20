@@ -160,7 +160,7 @@ class WeatherInteractorTests: XCTestCase {
         configurator.interactorOutput = interactorOutput
         let _ = configurator.build()
         let interactor = configurator.interactor as! WeatherInteractor
-        let appStyleRepository = AppStyleRepositoryStub()
+        let appStyleRepository = AppStyleRepositorySpy()
         let style = AppStyle(name: "test", description: "test", color: .red)
         
         appStyleRepository.stubbedAppStyle = BehaviorRelay<AppStyle>(value: style)

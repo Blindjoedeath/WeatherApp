@@ -8,20 +8,33 @@
 
 import Foundation
 
-class StyleConfigurator{
+class StyleConfigurator: NSObject {
     
-    static func build(from view: StyleTableViewController) -> StyleRouter{
-        let router = StyleRouter()
-        let interactor = StyleInteractor()
-        let presenter = StylePresenter()
+    var view: StyleViewProtocol!
+    
+    lazy var router: StyleRouterProtocol! = StyleRouter()
+    lazy var presenter: StylePresenterProtocol! = StylePresenter()
+    lazy var interactor: StyleInteractorProtocol! = StyleInteractor()
+    lazy var interactorOutput: StyleInteractorOutput! = {
+        return self.presenter as? StyleInteractorOutput
+    }()
+    
+    func build() -> StyleRouterProtocol {
+        presenter?.interactor = interactor
+        presenter?.router = router
+        presenter?.view = view
         
-        view.presenter = presenter
-        presenter.view = view
-        presenter.interactor = interactor
-        router.presenter = presenter
-        router.view = view
+        view?.presenter = presenter
         
-        print(router)
-        return router
+        interactor?.presenter = interactorOutput
+        
+        router?.presenter = presenter
+        
+        return router!
+    }
+    
+    func build(with view: StyleViewProtocol) -> StyleRouterProtocol{
+        self.view = view
+        return build()
     }
 }

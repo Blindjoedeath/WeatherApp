@@ -21,16 +21,14 @@ protocol WeatherRouterProtocol {
 class WeatherRouter: NSObject, WeatherRouterProtocol{
     
     var locationRouter: LocationRouter!
-    var view: WeatherViewController{
-        get{
-            return presenter.view as! WeatherViewController
-        }
-    }
+    lazy var view: WeatherViewController = {
+        return presenter.view as! WeatherViewController
+    }()
     weak var presenter: WeatherPresenterProtocol!
     lazy var dayForecastRouter: DayForecastRouterProtocol! = {
         DayForecastConfigurator().build(with: view.dayForecastScrollView)
     }()
-    var styleRouter: StyleRouter!
+    var styleRouter: StyleRouterProtocol!
     
     func route() {
         view.performSegue(withIdentifier: "StyleTableSegue", sender: {(segue: UIStoryboardSegue) in
@@ -40,15 +38,11 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
     
     func styleModuleFrom(segue: UIStoryboardSegue){
         let view = segue.destination as! StyleTableViewController
-        styleRouter = StyleConfigurator.build(from: view)
+        styleRouter = StyleConfigurator().build(with: view)
     }
     
     func presentDayForecast(){
         dayForecastRouter.load()
-    }
-    
-    func presentStyleMenu(){
-        view.performSegue(withIdentifier: "StyleTableSegue", sender: nil)
     }
 
     func unload(){
