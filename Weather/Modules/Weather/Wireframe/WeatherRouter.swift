@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol WeatherRouterProtocol {
+protocol WeatherRouterProtocol: class {
     
     var presenter: WeatherPresenterProtocol! {get set}
     
@@ -21,14 +21,18 @@ protocol WeatherRouterProtocol {
 class WeatherRouter: NSObject, WeatherRouterProtocol{
     
     var locationRouter: LocationRouter!
-    lazy var view: WeatherViewController = {
-        return presenter.view as! WeatherViewController
-    }()
+    weak var view: WeatherViewController! {
+        get{
+            return presenter.view as! WeatherViewController
+        }
+    }
     weak var presenter: WeatherPresenterProtocol!
-    lazy var dayForecastRouter: DayForecastRouterProtocol! = {
-        DayForecastConfigurator().build(with: view.dayForecastScrollView)
-    }()
-    var styleRouter: StyleRouterProtocol!
+    weak var dayForecastRouter: DayForecastRouterProtocol!{
+        get{
+            return DayForecastConfigurator().build(with: view!.dayForecastScrollView)
+        }
+    }
+    weak var styleRouter: StyleRouterProtocol!
     
     func route() {
         view.performSegue(withIdentifier: "StyleTableSegue", sender: {(segue: UIStoryboardSegue) in

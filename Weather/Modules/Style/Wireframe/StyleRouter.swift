@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol StyleRouterProtocol{
+protocol StyleRouterProtocol: class{
     
     var presenter: StylePresenterProtocol! {get set}
     
@@ -17,9 +17,11 @@ protocol StyleRouterProtocol{
 
 class StyleRouter: NSObject, StyleRouterProtocol{
     
-    lazy var view: StyleTableViewController! = {
-        return presenter.view as! StyleTableViewController
-    }()
+    weak var view: StyleTableViewController! {
+        get{
+            return presenter.view as! StyleTableViewController
+        }
+    }
     weak var presenter: StylePresenterProtocol!
     
     func close(){
@@ -27,6 +29,6 @@ class StyleRouter: NSObject, StyleRouterProtocol{
     }
     
     deinit {
-        //print("Style router deinited")
+        print("Style router deinited")
     }
 }

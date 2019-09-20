@@ -26,4 +26,8 @@ class DayForecastRouter: NSObject, DayForecastRouterProtocol{
     func unload() {
         presenter.unload()
     }
+    
+    deinit {
+        print("deinited day forecast router")
+    }
 }

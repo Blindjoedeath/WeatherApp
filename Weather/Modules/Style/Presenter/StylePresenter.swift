@@ -40,7 +40,7 @@ class StylePresenter: StylePresenterProtocol{
     }
     
     deinit {
-        //print("Deinited style presenter")
+        print("Deinited style presenter")
     }
 }
 

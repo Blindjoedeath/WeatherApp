@@ -17,7 +17,7 @@ protocol LocationRouterProtocol{
 
 class LocationRouter: NSObject, LocationRouterProtocol{
     weak var presenter: LocationPresenterProtocol!
-    var weatherRouter : WeatherRouterProtocol!
+    weak var weatherRouter : WeatherRouterProtocol!
     
     func route(with data: Any?){
         let view = self.presenter.view as? LocationViewController

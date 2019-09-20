@@ -41,6 +41,6 @@ class StyleInteractor: StyleInteractorProtocol {
     }
     
     deinit {
-        //print("Deinited style interactor")
+        print("Deinited style interactor")
     }
 }
