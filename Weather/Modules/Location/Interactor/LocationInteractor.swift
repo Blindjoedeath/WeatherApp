@@ -9,15 +9,19 @@
 import Foundation
 import RxSwift
 
-protocol LocationInteractorInput: class {
+protocol LocationInteractorProtocol: class {
+    
+    var presenter: LocationInteractorOutput! {get set}
+    
+    func load()
     func getLocation()
     func getWeather(for: String)
-    func setCity(_: String)
     func getCity() -> String?
-    var locationAccessDetermined: Bool {get}
+    var isLocationAccessDetermined: Bool {get}
 }
 
 protocol LocationInteractorOutput: class {
+    
     func noNetwork()
     func noLocation()
     func weatherRequestTimeOut()
@@ -29,27 +33,32 @@ protocol LocationInteractorOutput: class {
     func foundLocality(locality: String)
 }
 
-class LocationInteractor: LocationInteractorInput{
+class LocationInteractor: LocationInteractorProtocol{
     
-    var locationAccessDetermined: Bool = false
+    var isLocationAccessDetermined: Bool = false
     
-    var output: LocationInteractorOutput?
-    lazy var geolocationService = GeolocationService()
+    weak var presenter: LocationInteractorOutput!
+    lazy var geolocationService: GeolocationServiceProtocol = GeolocationService()
     lazy var bag = DisposeBag()
     var weatherRepository = WeatherRepository.instance
     var cityRepository = CityRepository.instance
+    var requestTimeout = 10
     
-    init() {
+    func createSubscriptions(){
+        
         let _ = geolocationService.access
             .subscribe(onNext: { state in
-                self.locationAccessDetermined = true
-                self.output?.geolocationAccessDetermined(state: state)
+                self.presenter?.geolocationAccessDetermined(state: state)
             }).disposed(by: bag)
         
         let _ = geolocationService.accessDetermined
             .subscribe(onNext: {state in
-                self.locationAccessDetermined = state
+                self.isLocationAccessDetermined = state
             }).disposed(by: bag)
+    }
+    
+    func load(){
+        createSubscriptions()
     }
     
     func getLocation() {
@@ -57,56 +66,47 @@ class LocationInteractor: LocationInteractorInput{
             .subscribe(
                 onNext: { locality in
                     if let locality = locality{
-                        self.output?.foundLocality(locality: locality)
+                        self.presenter.foundLocality(locality: locality)
                     } else {
-                        self.output?.geolocationError(error: "Couldn't get locality")
+                        self.presenter.geolocationError(error: "Couldn't get locality")
                     }
                 },
                 onError:{ error in
                     if let rxError = error as? RxError{
                         switch rxError{
                         case .timeout:
-                            self.output?.geolocationTimeOut()
+                            self.presenter.geolocationTimeOut()
                         default:
                             break
                         }
                     } else {
-                        self.output?.geolocationError(error: error.localizedDescription)
+                        self.presenter.geolocationError(error: error.localizedDescription)
                     }
             }).disposed(by: bag)
     }
     
     func getWeather(for city: String){
         
-        let weather = weatherRepository.getWeather(for: city)
-        weather
-            .observeOn(MainScheduler.instance)
-            .subscribe(
-                onNext: {[weak self] weather in
-                    self?.output?.foundWeather()
-                },
-                onError: {[weak self] error in
-                    if let self = self{
-                        if let requestError = error as? ReactiveRequestError{
-                            switch requestError{
-                            case .badResponse:
-                                self.output?.noLocation()
-                                break
-                            case .noResponce:
-                                self.output?.noNetwork()
-                                break
-                            }
-                        } else if let rxError = error as? RxError{
-                            switch rxError{
-                            case .timeout:
-                                self.output?.geolocationTimeOut()
-                            default:
-                                break
-                            }
-                        }
-                    }
+        weatherRepository.weatherResult
+            .subscribe(onNext: {[weak self]result in
+                switch result{
+                case .success:
+                    self?.cityRepository.city.accept(city)
+                    self?.presenter.foundWeather()
+                    break
+                case .locationNotFound:
+                    self?.presenter.noLocation()
+                    break
+                case .networkError:
+                    self?.presenter.noNetwork()
+                case .timeout:
+                    self?.presenter.weatherRequestTimeOut()
+                default:
+                    break
                 }
-            ).disposed(by: bag)
+            }).disposed(by: bag)
+        
+        weatherRepository.refreshWeather(for: city)
     }
     
     func setCity(_ city: String) {

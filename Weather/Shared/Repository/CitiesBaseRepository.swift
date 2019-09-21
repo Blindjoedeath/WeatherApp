@@ -8,9 +8,13 @@
 
 import Foundation
 
-class CitiesBaseRepository{
+protocol CitiesBaseRepositoryProtocol{
+    var cities: [String] {get}
+}
+
+class CitiesBaseRepository: CitiesBaseRepositoryProtocol{
     
-    static let instance = CitiesBaseRepository()
+    static let instance: CitiesBaseRepositoryProtocol = CitiesBaseRepository()
     
     private init(){
         

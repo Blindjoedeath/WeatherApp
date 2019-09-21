@@ -9,19 +9,22 @@
 import UIKit
 
 protocol StyleViewProtocol: class {
+    
+    var presenter: StylePresenterProtocol! {get set}
+    
     func setStyle(style: AppStyle)
     func setItems(items: [AppStyle])
 }
 
 class StyleTableViewController: UITableViewController {
     
-    var items: [AppStyle]!
+    var items: [AppStyle] = []
     var presenter: StylePresenterProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter.configureView()
+        presenter.load()
     }
     
     @IBAction func closeButtonAction(){
@@ -29,10 +32,7 @@ class StyleTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let items = items{
-            return items.count
-        }
-        return 0
+        return items.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
@@ -49,7 +49,7 @@ class StyleTableViewController: UITableViewController {
     }
     
     deinit {
-        //print("Deinited style table view")
+        print("Deinited style table view")
     }
 }
 
@@ -59,11 +59,7 @@ extension StyleTableViewController: StyleViewProtocol{
     }
     
     func setStyle(style: AppStyle){
-        let color = UIColor(red: CGFloat(style.color.r),
-                            green: CGFloat(style.color.g),
-                            blue: CGFloat(style.color.b),
-                            alpha: 1)
-        tableView.backgroundColor = color
+        tableView.backgroundColor = style.color
         tableView.reloadData()
     }
 }

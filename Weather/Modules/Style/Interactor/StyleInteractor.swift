@@ -7,25 +7,33 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol StyleInteractorProtocol: class {
-    func getStyle() -> AppStyle
+    
+    var presenter: StyleInteractorOutput! {get set}
+    
     func setStyle(name: String)
     func getAllStyles() -> [AppStyle]
+    func configure()
+}
+
+protocol StyleInteractorOutput: class{
+    func styleChanged(appStyle: AppStyle)
 }
 
 class StyleInteractor: StyleInteractorProtocol {
     
+    weak var presenter: StyleInteractorOutput!
+    
     var styleRepository = AppStyleRepository.instance
+    var bag = DisposeBag()
     
-    func styleToModel(style: AppStyle) -> AppStyle{
-        return AppStyle(name: style.name,
-                        description: style.description,
-                        color: style.color)
-    }
-    
-    func getStyle() -> AppStyle {
-        return styleToModel(style: styleRepository.appStyle.value)
+    func configure(){
+        styleRepository.appStyle
+            .subscribe(onNext: {[weak self] style in
+                self?.presenter.styleChanged(appStyle: style)
+            }).disposed(by: bag)
     }
     
     func setStyle(name: String) {
@@ -34,10 +42,10 @@ class StyleInteractor: StyleInteractorProtocol {
     }
     
     func getAllStyles() -> [AppStyle] {
-        return styleRepository.appStyles.map{styleToModel(style: $0.value)}
+        return styleRepository.appStyles.map{ $0.value }
     }
     
     deinit {
-        //print("Deinited style interactor")
+        print("Deinited style interactor")
     }
 }

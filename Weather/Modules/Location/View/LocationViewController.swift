@@ -12,11 +12,13 @@ import RxSwift
 
 protocol LocationViewProtocol: class {
     
+    var presenter: LocationPresenterProtocol! {get set}
+    
     func showAlert(title: String, message: String)
-    func setDate(_: String)
-    func setDay(_: String)
-    func setCity(_: String)
-    func setCities(_: [String])
+    func setDate(_ date: String)
+    func setDay(_ day: String)
+    func setCity(_ city: String)
+    func setCities(_ cities: [String])
     
     var isNextNavigationEnabled: Bool {get set}
     var isPermissionNotificationEnabled: Bool {get set}
@@ -49,7 +51,7 @@ class LocationViewController: UIViewController{
         super.viewDidLoad()
         cityTextField.borderStyle = .roundedRect
         addGestureRecognizer()
-        presenter.configureView()
+        presenter.load()
         initUpdatingLocationIndicator()
         configureCityTextField()
     }
@@ -112,6 +114,10 @@ class LocationViewController: UIViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let closure = sender as! (UIStoryboardSegue) -> ()
         closure(segue)
+    }
+    
+    deinit {
+        print("deinited view")
     }
 }
 
@@ -185,6 +191,7 @@ extension LocationViewController: LocationViewProtocol{
             defineLocationButton.isHidden = !newValue
         }
     }
+
 }
 
 extension LocationViewController: UIGestureRecognizerDelegate {
@@ -253,5 +260,4 @@ extension LocationViewController: UITableViewDataSource, UITableViewDelegate{
         presenter.cityNameChanged(on: cityTextField.text!)
         self.isCitySet = true
     }
-    
 }

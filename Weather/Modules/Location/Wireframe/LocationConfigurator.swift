@@ -10,21 +10,31 @@ import Foundation
 
 class LocationConfigurator: NSObject {
     
-    static func build(with view: LocationViewController) -> LocationRouter {
-        let router = LocationRouter()
-        let presenter = LocationPresenter()
-        let interactor = LocationInteractor()
+    var view: LocationViewProtocol!
+    
+    lazy var router: LocationRouterProtocol! = LocationRouter()
+    lazy var presenter: LocationPresenterProtocol! = LocationPresenter()
+    lazy var interactor: LocationInteractorProtocol! = LocationInteractor()
+    lazy var interactorOutput: LocationInteractorOutput! = {
+        return self.presenter as? LocationInteractorOutput
+    }()
+    
+    func build() -> LocationRouterProtocol {
+        presenter?.interactor = interactor
+        presenter?.router = router
+        presenter?.view = view
         
-        presenter.interactor = interactor
-        presenter.router = router
-        presenter.view = view
+        view?.presenter = presenter
         
-        view.presenter = presenter
+        interactor?.presenter = interactorOutput
         
-        interactor.output = presenter
+        router?.presenter = presenter
         
-        router.view = view
-        
-        return router
+        return router!
+    }
+    
+    func build(with view: LocationViewProtocol) -> LocationRouterProtocol{
+        self.view = view
+        return build()
     }
 }

@@ -8,15 +8,12 @@
 
 import Foundation
 
-protocol WeatherPresenterDelegate: class {
-    func updateWith(data forecast: [WeatherItem])
-    func animateDataAppearance()
-    func cancelAppearanceAnimation()
-    
-    var isUpdatingIndicatorEnabled: Bool {get set}
-}
-
 protocol WeatherPresenterProtocol: class{
+    
+    var interactor: WeatherInteractorProtocol! {get set}
+    var view: WeatherViewProtocol! {get set}
+    var router: WeatherRouterProtocol! {get set}
+    
     func closeNavigationRequired()
     func shareNavigationRequired()
     func styleMenuNavigationRequired()
@@ -27,20 +24,17 @@ protocol WeatherPresenterProtocol: class{
 class WeatherPresenter: WeatherPresenterProtocol{
     
     weak var view: WeatherViewProtocol!
-    var interactor: WeatherInteractorInput!
+    var interactor: WeatherInteractorProtocol!
     var router: WeatherRouterProtocol!
-    weak var delegate: WeatherPresenterDelegate?
     
     var setWeather = false
     var setForecast = false
     
     func setIndicatorState(state: Bool){
         view.isUpdateIndicatorEnabled = state
-        delegate?.isUpdatingIndicatorEnabled = state
     }
     
     func closeNavigationRequired() {
-        delegate?.cancelAppearanceAnimation()
         setIndicatorState(state: false)
         router.unload()
         view.close()
@@ -51,7 +45,7 @@ class WeatherPresenter: WeatherPresenterProtocol{
     }
     
     func styleMenuNavigationRequired() {
-        router.routeToStyle()
+        router.route()
     }
     
     func updateDataRequired() {
@@ -105,15 +99,6 @@ extension WeatherPresenter: WeatherInteractorOutput{
         view.setWeekForecastData(forecast: items)
         setForecast = true
         view.isUpdateIndicatorEnabled = !(setWeather && setForecast)
-    }
-    
-    func found(dayForecast: [Weather]) {
-        let items = dayForecast.map{
-            return WeatherItem.from(weather: $0, date: $0.date!.hour)
-        }
-        delegate?.updateWith(data: items)
-        delegate?.animateDataAppearance()
-        delegate?.isUpdatingIndicatorEnabled = false
     }
     
     func setStyle(appStyle: AppStyle) {

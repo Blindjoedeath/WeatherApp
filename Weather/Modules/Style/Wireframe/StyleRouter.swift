@@ -8,19 +8,34 @@
 
 import Foundation
 
-protocol StyleRouterProtocol{
+protocol StyleRouterProtocol: class{
+    
+    var presenter: StylePresenterProtocol! {get set}
+    
     func close()
 }
 
 class StyleRouter: NSObject, StyleRouterProtocol{
-    weak var view: StyleTableViewController!
-    weak var presenter: StylePresenter!
+    
+    weak var styleTableViewControllerCached: StyleTableViewController!
+    weak var view: StyleTableViewController! {
+        get{
+            if styleTableViewControllerCached == nil{
+                styleTableViewControllerCached = presenter.view as! StyleTableViewController
+            }
+            return styleTableViewControllerCached
+        }
+        set{
+            styleTableViewControllerCached = newValue
+        }
+    }
+    weak var presenter: StylePresenterProtocol!
     
     func close(){
         view.dismiss(animated: true, completion: nil)
     }
     
     deinit {
-        //print("Style router deinited")
+        print("Style router deinited")
     }
 }

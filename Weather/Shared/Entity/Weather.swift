@@ -96,4 +96,26 @@ class Weather: Codable {
         } else {
         }
     }
+    
+    init() {
+        self.date = Date()
+        self.description = ""
+        self.humidity = 0
+        self.iconCode = ""
+        self.temperature = 0
+        self.weatherId = 0
+        self.windSpeed = 0
+    }
+}
+
+extension Weather: Equatable{
+    static func == (lhs: Weather, rhs: Weather) -> Bool {
+        return  lhs.date == rhs.date &&
+                lhs.description == rhs.description &&
+                lhs.humidity == rhs.humidity &&
+                lhs.iconCode == rhs.iconCode &&
+                lhs.temperature == rhs.temperature &&
+                lhs.weatherId == rhs.weatherId &&
+                lhs.windSpeed == rhs.windSpeed
+    }
 }

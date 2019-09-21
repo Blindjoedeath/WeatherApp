@@ -9,22 +9,27 @@
 import Foundation
 
 protocol LocationPresenterProtocol: class {
+    
+    var view: LocationViewProtocol! {get set}
+    var interactor: LocationInteractorProtocol! {get set}
+    var router: LocationRouterProtocol! {get set}
+    
     func cityNameChanged(on: String)
     
     // or button clicked
     func nextNavigationRequired()
     func geolocationRequired()
-    func configureView()
+    func load()
 }
 
 class LocationPresenter: LocationPresenterProtocol{
     
-    var view: LocationViewProtocol!
+    weak var view: LocationViewProtocol!
     var router: LocationRouterProtocol!
-    var interactor: LocationInteractorInput!
+    var interactor: LocationInteractorProtocol!
     var repository = CitiesBaseRepository.instance
     
-    var city: String!
+    var city = ""
 
     func cityNameChanged(on city: String) {
         self.city = city
@@ -46,13 +51,13 @@ class LocationPresenter: LocationPresenterProtocol{
         interactor.getLocation()
     }
     
-    func configureView() {
+    func load() {
         let date = Date()
         view.setDay(date.day)
         view.setDate(date.formatted(by: "d MMMM yyyy"))
         view.setCities(repository.cities)
         view.isNextNavigationEnabled = false
-        if !interactor.locationAccessDetermined{
+        if !interactor.isLocationAccessDetermined{
             view.isLocalityButtonEnabled = true
             view.isPermissionNotificationEnabled = true
         }
@@ -79,12 +84,12 @@ extension LocationPresenter: LocationInteractorOutput{
     }
     
     func geolocationTimeOut() {
-        view.showAlert(title: "Опаньки..", message: "Время то не вечно..")
+        view.showAlert(title: "Exception", message: "Timeout")
         view.isDataLoadingIndicatorEnabled = false
     }
     
     func geolocationError(error: String) {
-        view.showAlert(title: "Опаньки..", message: error)
+        view.showAlert(title: "Exception", message: error)
         view.isDataLoadingIndicatorEnabled = false
     }
     
@@ -96,26 +101,25 @@ extension LocationPresenter: LocationInteractorOutput{
     }
     
     func weatherRequestTimeOut() {
-        view.showAlert(title: "Опаньки..", message: "Время то не вечно..")
+        view.showAlert(title: "Exception", message: "Timeout")
         view.isNextNavigationEnabled = false
         view.isDataLoadingIndicatorEnabled = false
     }
     
     func noNetwork() {
-        view.showAlert(title: "Опаньки..", message: "Проверьте соеднинение")
+        view.showAlert(title: "Exception", message: "No network")
         view.isNextNavigationEnabled = false
         view.isDataLoadingIndicatorEnabled = false
     }
     
     func noLocation() {
-        view.showAlert(title: "Опаньки..", message: "Город не найден")
+        view.showAlert(title: "Exception", message: "No location")
         view.isNextNavigationEnabled = false
         view.isDataLoadingIndicatorEnabled = false
     }
     
     func foundWeather() {
         view.isDataLoadingIndicatorEnabled = false
-        interactor.setCity(city)
         router.route(with: nil)
     }
 }

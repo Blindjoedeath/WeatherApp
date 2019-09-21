@@ -9,21 +9,48 @@
 import Foundation
 import UIKit
 
-protocol WeatherRouterProtocol {
+protocol WeatherRouterProtocol: class {
+    
+    var presenter: WeatherPresenterProtocol! {get set}
+    
+    func route()
     func presentDayForecast()
-    func routeToStyle()
     func unload()
 }
 
 class WeatherRouter: NSObject, WeatherRouterProtocol{
     
     var locationRouter: LocationRouter!
-    weak var view: WeatherViewController!
-    weak var presenter: WeatherPresenter! 
-    weak var dayForecastRouter: DayForecastRouter!
-    var styleRouter: StyleRouter!
     
-    func routeToStyle() {
+    weak var weatherViewControllerCached: WeatherViewController!
+    var view: WeatherViewController! {
+        get{
+            if weatherViewControllerCached == nil{
+                weatherViewControllerCached = presenter.view as! WeatherViewController
+            }
+            return weatherViewControllerCached
+        }
+        set{
+            weatherViewControllerCached = newValue
+        }
+    }
+    weak var presenter: WeatherPresenterProtocol!
+    
+    weak var dayForecastRouterCached: DayForecastRouterProtocol!
+    var dayForecastRouter: DayForecastRouterProtocol!{
+        get{
+            if dayForecastRouterCached == nil{
+                dayForecastRouterCached = DayForecastConfigurator().build(with: view!.dayForecastScrollView)
+            }
+            return dayForecastRouterCached
+        }
+        set{
+            dayForecastRouterCached = newValue
+        }
+    }
+    weak var styleRouter: StyleRouterProtocol!
+    
+    func route() {
         view.performSegue(withIdentifier: "StyleTableSegue", sender: {(segue: UIStoryboardSegue) in
             self.styleModuleFrom(segue: segue)
         })
@@ -31,23 +58,17 @@ class WeatherRouter: NSObject, WeatherRouterProtocol{
     
     func styleModuleFrom(segue: UIStoryboardSegue){
         let view = segue.destination as! StyleTableViewController
-        styleRouter = StyleConfigurator.build(from: view)
+        styleRouter = StyleConfigurator().build(with: view)
     }
     
     func presentDayForecast(){
-        dayForecastRouter = DayForecastConfigurator.build(from: view.dayForecastScrollView)
-        presenter.delegate = dayForecastRouter.presenter
-    }
-    
-    func presentStyleMenu(){
-        view.performSegue(withIdentifier: "StyleTableSegue", sender: nil)
+        dayForecastRouter.load()
     }
 
     func unload(){
+        dayForecastRouter.unload()
         view.dismiss(animated: true, completion: nil)
-        
         presenter = nil
-        view = nil
     }
     
     deinit {

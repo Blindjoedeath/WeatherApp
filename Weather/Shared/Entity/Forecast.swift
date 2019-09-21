@@ -21,6 +21,15 @@ class Forecast: Codable{
         return weather[day].count
     }
     
+    public func weekAverage() -> [Weather]{
+        var result : [Weather] = []
+        for i in 0..<self.daysCount{
+            let hourBin = self[i].count > 2 ? 2 : self[i].count-1
+            result.append(self[i, hourBin])
+        }
+        return result
+    }
+    
     subscript(day: Int, hourBin: Int) -> Weather {
         get {
             return weather[day][hourBin]
@@ -42,31 +51,40 @@ class Forecast: Codable{
         try container.encode(weather.reduce([], +), forKey: .list)
     }
     
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let weatherList = try container.decode([Weather].self, forKey: .list)
-        
+    private static func getDays(from weather: [Weather]) -> [String]{
         var days = [String]()
-        weatherList.map{ w in
+        weather.map{ w in
             if !days.contains(w.date!.day){
                 days.append(w.date!.day)
             }
         }
+        return days
+    }
+    
+    private static func sorted(_ weather: [Weather], byDays days: [String]) -> [[Weather]]{
         
-        weather = []
+        var result: [[Weather]] = []
         days.forEach{ day in
-            let oneDayDates = weatherList.filter { $0.date!.day == day }
+            let oneDayDates = weather.filter { $0.date!.day == day }
             let sorted = oneDayDates.sorted{
                 $0.date! < $1.date!
             }
-            
-            var multiple :[Weather] = []
-            for _ in 1...6{
-                multiple += sorted
-            }
-            multiple = Array(multiple.prefix(24))
-            
-            weather.append(multiple)
+            result.append(sorted)
         }
+        
+        return result
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let weatherList = try container.decode([Weather].self, forKey: .list)
+        
+        let days = Forecast.getDays(from: weatherList)
+        self.weather = Forecast.sorted(weatherList, byDays: days)
+    }
+    
+    init(from weather: [Weather]){
+        let days = Forecast.getDays(from: weather)
+        self.weather = Forecast.sorted(weather, byDays: days)
     }
 }
