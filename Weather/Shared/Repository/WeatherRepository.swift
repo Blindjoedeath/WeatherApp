@@ -33,8 +33,8 @@ class WeatherRepository: WeatherRepositoryProtocol{
     
     static let instance: WeatherRepositoryProtocol = WeatherRepository()
     
-    private var weatherSubject = PublishSubject<WeatherResult<Weather>>()
-    private var forecastSubject = PublishSubject<WeatherResult<Forecast>>()
+    var weatherSubject = PublishSubject<WeatherResult<Weather>>()
+    var forecastSubject = PublishSubject<WeatherResult<Forecast>>()
     
     var weatherResult: Observable<WeatherResult<Weather>>{
         return weatherSubject.asObservable()

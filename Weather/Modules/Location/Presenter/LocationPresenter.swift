@@ -62,7 +62,8 @@ class LocationPresenter: LocationPresenterProtocol{
             view.isPermissionNotificationEnabled = true
         }
 
-        if let city = self.interactor.getCity(){
+        if let city = self.interactor.getCity(),
+            !city.isEmpty{
             view.setCity(city)
             DispatchQueue.main.async {[weak self] in
                 if let self = self{
