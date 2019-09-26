@@ -19,6 +19,12 @@ class WeatherConfigurator{
         return self.presenter as? WeatherInteractorOutput
     }()
     
+    func mockDependencies(){
+        let interactor = self.interactor as! WeatherInteractor
+        interactor.cityRepository = CityRepositoryStub.instance
+        interactor.weatherRepository = WeatherRepositoryStub.stubInstance
+    }
+    
     func build() -> WeatherRouterProtocol {
         presenter?.interactor = interactor
         presenter?.router = router
@@ -29,6 +35,10 @@ class WeatherConfigurator{
         interactor?.presenter = interactorOutput
         
         router?.presenter = presenter
+        
+        #if UITESTS
+            mockDependencies()
+        #endif
         
         return router!
     }

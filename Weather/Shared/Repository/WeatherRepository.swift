@@ -31,7 +31,7 @@ protocol WeatherRepositoryProtocol{
 
 class WeatherRepository: WeatherRepositoryProtocol{
     
-    static let instance: WeatherRepositoryProtocol = WeatherRepository()
+    static var instance: WeatherRepositoryProtocol = WeatherRepository()
     
     var weatherSubject = PublishSubject<WeatherResult<Weather>>()
     var forecastSubject = PublishSubject<WeatherResult<Forecast>>()
@@ -46,10 +46,6 @@ class WeatherRepository: WeatherRepositoryProtocol{
     var requestTimeout: Int = 10
     
     var bag = DisposeBag()
-    
-    private init(){
-        
-    }
     
     private func emit<T>(observable: Observable<T>, in subject: PublishSubject<WeatherResult<T>>){
         subject.onNext(.loading)

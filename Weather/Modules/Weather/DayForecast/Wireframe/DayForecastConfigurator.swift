@@ -19,6 +19,11 @@ class DayForecastConfigurator: NSObject {
         return self.presenter as? DayForecastInteractorOutput
     }()
     
+    func mockDependencies(){
+        let interactor = self.interactor as! DayForecastInteractor
+        interactor.weatherRepository = WeatherRepositoryStub.stubInstance
+    }
+    
     func build() -> DayForecastRouterProtocol {
         presenter?.interactor = interactor
         presenter?.router = router
@@ -29,6 +34,10 @@ class DayForecastConfigurator: NSObject {
         interactor?.presenter = interactorOutput
         
         router?.presenter = presenter
+        
+        #if UITESTS
+            mockDependencies()
+        #endif
         
         return router!
     }

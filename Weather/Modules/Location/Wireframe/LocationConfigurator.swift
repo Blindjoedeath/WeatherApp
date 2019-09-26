@@ -21,9 +21,13 @@ class LocationConfigurator: NSObject {
     
     func mockDependencies(){
         let interactor = self.interactor as! LocationInteractor
-        let cityRepository = CityRepositoryStub()
+        let cityRepository = CityRepositoryStub.instance
         cityRepository.stubbedCity.accept("")
         interactor.cityRepository = cityRepository
+        let geolocationService = GeolocationServiceStub.instance
+        geolocationService.stubbedLocality = "Stubbed city"
+        interactor.geolocationService = geolocationService
+        interactor.weatherRepository = WeatherRepositoryStub.stubInstance
     }
     
     func build() -> LocationRouterProtocol {
@@ -37,9 +41,9 @@ class LocationConfigurator: NSObject {
         
         router?.presenter = presenter
         
-        if TestService.isUITesting{
+        #if UITESTS
             mockDependencies()
-        }
+        #endif
         
         return router!
     }

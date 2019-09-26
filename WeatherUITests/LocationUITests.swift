@@ -13,12 +13,7 @@ class LocationUITests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
         
-        let app = XCUIApplication()
-        app.launchArguments.append("uiTests")
-        app.launch() 
-    }
-
-    override func tearDown() {
+        XCUIApplication().launch()
     }
 
     func testNextButtonShouldAppearWhenCityWritten() {
@@ -98,5 +93,10 @@ class LocationUITests: XCTestCase {
         let textFieldValue = textField.value as! String
         
         XCTAssertEqual(textFieldValue, cellValue)
+    }
+    
+    func testExample(){
+        XCUIApplication()/*@START_MENU_TOKEN@*/.staticTexts["Выберете локацию"]/*[[".buttons[\"Выберете локацию\"].staticTexts[\"Выберете локацию\"]",".staticTexts[\"Выберете локацию\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        
     }
 }
