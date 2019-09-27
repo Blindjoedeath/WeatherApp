@@ -19,7 +19,7 @@ struct WeatherItem{
     static func from(weather: Weather, date: String) -> WeatherItem{
         return WeatherItem(temperature: String(weather.temperature),
                                humidity: String(weather.humidity),
-                               description: weather.description,
+                               description: weather.description.capitalized,
                                date: date,
                                iconCode: weather.iconCode,
                                perceivedTemperature: String(weather.perceivedTemperature))

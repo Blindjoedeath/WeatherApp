@@ -21,7 +21,8 @@ class LocationUITests: XCTestCase {
         let textField = app.textFields["CityTextField"]
         textField.tap()
         textField.typeText("Казань")
-        let back = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element
+        let back = app.otherElements.containing(.image, identifier:"Sky").element
+        back.tap()
         back.tap()
         let exists = app.buttons["NextButton"].exists
         XCTAssertTrue(exists)
@@ -32,7 +33,7 @@ class LocationUITests: XCTestCase {
         let textField = app.textFields["CityTextField"]
         textField.tap()
         textField.typeText("Казань")
-        let back = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element
+        let back = app.otherElements.containing(.image, identifier:"Sky").element
         back.tap()
         
         textField.tap()
@@ -49,19 +50,13 @@ class LocationUITests: XCTestCase {
         let textField = app/*@START_MENU_TOKEN@*/.textFields["CityTextField"]/*[[".textFields[\"Введите город\"]",".textFields[\"CityTextField\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
         textField.tap()
         textField.typeText("К")
-        let expect = expectation(description: "Cities list should appear")
         let citiesList = app.tables.firstMatch
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            XCTAssertTrue(citiesList.exists)
-            expect.fulfill()
+                
+        guard citiesList.waitForExistence(timeout: 0.4) else {
+            return XCTFail("Cities list not found.")
         }
         
-        waitForExpectations(timeout: 1){error in
-            if let error = error{
-                print(error.localizedDescription)
-            }
-        }
+        XCTAssertTrue(citiesList.exists)
     }
     
     func testCitiesTableShouldDisppearWhenDeselectTextField() {
@@ -70,7 +65,7 @@ class LocationUITests: XCTestCase {
         textField.tap()
         textField.typeText("К")
         
-        let back = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element
+        let back = app.otherElements.containing(.image, identifier:"Sky").element
         
         // dissmiss keyboard
         back.tap()
@@ -93,10 +88,5 @@ class LocationUITests: XCTestCase {
         let textFieldValue = textField.value as! String
         
         XCTAssertEqual(textFieldValue, cellValue)
-    }
-    
-    func testExample(){
-        XCUIApplication()/*@START_MENU_TOKEN@*/.staticTexts["Выберете локацию"]/*[[".buttons[\"Выберете локацию\"].staticTexts[\"Выберете локацию\"]",".staticTexts[\"Выберете локацию\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
-        
     }
 }

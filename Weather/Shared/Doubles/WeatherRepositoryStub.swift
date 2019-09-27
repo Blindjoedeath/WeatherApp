@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 class WeatherRepositoryStub: WeatherRepository{
     
@@ -59,11 +60,17 @@ class WeatherRepositoryStub: WeatherRepository{
     
     override func refreshWeather(for city: String) {
         let result = WeatherResult.success(weather)
-        weatherSubject.onNext(result)
+        weatherSubject.onNext(.loading)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){[weak self] in
+            self?.weatherSubject.onNext(result)
+        }
     }
     
     override func refreshForecast(for city: String) {
         let result = WeatherResult.success(forecast)
-        forecastSubject.onNext(result)
+        forecastSubject.onNext(.loading)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){[weak self] in
+            self?.forecastSubject.onNext(result)
+        }
     }
 }
