@@ -43,7 +43,7 @@ class WeatherRoutingTests: XCTestCase {
     
     func testRouterShouldUnloadDayForecastRouterWhenUnload(){
         let dayForecastRouter = DayForecastRouterSpy()
-        let view = WeatherViewController()
+        let view = StoryboardView<WeatherViewController>().instantiate(withIdentifier: "WeatherViewController")
         configurator.view = view
         let router = configurator.build() as! WeatherRouter
         

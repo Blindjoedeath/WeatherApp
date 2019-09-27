@@ -224,6 +224,11 @@ extension LocationViewController: UITextFieldDelegate{
         dismissKeyboard()
         return true
     }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        presenter.cityNameChanged(on: "")
+        return true
+    }
 }
 
 

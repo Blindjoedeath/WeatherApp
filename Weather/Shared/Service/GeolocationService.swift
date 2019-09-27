@@ -11,18 +11,18 @@ import CoreLocation
 import RxSwift
 import RxCoreLocation
 
-protocol GeolocationServiceProtocol{
+protocol GeolocationServiceProtocol: class{
     func getLocality() -> Observable<String?>
     var access: Observable<Bool> {get}
     var accessDetermined: Observable<Bool> {get}
     var timeLimit: Int {get set}
 }
 
-class GeolocationService: NSObject, GeolocationServiceProtocol{
+class GeolocationService: GeolocationServiceProtocol{
     
-    private lazy var locationManager = CLLocationManager()
+    private(set) lazy var locationManager = CLLocationManager()
     private lazy var geocoder = CLGeocoder()
-    private lazy var bag = DisposeBag()
+    private lazy var accessBag = DisposeBag()
     
     var timeLimit = 10
     
@@ -44,7 +44,20 @@ class GeolocationService: NSObject, GeolocationServiceProtocol{
             .share()
     }()
     
+    func subscribeOnAccess(){
+        accessBag = DisposeBag()
+        access
+            .bind(onNext: {[weak self] status in
+                if status{
+                    self?.startUpdatingLocations()
+                } else{
+                    self?.locationManager.requestWhenInUseAuthorization()
+                }
+            }).disposed(by: accessBag)
+    }
+    
     func getLocality() -> Observable<String?>{
+        subscribeOnAccess()
         startUpdatingLocations()
         
         return locationManager.rx
@@ -81,19 +94,5 @@ class GeolocationService: NSObject, GeolocationServiceProtocol{
                 self.geocoder.cancelGeocode()
             }
         }
-    }
-    
-    override init() {
-        super.init()
-        
-        
-        let _ = access
-            .bind(onNext: {[unowned self] status in
-                if status{
-                    self.startUpdatingLocations()
-                } else{
-                    self.locationManager.requestWhenInUseAuthorization()
-                }
-            }).disposed(by: bag)
     }
 }
